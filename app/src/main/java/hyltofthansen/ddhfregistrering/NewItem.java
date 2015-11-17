@@ -33,10 +33,11 @@ public class NewItem extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle("Ny genstand");
+        getActivity().setTitle("Registrer ny genstand");
         View root = inflater.inflate(R.layout.new_item, container, false);
         lv = (ListView) root.findViewById(R.id.newItem_listview);
 
+        // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises
         listAdapter = new ArrayAdapter(getActivity(), R.layout.listview_layout, R.id.listHeader, fields) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,26 +51,26 @@ public class NewItem extends Fragment {
 
         lv.setAdapter(listAdapter);
 
+
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              // get prompts.xml view
+              LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+              final View promptView = layoutInflater.inflate(R.layout.promptinput, null);
+              final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+              // set prompts.xml to be the layout file of the alertdialog builder
+              alertDialogBuilder.setView(promptView);
+              final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
+              final EditText input = (EditText) promptView.findViewById(R.id.userInput);
               switch (position) {
                   case 0: // Genstand nr.
-                      // get prompts.xml view
-                      LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-
-                      View promptView = layoutInflater.inflate(R.layout.promptinput, null);
-                      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-                      // set prompts.xml to be the layout file of the alertdialog builder
-                      alertDialogBuilder.setView(promptView);
-
-                      TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
                       inputHeader.setText(((TextView)lv.getChildAt(0).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-                      final TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
-
-                      final EditText input = (EditText) promptView.findViewById(R.id.userInput);
-                      input.setHint(inputText.getText());
+                      //TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
+                      input.setHint(((TextView) lv.getChildAt(0).findViewById(R.id.listDescription)).getText());
 
                       // setup a dialog window
                       alertDialogBuilder
@@ -77,8 +78,7 @@ public class NewItem extends Fragment {
                               .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                   public void onClick(DialogInterface dialog, int id) {
                                       // get user input and set it to result
-
-                                      inputText.setText(input.getText());
+                                      ((TextView) lv.getChildAt(0).findViewById(R.id.listDescription)).setText(input.getText());
                                   }
                               })
                               .setNegativeButton("Fortryd",
@@ -88,11 +88,33 @@ public class NewItem extends Fragment {
                                           }
                                       });
 
-                      // create an alert dialog
-                      AlertDialog alertD = alertDialogBuilder.create();
-                      alertD.show();
+                      AlertDialog promptDialog = alertDialogBuilder.create();
+                      promptDialog.show();
                       break;
+
                   case 1: // Betegnelse
+                      inputHeader.setText(((TextView) lv.getChildAt(1).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
+                      //TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
+                      input.setHint(((TextView) lv.getChildAt(1).findViewById(R.id.listDescription)).getText());
+
+                      // setup a dialog window
+                      alertDialogBuilder
+                              .setCancelable(false)
+                              .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                  public void onClick(DialogInterface dialog, int id) {
+                                      // get user input and set it to result
+                                      ((TextView) lv.getChildAt(1).findViewById(R.id.listDescription)).setText(input.getText());
+                                  }
+                              })
+                              .setNegativeButton("Fortryd",
+                                      new DialogInterface.OnClickListener() {
+                                          public void onClick(DialogInterface dialog, int id) {
+                                              dialog.cancel();
+                                          }
+                                      });
+
+                      AlertDialog promptDialog_1 = alertDialogBuilder.create();
+                      promptDialog_1.show();
                       break;
                   case 2: // Modtagelsesdato
                       DialogFragment dateFragment = new DatePickerFragment() {
