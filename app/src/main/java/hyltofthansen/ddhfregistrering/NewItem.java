@@ -64,10 +64,12 @@ public class NewItem extends Fragment {
                       // set prompts.xml to be the layout file of the alertdialog builder
                       alertDialogBuilder.setView(promptView);
 
+                      TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
+                      inputHeader.setText(((TextView)lv.getChildAt(0).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
                       final TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
 
                       final EditText input = (EditText) promptView.findViewById(R.id.userInput);
-                      input.setText(inputText.getText());
+                      input.setHint(inputText.getText());
 
                       // setup a dialog window
                       alertDialogBuilder
@@ -79,16 +81,15 @@ public class NewItem extends Fragment {
                                       inputText.setText(input.getText());
                                   }
                               })
-                              .setNegativeButton("Cancel",
+                              .setNegativeButton("Fortryd",
                                       new DialogInterface.OnClickListener() {
-                                          public void onClick(DialogInterface dialog,	int id) {
+                                          public void onClick(DialogInterface dialog, int id) {
                                               dialog.cancel();
                                           }
                                       });
 
                       // create an alert dialog
                       AlertDialog alertD = alertDialogBuilder.create();
-
                       alertD.show();
                       break;
                   case 1: // Betegnelse
