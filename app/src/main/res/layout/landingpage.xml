@@ -8,8 +8,7 @@
         android:layout_height="wrap_content"
         android:text="Ny genstand"
         android:id="@+id/b_newItem"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"/>
+        android:layout_gravity="center_horizontal" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -17,6 +16,5 @@
         android:layout_height="wrap_content"
         android:text="Søg"
         android:id="@+id/b_search"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"/>
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

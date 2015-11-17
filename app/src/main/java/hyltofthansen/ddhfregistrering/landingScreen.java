@@ -21,15 +21,25 @@ public class landingScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.landingpage, container, false);
 
-        Button b_newItem = (Button) root.findViewById(R.id.b_newItem);
+        final Button b_newItem = (Button) root.findViewById(R.id.b_newItem);
         b_newItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new NewItem())
+                if (v == b_newItem)
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new NewItem())
                         .addToBackStack(null).commit();
             }
         });
 
+        final Button b_searchItem = (Button) root.findViewById(R.id.b_search);
+        b_searchItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == b_searchItem)
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SearchItem())
+                        .addToBackStack(null).commit();
+            }
+        });
 
         return root;
     }
