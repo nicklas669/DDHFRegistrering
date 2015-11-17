@@ -31,13 +31,14 @@ public class SearchItem extends Fragment {
          View root = inflater.inflate(R.layout.searchitem, container, false);
 
          final EditText edit_id = (EditText) root.findViewById(R.id.edit_searchID);
-         final TextView tv_httpresponse = (TextView) root.findViewById(R.id.tv_httpget);
+         final TextView ev_httpresponse = (TextView) root.findViewById(R.id.et_httpget);
          Button b_search = (Button) root.findViewById(R.id.b_searchforID);
 
          b_search.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                 if (edit_id.getText().length() > 0) { // hvis der står noget i ID-feltet
+                    final String itemID = edit_id.getText().toString();
                     new AsyncTask() {
 
                         @Override
@@ -45,9 +46,9 @@ public class SearchItem extends Fragment {
                             // FYR HTTP GET AF HER
                             // http GET "http://78.46.187.172:4019/items/3"
 
-                            String url = "http://78.46.187.172:4019/items/3";
+                            String url = "http://78.46.187.172:4019/items/"+itemID;
                             String USER_AGENT = "Mozilla/5.0";
-                            StringBuffer response = null;
+                            StringBuffer response = new StringBuffer();
                             try {
                                 URL obj = new URL(url);
                                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -65,17 +66,15 @@ public class SearchItem extends Fragment {
                                 BufferedReader in = new BufferedReader(
                                         new InputStreamReader(con.getInputStream()));
                                 String inputLine;
-                                response = new StringBuffer();
 
                                 while ((inputLine = in.readLine()) != null) {
                                     response.append(inputLine);
                                 }
                                 in.close();
-                                //print result
-                                System.out.println(response.toString());
 
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                response.append("Der opstod en fejl! "+e.toString());
                             }
                             return response;
                         }
@@ -83,8 +82,7 @@ public class SearchItem extends Fragment {
                         @Override
                         protected void onPostExecute(Object o) {
                             // OPDATER HTTP TEXTVIEW
-                            tv_httpresponse.setText(o.toString());
-                            //super.onPostExecute(o);
+                            ev_httpresponse.setText(o.toString());
                         }
                     }.execute();
 

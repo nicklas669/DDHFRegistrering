@@ -19,11 +19,11 @@
         android:id="@+id/b_searchforID"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Besked her.."
-        android:id="@+id/tv_httpget"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/et_httpget"
+        android:layout_gravity="center_horizontal"
+        android:editable="false" />
+
 </LinearLayout>
