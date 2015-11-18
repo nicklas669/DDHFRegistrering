@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -76,54 +77,55 @@ public class NewItem extends Fragment {
                          */
                         URL url = null;
                         StringBuffer response = new StringBuffer();
-
-                        try {
-                            url = new URL("http://78.46.187.172:4019/items");       //Denne URL bør hentes ét sted fra, hvis Server ip skal skiftes
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        }
                         Map<String,Object> postParams = new LinkedHashMap<>();
                         postParams.put("itemheadline", "Hest");
                         postParams.put("itemdescription", "Dette er en hest");
-                        System.out.println("Async oprettet");
-
                         //Tilføj selv flere
-                        try {
 
-                            //Opretter POST URL
+                        try {
                             StringBuilder postData = new StringBuilder();
                             for (Map.Entry<String, Object> param : postParams.entrySet()) {
                                 if (postData.length() != 0) postData.append('&');
-
-                                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-
+                                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
                                 postData.append('=');
                                 postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
                             }
-                            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
 
-                            System.out.println("PostData incoming");
-                            System.out.println(postData);
+                            //System.out.println("PostData incoming");
+                            //System.out.println(postData);
+
+                            //Opretter POST URL
+                            try {
+                                url = new URL(getString(R.string.URL)+"/items?"+postData);
+                                System.out.println("url: "+url);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            }
 
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                             conn.setRequestMethod("POST");
                             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                            conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                            conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
                             conn.setDoOutput(true);
-                            conn.getOutputStream().write(postDataBytes);
+                            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                            wr.write(postData.toString());
+                            wr.flush();
 
                             int responseCode = conn.getResponseCode();
-                            System.out.println("\nSending 'GET' request to URL : " + url);
-                            System.out.println("Response Code : " + responseCode);
+                            System.out.println("Response Code: " + responseCode);
 
-                            BufferedReader in = new BufferedReader(
-                                    new InputStreamReader(conn.getInputStream()));
-                            String inputLine;
+                            conn.disconnect();
 
-                            while ((inputLine = in.readLine()) != null) {
-                                response.append(inputLine);
-                            }
-                            in.close();
+                            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
+
+                            //BufferedReader in = new BufferedReader(
+                            //        new InputStreamReader(conn.getInputStream()));
+                            //String inputLine;
+
+                            //while ((inputLine = in.readLine()) != null) {
+                            //    response.append(inputLine);
+                            //}
+                            //in.close();
                         }
                         catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -134,7 +136,8 @@ public class NewItem extends Fragment {
                         }
                         return response;
                     }
-                };
+                }.execute();
+                break;
         }
         return true;
     }

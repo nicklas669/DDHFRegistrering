@@ -43,13 +43,10 @@ public class SearchItem extends Fragment {
                 if (edit_id.getText().length() > 0) { // hvis der står noget i ID-feltet
                     final String itemID = edit_id.getText().toString();
                     new AsyncTask() {
-
                         @Override
                         protected Object doInBackground(Object[] params) {
-                            // FYR HTTP GET AF HER
                             // http GET "http://78.46.187.172:4019/items/3"
-
-                            String url = "http://78.46.187.172:4019/items/"+itemID;
+                            String url = getString(R.string.URL)+"/items/"+itemID;
                             String USER_AGENT = "Mozilla/5.0";
                             StringBuffer response = new StringBuffer();
                             try {
