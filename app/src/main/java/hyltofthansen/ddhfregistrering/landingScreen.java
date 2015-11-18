@@ -26,8 +26,9 @@ public class landingScreen extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v == b_newItem)
-                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new NewItem())
-                        .addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().addToBackStack(null).
+                replace(R.id.fragmentContainer, new NewItem())
+                        .commit();
             }
         });
 
@@ -36,8 +37,9 @@ public class landingScreen extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v == b_searchItem)
-                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SearchItem())
-                        .addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().addToBackStack(null).
+                replace(R.id.fragmentContainer, new SearchItem())
+                        .commit();
             }
         });
 
