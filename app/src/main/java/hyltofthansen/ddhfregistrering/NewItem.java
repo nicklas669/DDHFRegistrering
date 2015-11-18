@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,6 +22,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static android.app.ProgressDialog.show;
 
 public class NewItem extends Fragment {
 
@@ -33,16 +51,99 @@ public class NewItem extends Fragment {
     BaseAdapter listAdapter;
     ActionBar actionBar;
 
+
+    //Inflate ActionBar for Opret Genstand fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_createitem, menu);
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
+            case R.id.action_create:
+                System.out.println("Opret knap trykket");
+
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] params) {
+                        /**
+                         *  Opret nyt item:
+                            http POST "http://78.46.187.172:4019/items?itemheadline=test&itemdescription=blahblahblah"
+
+                         Venligst udlånt fra http://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily
+                         */
+                        URL url = null;
+                        StringBuffer response = new StringBuffer();
+
+                        try {
+                            url = new URL("http://78.46.187.172:4019/items");       //Denne URL bør hentes ét sted fra, hvis Server ip skal skiftes
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        Map<String,Object> postParams = new LinkedHashMap<>();
+                        postParams.put("itemheadline", "Hest");
+                        postParams.put("itemdescription", "Dette er en hest");
+                        System.out.println("Async oprettet");
+
+                        //Tilføj selv flere
+                        try {
+
+                            //Opretter POST URL
+                            StringBuilder postData = new StringBuilder();
+                            for (Map.Entry<String, Object> param : postParams.entrySet()) {
+                                if (postData.length() != 0) postData.append('&');
+
+                                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+
+                                postData.append('=');
+                                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                            }
+                            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+                            System.out.println("PostData incoming");
+                            System.out.println(postData);
+
+                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                            conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                            conn.setDoOutput(true);
+                            conn.getOutputStream().write(postDataBytes);
+
+                            int responseCode = conn.getResponseCode();
+                            System.out.println("\nSending 'GET' request to URL : " + url);
+                            System.out.println("Response Code : " + responseCode);
+
+                            BufferedReader in = new BufferedReader(
+                                    new InputStreamReader(conn.getInputStream()));
+                            String inputLine;
+
+                            while ((inputLine = in.readLine()) != null) {
+                                response.append(inputLine);
+                            }
+                            in.close();
+                        }
+                        catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (ProtocolException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return response;
+                    }
+                };
+        }
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Registrer ny genstand");
 
-        //Aktiver opret knap
+        //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
