@@ -1,13 +1,15 @@
 package hyltofthansen.ddhfregistrering;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,9 +21,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class NewItem extends Fragment {
 
     String[] fields = {"Genstand nr.", "Betegnelse", "Modtagelsesdato", "Datering fra", "Datering til",
@@ -32,11 +31,22 @@ public class NewItem extends Fragment {
 
     ListView lv;
     BaseAdapter listAdapter;
+    ActionBar actionBar;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_createitem, menu);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Registrer ny genstand");
+
+        //Aktiver opret knap
+        setHasOptionsMenu(true);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
+
 
         View root = inflater.inflate(R.layout.new_item, container, false);
         lv = (ListView) root.findViewById(R.id.newItem_listview);
