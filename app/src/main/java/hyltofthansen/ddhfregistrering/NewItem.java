@@ -5,9 +5,11 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -33,6 +35,8 @@ public class NewItem extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Registrer ny genstand");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
+
         View root = inflater.inflate(R.layout.new_item, container, false);
         lv = (ListView) root.findViewById(R.id.newItem_listview);
 
@@ -49,9 +53,6 @@ public class NewItem extends Fragment {
         };
 
         lv.setAdapter(listAdapter);
-
-
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,8 +88,10 @@ public class NewItem extends Fragment {
                                           }
                                       });
 
-                      AlertDialog promptDialog = alertDialogBuilder.create();
-                      promptDialog.show();
+                      AlertDialog promptDialog_0 = alertDialogBuilder.create();
+                      promptDialog_0.show();
+                      promptDialog_0.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                      promptDialog_0.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                       break;
 
                   case 1: // Betegnelse
@@ -114,7 +117,10 @@ public class NewItem extends Fragment {
 
                       AlertDialog promptDialog_1 = alertDialogBuilder.create();
                       promptDialog_1.show();
+                      promptDialog_1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                      promptDialog_1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                       break;
+
                   case 2: // Modtagelsesdato
                       DialogFragment dateFragment = new DatePickerFragment() {
                           @Override
@@ -125,18 +131,25 @@ public class NewItem extends Fragment {
                       };
                       dateFragment.show(getFragmentManager(), "datePicker");
                       break;
+
                   case 3: // Datering fra
                       break;
+
                   case 4: // Datering til
                       break;
+
                   case 5: // Beskrivelse
                       break;
+
                   case 6: // Ref. til donator
                       break;
+
                   case 7: // Ref. til producent
                       break;
+
                   case 8: // Geografisk område
                       break;
+
                   case 9: // Ref. til emnegruppe(r)
                       break;
               }
