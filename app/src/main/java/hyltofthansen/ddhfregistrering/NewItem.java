@@ -57,6 +57,7 @@ public class NewItem extends Fragment {
         inflater.inflate(R.menu.menu_createitem, menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -140,6 +141,7 @@ public class NewItem extends Fragment {
         return true;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Registrer ny genstand");
@@ -168,97 +170,98 @@ public class NewItem extends Fragment {
         lv.setAdapter(listAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                       @Override
-                                      public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                                          // get prompts.xml view
-                                          LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                          final View promptView = layoutInflater.inflate(R.layout.promptinput, null);
-                                          final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-                                          // set prompts.xml to be the layout file of the alertdialog builder
-                                          alertDialogBuilder.setView(promptView);
-                                          final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
-                                          final EditText input = (EditText) promptView.findViewById(R.id.userInput);
                                           switch (position) {
                                               case 0: // Betegnelse
-                                                  inputHeader.setText(((TextView) lv.getChildAt(position).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-                                                  input.setHint(((TextView) lv.getChildAt(position).findViewById(R.id.listDescription)).getText());
-
-                                                  // setup a dialog window
-                                                  alertDialogBuilder
-                                                          .setCancelable(false)
-                                                          .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                              public void onClick(DialogInterface dialog, int id) {
-                                                                  // get user input and set it to result
-                                                                  descriptions[position] = input.getText().toString();
-                                                                  listAdapter.notifyDataSetChanged();
-                                                              }
-                                                          })
-                                                          .setNegativeButton("Fortryd",
-                                                                  new DialogInterface.OnClickListener() {
-                                                                      public void onClick(DialogInterface dialog, int id) {
-                                                                          dialog.cancel();
-                                                                      }
-                                                                  });
-
-                                                  AlertDialog promptDialog_1 = alertDialogBuilder.create();
-                                                  promptDialog_1.show();
-                                                  // Viser tastatur
-                                                  promptDialog_1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                                                  promptDialog_1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                                                  showInputPrompt(position);
                                                   break;
 
                                               case 1: // Modtagelsesdato
-                                                  DialogFragment receivingDate = new DatePickerFragment() {
-                                                      @Override
-                                                      public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
-                                                          listAdapter.notifyDataSetChanged();
-                                                      }
-                                                  };
-                                                  receivingDate.show(getFragmentManager(), "datePicker");
+                                                  showDatePickerFragment(position);
                                                   break;
 
                                               case 2: // Datering fra
-                                                  DialogFragment datingFrom = new DatePickerFragment() {
-                                                      @Override
-                                                      public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
-                                                          listAdapter.notifyDataSetChanged();
-                                                      }
-                                                  };
-                                                  datingFrom.show(getFragmentManager(), "datePicker");
+                                                  showDatePickerFragment(position);
                                                   break;
 
                                               case 3: // Datering til
-                                                  DialogFragment datingTo = new DatePickerFragment() {
-                                                      @Override
-                                                      public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
-                                                          listAdapter.notifyDataSetChanged();
-                                                      }
-                                                  };
-                                                  datingTo.show(getFragmentManager(), "datePicker");
+                                                  showDatePickerFragment(position);
                                                   break;
 
                                               case 4: // Beskrivelse
+                                                  showInputPrompt(position);
                                                   break;
 
                                               case 5: // Ref. til donator
+                                                  showInputPrompt(position);
                                                   break;
 
                                               case 6: // Ref. til producent
+                                                  showInputPrompt(position);
                                                   break;
 
                                               case 7: // Geografisk område
+                                                  showInputPrompt(position);
                                                   break;
 
                                               case 8: // Ref. til emnegruppe(r)
+                                                  showInputPrompt(position);
                                                   break;
                                           }
                                       }
                                   }
         );
         return root;
+    }
+
+    public void showInputPrompt(final int position) {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        final View promptView = layoutInflater.inflate(R.layout.promptinput, null);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+        // set prompts.xml to be the layout file of the alertdialog builder
+        alertDialogBuilder.setView(promptView);
+        final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
+        final EditText input = (EditText) promptView.findViewById(R.id.userInput);
+
+        inputHeader.setText(((TextView) lv.getChildAt(position).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
+        input.setHint(((TextView) lv.getChildAt(position).findViewById(R.id.listDescription)).getText());
+
+        // setup a dialog window
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // get user input and set it to result
+                        descriptions[position] = input.getText().toString();
+                        listAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Fortryd",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog promptDialog_1 = alertDialogBuilder.create();
+        promptDialog_1.show();
+        // Viser tastatur
+        promptDialog_1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        promptDialog_1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    public void showDatePickerFragment(final int position) {
+        DialogFragment date = new DatePickerFragment() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
+                listAdapter.notifyDataSetChanged();
+            }
+        };
+        date.show(getFragmentManager(), "datePicker");
     }
 }
