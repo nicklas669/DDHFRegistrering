@@ -42,16 +42,14 @@ import static android.app.ProgressDialog.show;
 
 public class NewItem extends Fragment {
 
-    String[] fields = {"Genstand nr.", "Betegnelse", "Modtagelsesdato", "Datering fra", "Datering til",
+    String[] fields = {"Betegnelse", "Modtagelsesdato", "Datering fra", "Datering til",
             "Beskrivelse", "Ref. til donator", "Ref. til producent", "Geografisk område", "Ref. til emnegruppe(r)"};
 
-    String[] descriptions = {"Skriv genstand nummer her", "Skriv betegnelse her", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
+    String[] descriptions = {"Skriv betegnelse her", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
             "Indtast beskrivelse", "Referencenummer til donator", "Referencenummer til producent", "Vælg kommune her", "Referencenummer til emnegruppe(r)"};
 
     ListView lv;
     BaseAdapter listAdapter;
-    ActionBar actionBar;
-
 
     //Inflate ActionBar for Opret Genstand fragment
     @Override
@@ -170,7 +168,7 @@ public class NewItem extends Fragment {
         lv.setAdapter(listAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                       @Override
-                                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                      public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                                           // get prompts.xml view
                                           LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
@@ -182,10 +180,9 @@ public class NewItem extends Fragment {
                                           final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
                                           final EditText input = (EditText) promptView.findViewById(R.id.userInput);
                                           switch (position) {
-                                              case 0: // Genstand nr.
-                                                  inputHeader.setText(((TextView) lv.getChildAt(0).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-                                                  //TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
-                                                  input.setHint(((TextView) lv.getChildAt(0).findViewById(R.id.listDescription)).getText());
+                                              case 0: // Betegnelse
+                                                  inputHeader.setText(((TextView) lv.getChildAt(position).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
+                                                  input.setHint(((TextView) lv.getChildAt(position).findViewById(R.id.listDescription)).getText());
 
                                                   // setup a dialog window
                                                   alertDialogBuilder
@@ -193,34 +190,8 @@ public class NewItem extends Fragment {
                                                           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                               public void onClick(DialogInterface dialog, int id) {
                                                                   // get user input and set it to result
-                                                                  ((TextView) lv.getChildAt(0).findViewById(R.id.listDescription)).setText(input.getText());
-                                                              }
-                                                          })
-                                                          .setNegativeButton("Fortryd",
-                                                                  new DialogInterface.OnClickListener() {
-                                                                      public void onClick(DialogInterface dialog, int id) {
-                                                                          dialog.cancel();
-                                                                      }
-                                                                  });
-
-                                                  AlertDialog promptDialog_0 = alertDialogBuilder.create();
-                                                  promptDialog_0.show();
-                                                  promptDialog_0.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                                                  promptDialog_0.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                                                  break;
-
-                                              case 1: // Betegnelse
-                                                  inputHeader.setText(((TextView) lv.getChildAt(1).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-                                                  //TextView inputText = (TextView) lv.getChildAt(0).findViewById(R.id.listDescription); // fanger textView med beskrivelse til den valgte række
-                                                  input.setHint(((TextView) lv.getChildAt(1).findViewById(R.id.listDescription)).getText());
-
-                                                  // setup a dialog window
-                                                  alertDialogBuilder
-                                                          .setCancelable(false)
-                                                          .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                              public void onClick(DialogInterface dialog, int id) {
-                                                                  // get user input and set it to result
-                                                                  ((TextView) lv.getChildAt(1).findViewById(R.id.listDescription)).setText(input.getText());
+                                                                  descriptions[position] = input.getText().toString();
+                                                                  listAdapter.notifyDataSetChanged();
                                                               }
                                                           })
                                                           .setNegativeButton("Fortryd",
@@ -232,56 +203,57 @@ public class NewItem extends Fragment {
 
                                                   AlertDialog promptDialog_1 = alertDialogBuilder.create();
                                                   promptDialog_1.show();
+                                                  // Viser tastatur
                                                   promptDialog_1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                                                   promptDialog_1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                                                   break;
 
-                                              case 2: // Modtagelsesdato
+                                              case 1: // Modtagelsesdato
                                                   DialogFragment receivingDate = new DatePickerFragment() {
                                                       @Override
                                                       public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[2] = "" + day + "-" + (month + 1) + "-" + year;
+                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
                                                           listAdapter.notifyDataSetChanged();
                                                       }
                                                   };
                                                   receivingDate.show(getFragmentManager(), "datePicker");
                                                   break;
 
-                                              case 3: // Datering fra
+                                              case 2: // Datering fra
                                                   DialogFragment datingFrom = new DatePickerFragment() {
                                                       @Override
                                                       public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[3] = "" + day + "-" + (month + 1) + "-" + year;
+                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
                                                           listAdapter.notifyDataSetChanged();
                                                       }
                                                   };
                                                   datingFrom.show(getFragmentManager(), "datePicker");
                                                   break;
 
-                                              case 4: // Datering til
+                                              case 3: // Datering til
                                                   DialogFragment datingTo = new DatePickerFragment() {
                                                       @Override
                                                       public void onDateSet(DatePicker view, int year, int month, int day) {
-                                                          descriptions[4] = "" + day + "-" + (month + 1) + "-" + year;
+                                                          descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
                                                           listAdapter.notifyDataSetChanged();
                                                       }
                                                   };
                                                   datingTo.show(getFragmentManager(), "datePicker");
                                                   break;
 
-                                              case 5: // Beskrivelse
+                                              case 4: // Beskrivelse
                                                   break;
 
-                                              case 6: // Ref. til donator
+                                              case 5: // Ref. til donator
                                                   break;
 
-                                              case 7: // Ref. til producent
+                                              case 6: // Ref. til producent
                                                   break;
 
-                                              case 8: // Geografisk område
+                                              case 7: // Geografisk område
                                                   break;
 
-                                              case 9: // Ref. til emnegruppe(r)
+                                              case 8: // Ref. til emnegruppe(r)
                                                   break;
                                           }
                                       }
