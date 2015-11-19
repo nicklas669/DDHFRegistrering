@@ -42,11 +42,11 @@ import static android.app.ProgressDialog.show;
 
 public class NewItem extends Fragment {
 
-    String[] fields = {"Betegnelse", "Modtagelsesdato", "Datering fra", "Datering til",
-            "Beskrivelse", "Ref. til donator", "Ref. til producent", "Geografisk område", "Ref. til emnegruppe(r)"};
+    String[] fields = {"Betegnelse", "Beskrivelse", "Modtagelsesdato", "Datering fra", "Datering til",
+            "Ref. til donator", "Ref. til producent", "Postnummer"};
 
-    String[] descriptions = {"Skriv betegnelse her", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
-            "Indtast beskrivelse", "Referencenummer til donator", "Referencenummer til producent", "Vælg kommune her", "Referencenummer til emnegruppe(r)"};
+    String[] descriptions = {"Skriv betegnelse her", "Indtast beskrivelse", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
+            "Referencenummer til donator", "Referencenummer til producent", "Indtast postnummer her"};
 
     ListView lv;
     BaseAdapter listAdapter;
@@ -171,26 +171,25 @@ public class NewItem extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                       @Override
                                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                                           switch (position) {
                                               case 0: // Betegnelse
                                                   showInputPrompt(position);
                                                   break;
 
-                                              case 1: // Modtagelsesdato
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 2: // Datering fra
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 3: // Datering til
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 4: // Beskrivelse
+                                              case 1: // Beskrivelse
                                                   showInputPrompt(position);
+                                                  break;
+
+                                              case 2: // Modtagelsesdato
+                                                  showDatePickerFragment(position);
+                                                  break;
+
+                                              case 3: // Datering fra
+                                                  showDatePickerFragment(position);
+                                                  break;
+
+                                              case 4: // Datering til
+                                                  showDatePickerFragment(position);
                                                   break;
 
                                               case 5: // Ref. til donator
@@ -201,11 +200,7 @@ public class NewItem extends Fragment {
                                                   showInputPrompt(position);
                                                   break;
 
-                                              case 7: // Geografisk område
-                                                  showInputPrompt(position);
-                                                  break;
-
-                                              case 8: // Ref. til emnegruppe(r)
+                                              case 7: // Postnummer
                                                   showInputPrompt(position);
                                                   break;
                                           }
@@ -215,7 +210,14 @@ public class NewItem extends Fragment {
         return root;
     }
 
-    public void showInputPrompt(final int position) {
+    public void showInputPrompt(int position) {
+        System.out.println("KALDER showInputPrompt med POSITION: "+position);
+
+        // Nødvendig kode for at få korrekt index når der er scrolled i listen
+        int wantedPosition = position; // Whatever position you're looking for
+        int firstPosition = lv.getFirstVisiblePosition() - lv.getHeaderViewsCount(); // This is the same as child #0
+        final int index = wantedPosition - firstPosition;
+
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
@@ -227,16 +229,19 @@ public class NewItem extends Fragment {
         final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
         final EditText input = (EditText) promptView.findViewById(R.id.userInput);
 
-        inputHeader.setText(((TextView) lv.getChildAt(position).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-        input.setHint(((TextView) lv.getChildAt(position).findViewById(R.id.listDescription)).getText());
+
+        System.out.println("SÆTTER INPUTHEADER... index: "+index);
+        inputHeader.setText(((TextView) lv.getChildAt(index).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
+        input.setHint(((TextView) lv.getChildAt(index).findViewById(R.id.listDescription)).getText());
 
         // setup a dialog window
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        System.out.println("DER BLEV TRYKKET OK OG index ER NU: "+index);
                         // get user input and set it to result
-                        descriptions[position] = input.getText().toString();
+                        descriptions[index] = input.getText().toString();
                         listAdapter.notifyDataSetChanged();
                     }
                 })
