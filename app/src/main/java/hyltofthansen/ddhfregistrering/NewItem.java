@@ -57,13 +57,11 @@ public class NewItem extends Fragment {
         inflater.inflate(R.menu.menu_createitem, menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
             case R.id.action_create:
-                System.out.println("Opret knap trykket");
 
                 new AsyncTask() {
                     @Override
@@ -77,8 +75,10 @@ public class NewItem extends Fragment {
                         URL url = null;
                         StringBuffer response = new StringBuffer();
                         Map<String,Object> postParams = new LinkedHashMap<>();
-                        postParams.put("itemheadline", "Hest");
-                        postParams.put("itemdescription", "Dette er en hest");
+                        //postParams.put("itemheadline", "Hest");
+                        //postParams.put("itemdescription", "Dette er en hest");
+                        postParams.put("itemheadline", descriptions[0]);
+                        postParams.put("itemdescription", descriptions[1]);
                         //Tilføj selv flere
 
                         try {
@@ -89,14 +89,9 @@ public class NewItem extends Fragment {
                                 postData.append('=');
                                 postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
                             }
-
-                            //System.out.println("PostData incoming");
-                            //System.out.println(postData);
-
                             //Opretter POST URL
                             try {
                                 url = new URL(getString(R.string.URL)+"/items?"+postData);
-                                System.out.println("url: "+url);
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }
@@ -211,8 +206,6 @@ public class NewItem extends Fragment {
     }
 
     public void showInputPrompt(int position) {
-        System.out.println("KALDER showInputPrompt med POSITION: "+position);
-
         // Nødvendig kode for at få korrekt index når der er scrolled i listen
         int wantedPosition = position; // Whatever position you're looking for
         int firstPosition = lv.getFirstVisiblePosition() - lv.getHeaderViewsCount(); // This is the same as child #0
@@ -229,17 +222,14 @@ public class NewItem extends Fragment {
         final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
         final EditText input = (EditText) promptView.findViewById(R.id.userInput);
 
-
-        System.out.println("SÆTTER INPUTHEADER... index: "+index);
         inputHeader.setText(((TextView) lv.getChildAt(index).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-        input.setHint(((TextView) lv.getChildAt(index).findViewById(R.id.listDescription)).getText());
+        input.setText(((TextView) lv.getChildAt(index).findViewById(R.id.listDescription)).getText());
 
         // setup a dialog window
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        System.out.println("DER BLEV TRYKKET OK OG index ER NU: "+index);
                         // get user input and set it to result
                         descriptions[index] = input.getText().toString();
                         listAdapter.notifyDataSetChanged();
