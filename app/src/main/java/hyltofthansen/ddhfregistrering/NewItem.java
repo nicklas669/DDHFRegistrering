@@ -106,6 +106,7 @@ public class NewItem extends Fragment {
                             wr.flush();
 
                             int responseCode = conn.getResponseCode();
+                            System.out.println(conn.getResponseMessage());
                             System.out.println("Response Code: " + responseCode);
 
                             conn.disconnect();
