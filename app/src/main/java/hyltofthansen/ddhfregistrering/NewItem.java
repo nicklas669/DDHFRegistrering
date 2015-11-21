@@ -75,10 +75,29 @@ public class NewItem extends Fragment {
                         URL url = null;
                         StringBuffer response = new StringBuffer();
                         Map<String,Object> postParams = new LinkedHashMap<>();
-                        //postParams.put("itemheadline", "Hest");
-                        //postParams.put("itemdescription", "Dette er en hest");
+
+                        /**
+                         * Parameters er indhentet fra API 0.1 21-11-2015
+                         *
+                         * [{"itemid":67,"itemheadline":"aeggekage",
+                         * "itemdescription":"en+god+%C3%A6ggekage",
+                         * "itemreceived":null,
+                         * "itemdatingfrom":null,
+                         * "itemdatingto":null,
+                         * "donator":null,
+                         * "producer":null,
+                         * "postnummer":null,
+                         * "created_at":"2015-11-21 03:09:24.974438"}]
+                         */
                         postParams.put("itemheadline", descriptions[0]);
                         postParams.put("itemdescription", descriptions[1]);
+                        postParams.put("itemreceived", descriptions[2]);
+                        postParams.put("itemdatingfrom", descriptions[3]);
+                        postParams.put("itemdatingto", descriptions[4]);
+                        postParams.put("donator", descriptions[5]);
+                        postParams.put("producer", descriptions[6]);
+                        postParams.put("postnummer", descriptions[7]);
+
                         //Tilføj selv flere
 
                         try {
