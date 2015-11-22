@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0 ){
             fm.popBackStack();
-            System.out.println(fm.getBackStackEntryCount());
             if (fm.getBackStackEntryCount() == 1) getSupportActionBar().setDisplayHomeAsUpEnabled(false); // deaktivér "tilbage"-pil i venstre top når landing page vises
         } else {
             super.onBackPressed();

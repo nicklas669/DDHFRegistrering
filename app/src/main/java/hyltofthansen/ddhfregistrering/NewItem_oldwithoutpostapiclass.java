@@ -1,6 +1,5 @@
 package hyltofthansen.ddhfregistrering;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -22,13 +21,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -38,9 +33,7 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static android.app.ProgressDialog.show;
-
-public class NewItem extends Fragment {
+public class NewItem_oldwithoutpostapiclass extends Fragment {
 
     String[] fields = {"Betegnelse", "Beskrivelse", "Modtagelsesdato", "Datering fra", "Datering til",
             "Ref. til donator", "Ref. til producent", "Postnummer"};
@@ -62,18 +55,95 @@ public class NewItem extends Fragment {
         switch (item.getItemId()) {
             //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
             case R.id.action_create:
-                Map<String,Object> postParams = new LinkedHashMap<>();
-                postParams.put("itemheadline", descriptions[0]);
-                postParams.put("itemdescription", descriptions[1]);
-                postParams.put("itemreceived", descriptions[2]);
-                postParams.put("itemdatingfrom", descriptions[3]);
-                postParams.put("itemdatingto", descriptions[4]);
-                postParams.put("donator", descriptions[5]);
-                postParams.put("producer", descriptions[6]);
-                postParams.put("postnummer", descriptions[7]);
 
-                PostAPI post = new PostAPI();
-                post.execute(postParams);
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] params) {
+                        /**
+                         *  Opret nyt item:
+                            http POST "http://78.46.187.172:4019/items?itemheadline=test&itemdescription=blahblahblah"
+
+                         Venligst udlånt fra http://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily
+                         */
+                        URL url = null;
+                        StringBuffer response = new StringBuffer();
+                        Map<String,Object> postParams = new LinkedHashMap<>();
+
+                        /**
+                         * Parameters er indhentet fra API 0.1 21-11-2015
+                         *
+                         * [{"itemid":67,"itemheadline":"aeggekage",
+                         * "itemdescription":"en+god+%C3%A6ggekage",
+                         * "itemreceived":null,
+                         * "itemdatingfrom":null,
+                         * "itemdatingto":null,
+                         * "donator":null,
+                         * "producer":null,
+                         * "postnummer":null,
+                         * "created_at":"2015-11-21 03:09:24.974438"}]
+                         */
+                        postParams.put("itemheadline", descriptions[0]);
+                        postParams.put("itemdescription", descriptions[1]);
+                        postParams.put("itemreceived", descriptions[2]);
+                        postParams.put("itemdatingfrom", descriptions[3]);
+                        postParams.put("itemdatingto", descriptions[4]);
+                        postParams.put("donator", descriptions[5]);
+                        postParams.put("producer", descriptions[6]);
+                        postParams.put("postnummer", descriptions[7]);
+
+                        //Tilføj selv flere
+
+                        try {
+                            StringBuilder postData = new StringBuilder();
+                            for (Map.Entry<String, Object> param : postParams.entrySet()) {
+                                if (postData.length() != 0) postData.append('&');
+                                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                                postData.append('=');
+                                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                            }
+                            //Opretter POST URL
+                            try {
+                                url = new URL(getString(R.string.URL)+"/items?"+postData);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            }
+
+                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                            conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
+                            conn.setDoOutput(true);
+                            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                            wr.write(postData.toString());
+                            wr.flush();
+
+                            int responseCode = conn.getResponseCode();
+                            System.out.println(conn.getResponseMessage());
+                            System.out.println("Response Code: " + responseCode);
+
+                            conn.disconnect();
+
+                            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
+
+                            //BufferedReader in = new BufferedReader(
+                            //        new InputStreamReader(conn.getInputStream()));
+                            //String inputLine;
+
+                            //while ((inputLine = in.readLine()) != null) {
+                            //    response.append(inputLine);
+                            //}
+                            //in.close();
+                        }
+                        catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (ProtocolException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return response;
+                    }
+                }.execute();
                 break;
         }
         return true;
