@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -35,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0 ){
             fm.popBackStack();
-            if (fm.getBackStackEntryCount() == 1) getSupportActionBar().setDisplayHomeAsUpEnabled(false); // deaktivér "tilbage"-pil i venstre top når landing page vises
+            if (fm.getBackStackEntryCount() == 1) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false); // deaktivér "tilbage"-pil i venstre top når landing page vises
+                setTitle("DDHF Registrering"); // Hvis landing page fragment vises, skiftes hovedmenu tekst
+            }
         } else {
             super.onBackPressed();
         }
