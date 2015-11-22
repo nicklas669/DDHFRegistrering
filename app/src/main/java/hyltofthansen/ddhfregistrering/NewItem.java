@@ -72,8 +72,8 @@ public class NewItem extends Fragment {
                 postParams.put("producer", descriptions[6]);
                 postParams.put("postnummer", descriptions[7]);
 
-                PostAPI post = new PostAPI();
-                post.execute(postParams);
+                PostAPI postAPI = new PostAPI(postParams, getActivity());
+                postAPI.execute();
                 break;
         }
         return true;
