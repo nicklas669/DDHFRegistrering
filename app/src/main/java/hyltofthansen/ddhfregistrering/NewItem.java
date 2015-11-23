@@ -65,6 +65,17 @@ public class NewItem extends Fragment {
                 PostAPI postAPI = new PostAPI(postParams, getActivity(), getFragmentManager());
                 postAPI.execute();
                 break;
+            case R.id.action_photo: //Der blev trykket på kamera ikonet
+                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, 1);
+                    }
+                } else { // device har ikke kamera features
+                    System.out.println("Device har ikke camera feature!!");
+                    // vis en alertdialog her der siger, at kamera ikke er tilgængelig?
+                    // ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
+                }
         }
         return true;
     }
@@ -138,23 +149,6 @@ public class NewItem extends Fragment {
                                       }
                                   }
         );
-
-        b_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, 1);
-                    }
-                } else { // device har ikke kamera features
-                    System.out.println("Device har ikke camera feature!!");
-                    // vis en alertdialog her der siger, at kamera ikke er tilgængelig?
-                    // ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
-                }
-
-            }
-        });
         return root;
     }
 
