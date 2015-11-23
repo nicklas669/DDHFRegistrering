@@ -3,8 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <!-- Opret Genstand knap -->
     <item
+        android:id="@+id/action_photo"
+        android:icon="@drawable/ic_photo_action"
+        app:showAsAction="ifRoom"
+        android:title="Photo" />
+    <item
         android:id="@+id/action_create"
         android:title="@string/action_createItem"
         app:showAsAction="ifRoom"/>
+
+
 
 </menu>
