@@ -1,10 +1,15 @@
 package hyltofthansen.ddhfregistrering;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.LinkedHashMap;
@@ -33,6 +40,7 @@ public class NewItem extends Fragment {
 
     ListView lv;
     BaseAdapter listAdapter;
+    ImageView imageView;
 
     //Inflate ActionBar for Opret Genstand fragment
     @Override
@@ -43,8 +51,7 @@ public class NewItem extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
-            case R.id.action_create:
+            case R.id.action_create: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 Map<String,Object> postParams = new LinkedHashMap<>();
                 postParams.put("itemheadline", descriptions[0]);
                 postParams.put("itemdescription", descriptions[1]);
@@ -72,8 +79,11 @@ public class NewItem extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
 
-
         View root = inflater.inflate(R.layout.new_item, container, false);
+
+        ImageButton b_img = (ImageButton) root.findViewById(R.id.newItem_imgButton);
+        imageView = (ImageView) root.findViewById(R.id.newItem_imgView);
+
         lv = (ListView) root.findViewById(R.id.newItem_listview);
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises
@@ -128,7 +138,33 @@ public class NewItem extends Fragment {
                                       }
                                   }
         );
+
+        b_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, 1);
+                    }
+                } else { // device har ikke kamera features
+                    System.out.println("Device har ikke camera feature!!");
+                    // vis en alertdialog her der siger, at kamera ikke er tilgængelig?
+                    // ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
+                }
+
+            }
+        });
         return root;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) { // fanger billede resultat fra camera intent
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
 
     public void showInputPrompt(int position) {
