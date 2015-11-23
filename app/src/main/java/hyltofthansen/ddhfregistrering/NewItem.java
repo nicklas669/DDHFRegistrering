@@ -66,16 +66,10 @@ public class NewItem extends Fragment {
                 postAPI.execute();
                 break;
             case R.id.action_photo: //Der blev trykket på kamera ikonet
-                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, 1);
-                    }
-                } else { // device har ikke kamera features
-                    System.out.println("Device har ikke camera feature!!");
-                    // vis en alertdialog her der siger, at kamera ikke er tilgængelig?
-                    // ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
-                }
+                getFragmentManager().beginTransaction().addToBackStack(null).
+                        replace(R.id.fragmentContainer, new imageBrowse())
+                        .commit();
+                break;
         }
         return true;
     }
@@ -83,7 +77,7 @@ public class NewItem extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle("Registrer ny genstand");
+        getActivity().setTitle("Registrer genstand");
 
         //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
@@ -91,9 +85,6 @@ public class NewItem extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
 
         View root = inflater.inflate(R.layout.new_item, container, false);
-
-        ImageButton b_img = (ImageButton) root.findViewById(R.id.newItem_imgButton);
-        imageView = (ImageView) root.findViewById(R.id.newItem_imgView);
 
         lv = (ListView) root.findViewById(R.id.newItem_listview);
 

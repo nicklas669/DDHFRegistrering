@@ -11,31 +11,11 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="348dp"
+        android:layout_height="fill_parent"
         android:id="@+id/newItem_listview"
         android:layout_alignParentStart="false"
         android:drawSelectorOnTop="false"
         tools:listitem="@android:layout/simple_list_item_1"
         android:layout_weight="0.37" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.37"
-        android:layout_gravity="center_horizontal">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/newItem_imgButton"
-            android:src="@android:drawable/ic_menu_camera" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/newItem_imgView"
-            android:src="@android:drawable/ic_menu_gallery" />
-    </LinearLayout>
 
 </LinearLayout>
