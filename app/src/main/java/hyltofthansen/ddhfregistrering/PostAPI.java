@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -26,10 +27,12 @@ public class PostAPI extends AsyncTask {
     URL url;
     StringBuffer response;
     Context context;
+    FragmentManager fm;
 
-    public PostAPI(Map<String, Object> postParams, Context context) {
+    public PostAPI(Map<String, Object> postParams, Context context, FragmentManager fm) {
         this.postParams = postParams;
         this.context = context;
+        this.fm = fm;
     }
 
 
@@ -102,6 +105,7 @@ public class PostAPI extends AsyncTask {
             builder.setMessage("Genstand oprettet successfuldt. Responskode: " + responseCode)
                     .setTitle("Success");
             //Gå tilbage til hovedmenu her
+            fm.popBackStack();
         } else {
             builder.setMessage("Fejl ved oprettelse. Responskode: " + responseCode)
                     .setTitle("Fejl");

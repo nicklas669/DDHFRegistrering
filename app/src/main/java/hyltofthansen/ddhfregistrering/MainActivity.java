@@ -25,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment = new landingScreen();
             getFragmentManager().beginTransaction()
                     .add(R.id.fragmentContainer, fragment).commit();
+            getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+                    if (getFragmentManager().getBackStackEntryCount() == 0) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(false); // deaktivér "tilbage"-pil i venstre top når landing page vises
+                        setTitle("DDHF Registrering"); // Hvis landing page fragment vises, skiftes hovedmenu tekst
+                    }
+                }
+            });
         }
     }
 
@@ -33,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0 ){
             fm.popBackStack();
-            if (fm.getBackStackEntryCount() == 1) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false); // deaktivér "tilbage"-pil i venstre top når landing page vises
-                setTitle("DDHF Registrering"); // Hvis landing page fragment vises, skiftes hovedmenu tekst
-            }
         } else {
             super.onBackPressed();
         }
