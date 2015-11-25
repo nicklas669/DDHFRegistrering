@@ -18,6 +18,13 @@
         android:id="@+id/imgBrowse_bGallery"
         android:layout_gravity="center_horizontal" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="320dp"
+        android:id="@+id/imgBrowse_galleryView"
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_gravity="center_horizontal" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

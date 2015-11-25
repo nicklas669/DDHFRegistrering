@@ -52,6 +52,7 @@ public class NewItem extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_create: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
+                // evt. dialog her der spørger om man er sikker på at man vil oprette?
                 Map<String,Object> postParams = new LinkedHashMap<>();
                 postParams.put("itemheadline", descriptions[0]);
                 postParams.put("itemdescription", descriptions[1]);

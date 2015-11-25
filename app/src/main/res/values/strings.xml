@@ -2,5 +2,6 @@
     <string name="app_name">DDHF Registrering</string>
     <string name="action_settings">Settings</string>
     <string name="action_createItem">Opret</string>
+    <string name="action_confirmImg">OK</string>
     <string name="URL">http://78.46.187.172:4019</string>
 </resources>

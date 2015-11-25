@@ -11,7 +11,4 @@
         android:id="@+id/action_create"
         android:title="@string/action_createItem"
         app:showAsAction="ifRoom"/>
-
-
-
 </menu>
