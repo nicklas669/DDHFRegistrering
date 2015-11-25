@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <!-- OK Billede knap -->
+    <item
+        android:id="@+id/action_confirmImage"
+        android:title="@string/action_confirmImg"
+        app:showAsAction="ifRoom"/>
+
+</menu>
