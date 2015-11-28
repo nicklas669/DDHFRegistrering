@@ -2,13 +2,14 @@ package hyltofthansen.ddhfregistrering;
 
 
 public class ItemDTO {
-    private int postnummer;
+    private int itemid, postnummer;
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
 
-    public ItemDTO(String itemheadline, String itemdescription,
+    public ItemDTO(int itemid, String itemheadline, String itemdescription,
                    String itemreceived, String itemdatingfrom, String itemdatingto,
                    String donator, String producer, int postnummer) {
+        this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;
         this.itemreceived = itemreceived;
@@ -17,6 +18,14 @@ public class ItemDTO {
         this.donator = donator;
         this.producer = producer;
         this.postnummer = postnummer;
+    }
+
+    public int getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(int itemid) {
+        this.itemid = itemid;
     }
 
     public String getDonator() {
@@ -88,10 +97,7 @@ public class ItemDTO {
 
     @Override
     public String toString() {
-        //this.itemdatingto = itemdatingto;
-        //this.donator = donator;
-        //this.producer = producer;
-        // this.postnummer = postnummer;
-        return "itemheadline: "+itemheadline+", itemdescription: "+itemdescription+", itemreceived: "+itemreceived+", itemdatingfrom: "+itemdatingfrom;
+        return "itemid: "+itemid+", itemheadline: "+itemheadline+", itemdescription: "+itemdescription+", itemreceived: "+itemreceived+", itemdatingfrom: "+itemdatingfrom
+                +", itemdatingto: "+itemdatingto+", donator: "+donator+", producer: "+producer+", postnummer: "+postnummer;
     }
 }
