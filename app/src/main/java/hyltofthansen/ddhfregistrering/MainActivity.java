@@ -3,7 +3,9 @@ package hyltofthansen.ddhfregistrering;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Ryd gemt billede fra app's data
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        prefs.edit().remove("chosenImage").commit();
 
         if (savedInstanceState == null) {
             Fragment fragment = new landingScreen();

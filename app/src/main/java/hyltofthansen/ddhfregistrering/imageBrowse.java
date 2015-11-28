@@ -2,7 +2,9 @@ package hyltofthansen.ddhfregistrering;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -25,19 +27,34 @@ import java.util.Map;
 public class imageBrowse extends Fragment {
     private static final int PICK_IMAGE = 100;
     ImageView iv_gallery;
+    Uri imageUri;
+    SharedPreferences prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Vedhæft billede");
 
-        //Aktiver ActionBar menu
-        setHasOptionsMenu(true);
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
 
-        View root = inflater.inflate(R.layout.imagebrowse, container, false);
+        View root = inflater.inflate(R.layout.imagebrowse, container, false); // sæt layout op
 
+        prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
+
+        // Læs om der er valgt et billede i forvejen
+        String imgURI = prefs.getString("chosenImage", null);
+        if (imgURI != null) {
+            // Hvis der er et gemt billede så vis det i imageViewet
+            try {
+                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(imgURI));
+                iv_gallery.setImageBitmap(img);
+                setHasOptionsMenu(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +83,8 @@ public class imageBrowse extends Fragment {
             }
         });
 
+
+
         return root;
     }
 
@@ -73,12 +92,14 @@ public class imageBrowse extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
             try {
                 Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 iv_gallery.setImageBitmap(img);
-                //iv_gallery.invalidate();
+                //Aktiver ActionBar menu
+                setHasOptionsMenu(true);
             } catch (IOException e) {
+                System.out.println("EXCEPTION!!!");
                 e.printStackTrace();
             }
         }
@@ -94,7 +115,10 @@ public class imageBrowse extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
-                // Gør noget her
+                // Gem URI til valgt billede
+                SharedPreferences.Editor prefedit = prefs.edit();
+                prefedit.putString("chosenImage", imageUri.toString());
+                prefedit.commit();
                 break;
         }
         return true;

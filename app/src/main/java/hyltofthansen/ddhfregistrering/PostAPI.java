@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -26,10 +28,10 @@ public class PostAPI extends AsyncTask {
     private int responseCode;
     URL url;
     StringBuffer response;
-    Context context;
+    Activity context;
     FragmentManager fm;
 
-    public PostAPI(Map<String, Object> postParams, Context context, FragmentManager fm) {
+    public PostAPI(Map<String, Object> postParams, Activity context, FragmentManager fm) {
         this.postParams = postParams;
         this.context = context;
         this.fm = fm;
@@ -113,6 +115,10 @@ public class PostAPI extends AsyncTask {
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        // Ryd gemt billede fra app's data
+        SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
+        prefs.edit().remove("chosenImage").commit();
     }
 }
 
