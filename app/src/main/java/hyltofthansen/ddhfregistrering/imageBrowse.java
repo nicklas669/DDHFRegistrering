@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,11 +22,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class imageBrowse extends Fragment {
-    private static final int PICK_IMAGE = 100;
+    private static final int PICK_IMAGE = 100, IMAGE_TAKEN = 99;
     ImageView iv_gallery;
     Uri imageUri;
     SharedPreferences prefs;
@@ -46,7 +45,8 @@ public class imageBrowse extends Fragment {
         if (imgURI != null) {
             // Hvis der er et gemt billede så vis det i imageViewet
             try {
-                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(imgURI));
+                imageUri = Uri.parse(imgURI);
+                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 iv_gallery.setImageBitmap(img);
                 setHasOptionsMenu(true);
             } catch (IOException e) {
@@ -73,7 +73,7 @@ public class imageBrowse extends Fragment {
                 if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, 1);
+                        startActivityForResult(takePictureIntent, IMAGE_TAKEN);
                     }
                 } else { // device har ikke kamera features
                     System.out.println("Device har ikke camera feature!!");
@@ -82,16 +82,13 @@ public class imageBrowse extends Fragment {
                 }
             }
         });
-
-
-
         return root;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
+        if (resultCode == Activity.RESULT_OK && (requestCode == PICK_IMAGE || requestCode == IMAGE_TAKEN)) {
             imageUri = data.getData();
             try {
                 Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
@@ -99,7 +96,6 @@ public class imageBrowse extends Fragment {
                 //Aktiver ActionBar menu
                 setHasOptionsMenu(true);
             } catch (IOException e) {
-                System.out.println("EXCEPTION!!!");
                 e.printStackTrace();
             }
         }
@@ -115,10 +111,12 @@ public class imageBrowse extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
-                // Gem URI til valgt billede
-                SharedPreferences.Editor prefedit = prefs.edit();
-                prefedit.putString("chosenImage", imageUri.toString());
-                prefedit.commit();
+                    // Gem URI til valgt billede
+                    SharedPreferences.Editor prefedit = prefs.edit();
+                    prefedit.putString("chosenImage", imageUri.toString());
+                    prefedit.commit();
+                    // Hop tilbage til Opret genstand fragment
+                    getFragmentManager().popBackStack();
                 break;
         }
         return true;
