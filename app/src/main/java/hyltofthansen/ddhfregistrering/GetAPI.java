@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.BaseAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,10 +20,13 @@ import java.util.ArrayList;
 public class GetAPI extends AsyncTask {
 
     Context context;
-    ArrayList<ItemDTO> items = new ArrayList<ItemDTO>();
+    BaseAdapter listAdapter;
+    ArrayList<ItemDTO> items;
 
-    public GetAPI(Context context) {
+    public GetAPI(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
         this.context = context;
+        this.items = items;
+        this.listAdapter = listAdapter;
     }
 
     @Override
@@ -65,19 +69,16 @@ public class GetAPI extends AsyncTask {
                 e.printStackTrace();
                 response.append("Der opstod en fejl! "+e.toString());
             }
-
-
-
             return response;
     }
 
     @Override
     protected void onPostExecute(Object o) {
+        listAdapter.notifyDataSetChanged();
         super.onPostExecute(o);
     }
 
-    public ArrayList<ItemDTO> fetchItems() {
+    public void fetchItems() {
         this.execute();
-        return items;
     }
 }
