@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering;
+package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,17 +13,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.R;
+
 /**
  * Class responsible for GET HTTP functionality to API 0.1 on searchItem
  */
 
-public class GetAPI extends AsyncTask {
+public class GetHTTP extends AsyncTask {
 
     Context context;
     BaseAdapter listAdapter;
     ArrayList<ItemDTO> items;
 
-    public GetAPI(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
+    public GetHTTP(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
         this.context = context;
         this.items = items;
         this.listAdapter = listAdapter;
@@ -31,7 +34,7 @@ public class GetAPI extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-            String url = context.getString(R.string.URL)+"/items/";
+            String url = context.getString(R.string.API_URL)+"/items/";
             String USER_AGENT = "Mozilla/5.0";
             StringBuffer response = new StringBuffer();
             try {

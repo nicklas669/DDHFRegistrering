@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering;
+package hyltofthansen.ddhfregistrering.dto;
 
 
 public class ItemDTO {

@@ -1,17 +1,15 @@
 package hyltofthansen.ddhfregistrering;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
+import hyltofthansen.ddhfregistrering.fragments.LandingScreenFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().remove("chosenImage").commit();
 
         if (savedInstanceState == null) {
-            Fragment fragment = new landingScreen();
+            Fragment fragment = new LandingScreenFragment();
             getFragmentManager().beginTransaction()
                     .add(R.id.fragmentContainer, fragment).commit();
             getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {

@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering;
+package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -16,13 +15,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.LinkedHashMap;
 import java.util.Map;
+
+import hyltofthansen.ddhfregistrering.R;
 
 /**
  * Class responsible for POST HTTP functionality to API 0.1 on CreateItem
  */
-public class PostAPI extends AsyncTask {
+public class PostHTTP extends AsyncTask {
 
     private Map<String, Object> postParams;
     private int responseCode;
@@ -31,7 +31,7 @@ public class PostAPI extends AsyncTask {
     Activity context;
     FragmentManager fm;
 
-    public PostAPI(Map<String, Object> postParams, Activity context, FragmentManager fm) {
+    public PostHTTP(Map<String, Object> postParams, Activity context, FragmentManager fm) {
         this.postParams = postParams;
         this.context = context;
         this.fm = fm;
@@ -52,7 +52,7 @@ public class PostAPI extends AsyncTask {
 
             //Opretter POST URL
             try {
-                url = new URL(context.getString(R.string.URL)+"/items?"+postData);
+                url = new URL(context.getString(R.string.API_URL)+"/items?"+postData);
                 //url = new URL("http://78.46.187.172:4019/items?"+postData);
                 System.out.println("URL: " + url);
             } catch (MalformedURLException e) {
@@ -69,7 +69,7 @@ public class PostAPI extends AsyncTask {
             wr.flush();
 
             responseCode = conn.getResponseCode();
-            String responseMsg = "PostAPI.java - Response Code: " + responseCode;
+            String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
             System.out.println(responseMsg);
 
             conn.disconnect();
