@@ -2,16 +2,22 @@ package hyltofthansen.ddhfregistrering;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import hyltofthansen.ddhfregistrering.fragments.LandingScreenFragment;
+import hyltofthansen.ddhfregistrering.fragments.NewItemFragment;
+import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    Fragment searchFragment = new SearchItemFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().remove("chosenImage").commit();
 
         if (savedInstanceState == null) {
-            Fragment fragment = new LandingScreenFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContainer, fragment).commit();
+            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, searchFragment).commit();
             getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                 @Override
                 public void onBackStackChanged() {
@@ -39,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
@@ -56,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_create_main:   //Hvis man klikker på + knappen i action bar
+                Fragment createItemFragment = new NewItemFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
+                ft.replace(R.id.fragmentContainer, createItemFragment);
+                ft.commit();
             default:
                 return super.onOptionsItemSelected(item);
         }
