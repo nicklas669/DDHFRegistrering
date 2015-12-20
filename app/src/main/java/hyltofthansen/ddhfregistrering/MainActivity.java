@@ -17,7 +17,7 @@ import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    Fragment searchFragment = new SearchItemFragment();
+    private Fragment searchFragment = new SearchItemFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

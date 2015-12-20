@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <!-- Opret Genstand knap (hvidt plustegn)-->
     <item
-        android:id="@+id/action_create"
+        android:id="@+id/action_create_main"
         android:icon="@drawable/ic_plussign"
         app:showAsAction="ifRoom" />
 </menu>

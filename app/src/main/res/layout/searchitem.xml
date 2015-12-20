@@ -3,6 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Editext for Search (lånt fra http://www.androidhive.info/2012/09/android-adding-search-functionality-to-listview/) -->
+    <EditText android:id="@+id/inputSearch"
+        android:layout_marginLeft="8dp"
+        android:hint="Søg efter genstand"
+        android:inputType="textVisiblePassword"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

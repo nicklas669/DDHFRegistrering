@@ -2,7 +2,9 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,9 +24,9 @@ import hyltofthansen.ddhfregistrering.R;
 
 public class GetHTTP extends AsyncTask {
 
-    Context context;
-    BaseAdapter listAdapter;
-    ArrayList<ItemDTO> items;
+    private Context context;
+    private BaseAdapter listAdapter;
+    private ArrayList<ItemDTO> items;
 
     public GetHTTP(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
         this.context = context;
@@ -83,5 +85,9 @@ public class GetHTTP extends AsyncTask {
 
     public void fetchItems() {
         this.execute();
+    }
+
+    public BaseAdapter getlistAdapter() {
+        return listAdapter;
     }
 }
