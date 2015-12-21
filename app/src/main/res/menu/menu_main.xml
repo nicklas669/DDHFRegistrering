@@ -5,7 +5,9 @@
     <item
         android:id="@+id/action_create_main"
         android:icon="@drawable/ic_plussign"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:title=""
+        android:orderInCategory="1"/> <!--Får plus-tegnet til altid af være til højre -->
 </menu>
 
 
