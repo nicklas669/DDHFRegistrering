@@ -1,14 +1,14 @@
 package hyltofthansen.ddhfregistrering;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
@@ -17,16 +17,20 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
  * Custom Adapter for at muliggøre søgningen med filter() i ArrayAdapter.
  * Inspiration fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
  */
-public class CustomAdapter extends BaseAdapter implements Filterable {
+public class CustomAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
 
     private ArrayList<ItemDTO> mOriginalValues;
     private ArrayList<ItemDTO> mDisplayedValues;
+    private static final String TAG = "CustomAdapter";
+
+
     LayoutInflater inflater;
 
-    public CustomAdapter(Context context, ArrayList<ItemDTO> mProductArrayList) {
-        this.mOriginalValues = mProductArrayList;
-        this.mDisplayedValues = mProductArrayList;
-        inflater = LayoutInflater.from(context);
+    public CustomAdapter(Context context, ArrayList<ItemDTO> mItemArrayList ) {
+        super(context,R.layout.simple_list_item, mItemArrayList);
+        this.mDisplayedValues = mItemArrayList;
+        this.mOriginalValues = mItemArrayList;
+
     }
 
     @Override
@@ -35,8 +39,8 @@ public class CustomAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public Object getItem(int position) {
-        return position;
+    public ItemDTO getItem(int position) {
+        return mDisplayedValues.get(position);
     }
 
     @Override
@@ -47,9 +51,11 @@ public class CustomAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        super.getView(position, convertView, parent);
         View view = super.getView(position, convertView, parent);
-        TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
-        itemHeadline.setText(items.get(position).getItemheadline());
+//        TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
+        TextView itemHeadline = (TextView) view.findViewById(R.id.rowTextView);
+        itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
         return view;
     }
     @Override
