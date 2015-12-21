@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -27,6 +28,8 @@ public class GetHTTP extends AsyncTask {
     private Context context;
     private BaseAdapter listAdapter;
     private ArrayList<ItemDTO> items;
+    private static final String TAG = "GetHTTP";
+
 
     public GetHTTP(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
         this.context = context;
@@ -48,8 +51,8 @@ public class GetHTTP extends AsyncTask {
                 //add request header
                 con.setRequestProperty("User-Agent", USER_AGENT);
                 int responseCode = con.getResponseCode();
-                System.out.println("\nSending 'GET' request to URL : " + url);
-                System.out.println("Response Code : " + responseCode);
+                Log.d(TAG, "\nSending 'GET' request to URL : " + url);
+                Log.d(TAG, "Response Code : " + responseCode);
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream()));
@@ -62,13 +65,12 @@ public class GetHTTP extends AsyncTask {
 
                 JSONArray itemsfromDB = new JSONArray(response.toString());
                 for (int x = 0; x < itemsfromDB.length(); x++) {
-                    if (x < 20) { // maks. 20 items til test
+//                    if (x < 20) { // maks. 20 items til test      //Fjernede denne limit da det fik 20 items til at gentage sig igen og igen med CustomAdapter...
                         JSONObject item = itemsfromDB.getJSONObject(x);
                         items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
                                 item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-                    }
+//                    }
                 }
-                //for (ItemDTO item : items) System.out.println(item);
 
             } catch (Exception e) {
                 e.printStackTrace();

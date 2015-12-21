@@ -1,7 +1,6 @@
 package hyltofthansen.ddhfregistrering;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +15,16 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 /**
  * Custom Adapter for at muliggøre søgningen med filter() i ArrayAdapter.
  * Inspiration fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
+ * //TODO Få billedikoner til at fungere i Viewet - af en eller grund vil den kun tage imod et meget simpelt textView (?)
  */
-public class CustomAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
+public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
 
     private ArrayList<ItemDTO> mOriginalValues;
     private ArrayList<ItemDTO> mDisplayedValues;
-    private static final String TAG = "CustomAdapter";
+    private static final String TAG = "CustomArrayAdapter";
+    private LayoutInflater inflater;
 
-
-    LayoutInflater inflater;
-
-    public CustomAdapter(Context context, ArrayList<ItemDTO> mItemArrayList ) {
+    public CustomArrayAdapter(Context context, ArrayList<ItemDTO> mItemArrayList) {
         super(context,R.layout.simple_list_item, mItemArrayList);
         this.mDisplayedValues = mItemArrayList;
         this.mOriginalValues = mItemArrayList;
@@ -53,7 +51,7 @@ public class CustomAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         super.getView(position, convertView, parent);
         View view = super.getView(position, convertView, parent);
-//        TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
+//      TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         TextView itemHeadline = (TextView) view.findViewById(R.id.rowTextView);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
         return view;
