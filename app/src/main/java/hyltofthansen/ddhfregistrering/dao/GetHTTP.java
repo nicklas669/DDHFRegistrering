@@ -57,19 +57,26 @@ public class GetHTTP extends AsyncTask {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream()));
 
+                int heste = 0;
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
+                    heste++;
+                    Log.d(TAG, String.valueOf(in.readLine()));
                     response.append(inputLine);
+                    Log.d(TAG, String.valueOf(response));
                 }
                 in.close();
 
                 JSONArray itemsfromDB = new JSONArray(response.toString());
+                Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
+                Log.d(TAG, heste + " heste size");
+
                 for (int x = 0; x < itemsfromDB.length(); x++) {
-//                    if (x < 20) { // maks. 20 items til test      //Fjernede denne limit da det fik 20 items til at gentage sig igen og igen med CustomAdapter...
+                    if (x < 20) { // maks. 20 items til test      //TODO Fix så det virker uden limit uden der sker gentagelse
                         JSONObject item = itemsfromDB.getJSONObject(x);
                         items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
                                 item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-//                    }
+                    }
                 }
 
             } catch (Exception e) {
@@ -82,6 +89,7 @@ public class GetHTTP extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         listAdapter.notifyDataSetChanged();
+        Log.d(TAG, String.valueOf(items.size() + " Item size"));
         super.onPostExecute(o);
     }
 

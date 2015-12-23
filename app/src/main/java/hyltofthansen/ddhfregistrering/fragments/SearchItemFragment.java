@@ -69,8 +69,8 @@ public class SearchItemFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable arg0) {
             }
-        });
 
+        });
         return root;
     }
 
