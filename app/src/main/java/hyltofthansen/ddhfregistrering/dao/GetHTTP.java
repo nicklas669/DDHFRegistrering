@@ -3,13 +3,9 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -45,7 +41,6 @@ public class GetHTTP extends AsyncTask {
             try {
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
                 // optional, default is GET
                 con.setRequestMethod("GET");
                 //add request header

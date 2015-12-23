@@ -1,7 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
@@ -18,10 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+
 import java.lang.Object;import java.lang.Override;import java.lang.String;import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,9 +27,6 @@ import hyltofthansen.ddhfregistrering.dao.PostHTTP;
 import hyltofthansen.ddhfregistrering.R;
 
 public class NewItemFragment extends Fragment {
-
-    String[] fields = {"Betegnelse", "Beskrivelse", "Modtagelsesdato", "Datering fra", "Datering til",
-            "Ref. til donator", "Ref. til producent", "Postnummer"};
 
     String[] descriptions = {"Skriv betegnelse her", "Indtast beskrivelse", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
             "Referencenummer til donator", "Referencenummer til producent", "Indtast postnummer her"};
@@ -78,68 +73,10 @@ public class NewItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().setTitle("Registrer genstand");
-
         //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
-
-        View root = inflater.inflate(R.layout.new_item_listview, container, false);
-
-        lv = (ListView) root.findViewById(R.id.newItem_listview);
-
-        // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises
-        listAdapter = new ArrayAdapter(getActivity(), R.layout.newitemlayout, R.id.listHeader, fields) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-//                TextView beskrivelse = (TextView) view.findViewById(R.id.listDescription);
-//                beskrivelse.setText(descriptions[position]);
-                return view;
-            }
-        };
-
-        lv.setAdapter(listAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                      @Override
-                                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                          switch (position) {
-                                              case 0: // Betegnelse
-                                                  showInputPrompt(position);
-                                                  break;
-
-                                              case 1: // Beskrivelse
-                                                  showInputPrompt(position);
-                                                  break;
-
-                                              case 2: // Modtagelsesdato
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 3: // Datering fra
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 4: // Datering til
-                                                  showDatePickerFragment(position);
-                                                  break;
-
-                                              case 5: // Ref. til donator
-                                                  showInputPrompt(position);
-                                                  break;
-
-                                              case 6: // Ref. til producent
-                                                  showInputPrompt(position);
-                                                  break;
-
-                                              case 7: // Postnummer
-                                                  showInputPrompt(position);
-                                                  break;
-                                          }
-                                      }
-                                  }
-        );
+        View root = inflater.inflate(R.layout.newitemlayout, container, false);
         return root;
     }
 
@@ -150,50 +87,6 @@ public class NewItemFragment extends Fragment {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
         }
-    }
-
-    public void showInputPrompt(int position) {
-        // Nødvendig kode for at få korrekt index når der er scrolled i listen
-        int wantedPosition = position; // Whatever position you're looking for
-        int firstPosition = lv.getFirstVisiblePosition() - lv.getHeaderViewsCount(); // This is the same as child #0
-        final int index = wantedPosition - firstPosition;
-
-        // get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-
-        final View promptView = layoutInflater.inflate(R.layout.promptinput, null);
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-        // set prompts.xml to be the layout file of the alertdialog builder
-        alertDialogBuilder.setView(promptView);
-        final TextView inputHeader = (TextView) promptView.findViewById(R.id.text_inputPrompt);
-        final EditText input = (EditText) promptView.findViewById(R.id.userInput);
-
-        inputHeader.setText(((TextView) lv.getChildAt(index).findViewById(R.id.listHeader)).getText()); // sætter overskrift på inputDialog til overskrift fra den klikkede række
-//        input.setText(((TextView) lv.getChildAt(index).findViewById(R.id.listDescription)).getText());
-
-//        // setup a dialog window
-//        alertDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // get user input and set it to result
-//                        descriptions[index] = input.getText().toString();
-//                        listAdapter.notifyDataSetChanged();
-//                    }
-//                })
-//                .setNegativeButton("Fortryd",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        AlertDialog promptDialog_1 = alertDialogBuilder.create();
-//        promptDialog_1.show();
-//        // Viser tastatur
-//        promptDialog_1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-//        promptDialog_1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     public void showDatePickerFragment(final int position) {
