@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TODO Sæt alle strings ind i strings.xml -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-
+        android:id="@+id/titelTextEdit"
         />
     <TextView
         android:layout_width="match_parent"
@@ -28,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
+        android:id="@+id/beskrivelseTextEdit"
         />
     <TextView
         android:layout_width="match_parent"
@@ -37,7 +39,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showDatePickerDialog"
+        android:focusable="false"
+        android:id="@+id/modtagelsesDatoEditText"
         />
     <TextView
     android:layout_width="match_parent"
@@ -47,7 +50,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showDatePickerDialog"
+        android:focusable="false"
+        android:id="@+id/dateringfraeditText"
         />
     <TextView
         android:layout_width="match_parent"
@@ -57,7 +61,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showDatePickerDialog"
+        android:focusable="false"
+        android:id="@+id/dateringtileditText"
         />
     <TextView
         android:layout_width="match_parent"
@@ -67,6 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:id="@+id/refDonatorTextEdit"
         />
     <TextView
         android:layout_width="match_parent"
@@ -77,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:id="@+id/refproducent"
         />
     <TextView
         android:layout_width="match_parent"
@@ -86,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:id="@+id/postnr"
         />
 </LinearLayout>
 </ScrollView>

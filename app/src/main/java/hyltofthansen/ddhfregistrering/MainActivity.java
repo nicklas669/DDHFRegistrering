@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
+import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
 import hyltofthansen.ddhfregistrering.fragments.NewItemFragment;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 

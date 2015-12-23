@@ -1,12 +1,15 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,10 +20,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.lang.Object;import java.lang.Override;import java.lang.String;import java.util.LinkedHashMap;
+import java.lang.Object;import java.lang.Override;import java.lang.String;
+import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import hyltofthansen.ddhfregistrering.dao.PostHTTP;
@@ -28,12 +35,16 @@ import hyltofthansen.ddhfregistrering.R;
 
 public class NewItemFragment extends Fragment {
 
-    String[] descriptions = {"Skriv betegnelse her", "Indtast beskrivelse", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
+    private String[] descriptions = {"Skriv betegnelse her", "Indtast beskrivelse", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
             "Referencenummer til donator", "Referencenummer til producent", "Indtast postnummer her"};
 
-    ListView lv;
-    BaseAdapter listAdapter;
-    ImageView imageView;
+    private ListView lv;
+    private BaseAdapter listAdapter;
+    private ImageView imageView;
+    private EditText titelTxt, beskrivelseTxt,
+            modtagelsesDatoTxt, dateringFraTxt,
+            dateringTilTxt, refDonatorTxt, refProducentTxt, postNrTxt;
+    private static final String TAG = "NewItemFragment";
 
     //Inflate ActionBar for Opret Genstand fragment
     @Override
@@ -48,15 +59,19 @@ public class NewItemFragment extends Fragment {
                 // evt. dialog her der spørger om man er sikker på at man vil oprette?
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
                 Map<String,Object> postParams = new LinkedHashMap<>();
-                postParams.put("itemheadline", descriptions[0]);
-                postParams.put("itemdescription", descriptions[1]);
-                postParams.put("itemreceived", descriptions[2]);
-                postParams.put("itemdatingfrom", descriptions[3]);
-                postParams.put("itemdatingto", descriptions[4]);
-                postParams.put("donator", descriptions[5]);
-                postParams.put("producer", descriptions[6]);
-                postParams.put("postnummer", descriptions[7]);
+                postParams.put("itemheadline", titelTxt.getText().toString());
+                postParams.put("itemdescription", beskrivelseTxt.getText().toString());
+                postParams.put("itemreceived", modtagelsesDatoTxt.getText().toString());
+                postParams.put("itemdatingfrom", dateringFraTxt.getText().toString());
+                postParams.put("itemdatingto", dateringTilTxt.getText().toString());
+                postParams.put("donator", refDonatorTxt.getText().toString());
+                postParams.put("producer", refProducentTxt.getText().toString());
+                postParams.put("postnummer", postNrTxt.getText().toString());
 
+                Log.d(TAG, "Hejsa!");
+                for (Map.Entry<String, Object> param : postParams.entrySet()) {
+                    Log.d(TAG, param.getKey());
+                }
                 PostHTTP postHTTP = new PostHTTP(postParams, getActivity(), getFragmentManager());
                 postHTTP.execute();
                 break;
@@ -77,6 +92,19 @@ public class NewItemFragment extends Fragment {
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
         View root = inflater.inflate(R.layout.newitemlayout, container, false);
+        titelTxt = (EditText) root.findViewById(R.id.titelTextEdit);
+        beskrivelseTxt = (EditText) root.findViewById(R.id.beskrivelseTextEdit);
+        refDonatorTxt = (EditText) root.findViewById(R.id.refDonatorTextEdit);
+        refProducentTxt = (EditText) root.findViewById(R.id.refproducent);
+        modtagelsesDatoTxt = (EditText) root.findViewById(R.id.modtagelsesDatoEditText);
+        dateringFraTxt = (EditText) root.findViewById(R.id.dateringfraeditText);
+        dateringTilTxt = (EditText) root.findViewById(R.id.dateringtileditText);
+        postNrTxt = (EditText) root.findViewById(R.id.postnr);
+
+        setEditTextDatePicker(modtagelsesDatoTxt);
+        setEditTextDatePicker(dateringFraTxt);
+        setEditTextDatePicker(dateringTilTxt);
+
         return root;
     }
 
@@ -89,14 +117,13 @@ public class NewItemFragment extends Fragment {
         }
     }
 
-    public void showDatePickerFragment(final int position) {
-        DialogFragment date = new DatePickerDialogFragment() {
+    private void setEditTextDatePicker(final EditText editText) {
+        editText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                descriptions[position] = "" + day + "-" + (month + 1) + "-" + year;
-                listAdapter.notifyDataSetChanged();
+            public void onClick(View v) {
+                DialogFragment newFragment = new DatePickerFragment(editText);
+                newFragment.show(getFragmentManager(), "datePicker");
             }
-        };
-        date.show(getFragmentManager(), "datePicker");
+        });
     }
 }
