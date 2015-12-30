@@ -37,18 +37,7 @@ public class SearchItemFragment extends Fragment {
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og søges i
-        listAdapter = new CustomArrayAdapter(getActivity(), items);
-
-        //TODO Slet nedenstående hvis det ikke skal bruges mere
-//             @Override
-//             public View getView(int position, View convertView, ViewGroup parent) {
-//                 View view = super.getView(position, convertView, parent);
-//                 TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
-//                 itemHeadline.setText(items.get(position).getItemheadline());
-//                 return view;
-//             }
-//        };
-
+        listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist, R.id.search_tvheadline, items);
         lv.setAdapter(listAdapter);
 
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);

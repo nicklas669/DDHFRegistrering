@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,10 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     private static final String TAG = "CustomArrayAdapter";
     private LayoutInflater inflater;
 
-    public CustomArrayAdapter(Context context, ArrayList<ItemDTO> mItemArrayList) {
-        super(context,R.layout.simple_list_item, mItemArrayList);
+    public CustomArrayAdapter(Context context, int layout, int layout_textview, ArrayList<ItemDTO> mItemArrayList) {
+        super(context, layout, layout_textview, mItemArrayList);
         this.mDisplayedValues = mItemArrayList;
         this.mOriginalValues = mItemArrayList;
-
     }
 
     @Override
@@ -49,11 +49,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        super.getView(position, convertView, parent);
         View view = super.getView(position, convertView, parent);
-//      TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
-        TextView itemHeadline = (TextView) view.findViewById(R.id.rowTextView);
+        TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
+
+        TextView itemID = (TextView) view.findViewById(R.id.search_itemid);
+        itemID.setText(String.valueOf(mDisplayedValues.get(position).getItemid()));
         return view;
     }
     @Override
