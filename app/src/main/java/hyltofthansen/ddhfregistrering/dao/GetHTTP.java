@@ -67,11 +67,11 @@ public class GetHTTP extends AsyncTask {
                 Log.d(TAG, heste + " heste size");
 
                 for (int x = 0; x < itemsfromDB.length(); x++) {
-                    if (x < 20) { // maks. 20 items til test      //TODO Fix så det virker uden limit uden der sker gentagelse
+//                    if (x < 20) { // maks. 20 items til test      //TODO Sæt scrolling opdatering ind
                         JSONObject item = itemsfromDB.getJSONObject(x);
                         items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
                                 item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-                    }
+//                    }
                 }
 
             } catch (Exception e) {
