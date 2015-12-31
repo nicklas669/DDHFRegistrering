@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +23,20 @@ public class SearchItemFragment extends Fragment {
     private ListView lv;
     private CustomArrayAdapter listAdapter;
     private GetHTTP getHTTP;
-    private ArrayList<ItemDTO> items = new ArrayList<ItemDTO>();
+    private ArrayList<ItemDTO> items;
     // Search EditText
     private EditText inputSearch;
+    private static final String TAG = "SearchItemFragment";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getActivity().setTitle("DDHF Registering");
+        items = new ArrayList<ItemDTO>();
 
+        getActivity().setTitle("DDHF Registering");
         View root = inflater.inflate(R.layout.searchitem, container, false);
+
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
@@ -62,7 +66,4 @@ public class SearchItemFragment extends Fragment {
         });
         return root;
     }
-
-
-
 }
