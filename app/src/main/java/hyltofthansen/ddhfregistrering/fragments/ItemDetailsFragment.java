@@ -2,23 +2,17 @@ package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
- * Created by Nicklas on 04-01-2016.
+ * ItemDetailsFragment is showing detailed informaiton about a specific item which the user has clicked on
  */
 public class ItemDetailsFragment extends Fragment {
 
@@ -29,7 +23,7 @@ public class ItemDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.itemdetails, container, false);
-        getActivity().setTitle(item.getItemheadline().toString()); // TODO: FRÆKT AT SÆTTE GENSTANDSNAVN HER
+        getActivity().setTitle(item.getItemheadline().toString()); //FRÆKT AT SÆTTE GENSTANDSNAVN HER
         items = new ArrayList<ItemDTO>();
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
         getHTTPDetails.fetchItems();
@@ -42,6 +36,26 @@ public class ItemDetailsFragment extends Fragment {
 
         TextView tv_descript = (TextView) root.findViewById(R.id.tv_itemdescr);
         tv_descript.setText(items.get(0).getItemdescription().toString());
+
+        TextView tv_received = (TextView) root.findViewById(R.id.tv_receivedDate);
+        tv_received.setText(items.get(0).getItemreceived().toString());
+
+        TextView tv_datingFrom = (TextView) root.findViewById(R.id.tv_datingFrom);
+        tv_datingFrom.setText(items.get(0).getItemdatingfrom().toString());
+
+        TextView tv_datingTo = (TextView) root.findViewById(R.id.tv_datingTo);
+        tv_datingTo.setText(items.get(0).getItemdatingfrom().toString());
+
+        TextView tv_donator = (TextView) root.findViewById(R.id.tv_donator);
+        tv_donator.setText(items.get(0).getDonator().toString());
+
+        TextView tv_producer = (TextView) root.findViewById(R.id.tv_producer);
+        tv_producer.setText(items.get(0).getProducer().toString());
+
+        TextView tv_postnr = (TextView) root.findViewById(R.id.tv_postnr);
+        tv_postnr.setText(String.valueOf(items.get(0).getpostnummer()));
+
+
     }
 
     public void setItem(ItemDTO item) {
