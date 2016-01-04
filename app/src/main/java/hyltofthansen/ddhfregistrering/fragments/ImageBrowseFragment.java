@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.io.IOException;
 
 import hyltofthansen.ddhfregistrering.R;
@@ -29,6 +33,7 @@ public class ImageBrowseFragment extends Fragment {
     ImageView iv_gallery;
     Uri imageUri;
     SharedPreferences prefs;
+    private static final String TAG = "ImageBrowseFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,14 +77,20 @@ public class ImageBrowseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);   //TODO Fjern hvis ikke skal bruges længere
+                    Intent takePictureIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+
+                    File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "picture.jpg");
+                    imageUri = Uri.fromFile(photo);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, IMAGE_TAKEN);
                     }
                 } else { // device har ikke kamera features
-                    System.out.println("Device har ikke camera feature!!");
-                    // vis en alertdialog her der siger, at kamera ikke er tilgængelig?
-                    // ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
+                    Log.d(TAG,"Device har ikke camera feature!!");
+                    // TODO vis en alertdialog her der siger, at kamera ikke er tilgængelig
+                    // TODO ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
                 }
             }
         });
@@ -87,17 +98,22 @@ public class ImageBrowseFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK && (requestCode == PICK_IMAGE || requestCode == IMAGE_TAKEN)) {
-            imageUri = data.getData();
+
+//            imageUri = intent.getData();      //TODO Fjern hvis ikke skal bruges længere
+            getActivity().getContentResolver().notifyChange(imageUri, null);
+            ContentResolver cr = getActivity().getContentResolver();
+
+//            imageUri = intent.getData();  //TODO Fjern hvis ikke skal bruges længere
             try {
-                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                Bitmap img = MediaStore.Images.Media.getBitmap(cr, imageUri);
                 iv_gallery.setImageBitmap(img);
                 //Aktiver ActionBar menu
                 setHasOptionsMenu(true);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d(TAG, e.toString());
             }
         }
     }
