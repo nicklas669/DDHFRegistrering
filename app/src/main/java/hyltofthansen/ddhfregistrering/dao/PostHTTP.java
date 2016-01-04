@@ -52,7 +52,8 @@ public class PostHTTP extends AsyncTask {
 
             //Opretter POST URL
             try {
-                url = new URL(context.getString(R.string.API_URL)+"/items?"+postData);
+                String urlAPI = context.getString(R.string.API_URL);
+                url = new URL(urlAPI +"/items?"+postData);
                 //url = new URL("http://78.46.187.172:4019/items?"+postData);
                 System.out.println("URL: " + url);
             } catch (MalformedURLException e) {

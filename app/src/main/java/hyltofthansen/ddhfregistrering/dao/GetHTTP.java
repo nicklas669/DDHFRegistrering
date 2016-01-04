@@ -35,8 +35,9 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-            String url = context.getString(R.string.API_URL)+"/items/";
+            String url = context.getString(R.string.API_URL) + "/items/" ;
             String USER_AGENT = "Mozilla/5.0";
+
             StringBuffer response = new StringBuffer();
             try {
                 URL obj = new URL(url);
