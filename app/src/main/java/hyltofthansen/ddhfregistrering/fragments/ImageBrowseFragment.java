@@ -1,6 +1,7 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.IOException;
 
+import hyltofthansen.ddhfregistrering.MainActivity;
 import hyltofthansen.ddhfregistrering.R;
 
 public class ImageBrowseFragment extends Fragment {
@@ -88,9 +90,11 @@ public class ImageBrowseFragment extends Fragment {
                         startActivityForResult(takePictureIntent, IMAGE_TAKEN);
                     }
                 } else { // device har ikke kamera features
-                    Log.d(TAG,"Device har ikke camera feature!!");
-                    // TODO vis en alertdialog her der siger, at kamera ikke er tilgængelig
-                    // TODO ALTERNATIVT: LAD VÆRE MED AT VISE IMAGEBUTTON OG IMAGEVIEW HVIS DEVICE IKKE HAR CAMERA FEATURE?
+                    //Viser AlertDialog med teksten "Enheden har ikke kamerafunktionalitet"
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.intetKameraDialogTekst).setTitle(R.string.intetKameraDialogTitel);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
