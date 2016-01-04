@@ -35,9 +35,6 @@ import hyltofthansen.ddhfregistrering.R;
 
 public class NewItemFragment extends Fragment {
 
-    private String[] descriptions = {"Skriv betegnelse her", "Indtast beskrivelse", "Indtast modtagelsesdato", "Indtast datering fra", "Indtast datering til",
-            "Referencenummer til donator", "Referencenummer til producent", "Indtast postnummer her"};
-
     private ListView lv;
     private BaseAdapter listAdapter;
     private ImageView imageView;
@@ -56,7 +53,7 @@ public class NewItemFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_create_main: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
-                // evt. dialog her der spørger om man er sikker på at man vil oprette?
+                //TODO dialog her der spørger om man er sikker på at man vil oprette
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
                 Map<String,Object> postParams = new LinkedHashMap<>();
                 postParams.put("itemheadline", titelTxt.getText().toString());
@@ -68,10 +65,6 @@ public class NewItemFragment extends Fragment {
                 postParams.put("producer", refProducentTxt.getText().toString());
                 postParams.put("postnummer", postNrTxt.getText().toString());
 
-                Log.d(TAG, "Hejsa!");
-                for (Map.Entry<String, Object> param : postParams.entrySet()) {
-                    Log.d(TAG, param.getKey());
-                }
                 PostHTTP postHTTP = new PostHTTP(postParams, getActivity(), getFragmentManager());
                 postHTTP.execute();
                 break;
@@ -83,7 +76,6 @@ public class NewItemFragment extends Fragment {
         }
         return true;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

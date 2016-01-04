@@ -16,8 +16,8 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 /**
  * Custom Adapter for at muliggøre søgningen med filter() i ArrayAdapter.
  * Inspiration fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
- * //TODO Få billedikoner til at fungere i Viewet - af en eller grund vil den kun tage imod et meget simpelt textView (?)
- */
+ *
+ **/
 public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
 
     private ArrayList<ItemDTO> mOriginalValues;

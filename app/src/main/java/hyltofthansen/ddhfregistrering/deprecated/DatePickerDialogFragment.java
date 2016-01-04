@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering.fragments;
+package hyltofthansen.ddhfregistrering.deprecated;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
