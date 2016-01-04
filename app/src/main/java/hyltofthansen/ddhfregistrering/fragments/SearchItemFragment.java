@@ -1,6 +1,8 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -52,8 +54,17 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast toast  = Toast.makeText(getActivity().getBaseContext(), items.get(position).getItemheadline().toString(), Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast  = Toast.makeText(getActivity().getBaseContext(), items.get(position).getItemheadline().toString(), Toast.LENGTH_SHORT);
+//                toast.show();
+
+                ItemDetailsFragment itemfragment = new ItemDetailsFragment();
+                itemfragment.setItem(items.get(position));
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.addToBackStack(null);
+                ft.replace(R.id.fragmentContainer, itemfragment);
+                ft.commit();
             }
         });
 
