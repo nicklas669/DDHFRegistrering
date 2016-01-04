@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -18,21 +21,22 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
  * Class responsible for POST HTTP functionality to API 0.1 on CreateItem
  */
 public class PostHTTP extends AsyncTask {
 
-    private Map<String, Object> postParams;
+    private JSONObject JSONitem;
     private int responseCode;
     URL url;
     StringBuffer response;
     Activity context;
     FragmentManager fm;
 
-    public PostHTTP(Map<String, Object> postParams, Activity context, FragmentManager fm) {
-        this.postParams = postParams;
+    public PostHTTP(JSONObject JSONitem, Activity context, FragmentManager fm) {
+        this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;
     }
@@ -42,32 +46,33 @@ public class PostHTTP extends AsyncTask {
     protected Integer doInBackground(Object[] params) {
 
         try {
-            StringBuilder postData = new StringBuilder();
-            for (Map.Entry<String, Object> param : postParams.entrySet()) {
-                if (postData.length() != 0) postData.append('&');
-                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                postData.append('=');
-                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-            }
 
             //Opretter POST URL
             try {
-                String urlAPI = context.getString(R.string.API_URL);
-                url = new URL(urlAPI +"/items?"+postData);
-                //url = new URL("http://78.46.187.172:4019/items?"+postData);
+                //String urlAPI = context.getString(R.string.API_URL);
+                String urlAPI = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
+                url = new URL(urlAPI);
                 System.out.println("URL: " + url);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setRequestProperty("Content-Length", String.valueOf(postData.length()));
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(postData.toString());
-            wr.flush();
+            conn.setRequestMethod("POST");
+            //conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Type", "application/json"); // content type til Mathias' API
+            //conn.setRequestProperty("Content-Length", String.valueOf(JSONitem.length()));
+
+
+            OutputStream os = conn.getOutputStream();
+            os.write(JSONitem.toString().getBytes());
+            os.flush();
+            os.close();
+//            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+//            wr.write(JSONitem.toString());
+//            wr.flush();
+//            wr.close();
 
             responseCode = conn.getResponseCode();
             String responseMsg = "PostHTTP.java - Response Code: " + responseCode;

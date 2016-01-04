@@ -24,6 +24,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.Object;import java.lang.Override;import java.lang.String;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -32,6 +35,7 @@ import java.util.Map;
 
 import hyltofthansen.ddhfregistrering.dao.PostHTTP;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 public class NewItemFragment extends Fragment {
 
@@ -55,18 +59,28 @@ public class NewItemFragment extends Fragment {
             case R.id.action_create_main: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
-                Map<String,Object> postParams = new LinkedHashMap<>();
-                postParams.put("itemheadline", titelTxt.getText().toString());
-                postParams.put("itemdescription", beskrivelseTxt.getText().toString());
-                postParams.put("itemreceived", modtagelsesDatoTxt.getText().toString());
-                postParams.put("itemdatingfrom", dateringFraTxt.getText().toString());
-                postParams.put("itemdatingto", dateringTilTxt.getText().toString());
-                postParams.put("donator", refDonatorTxt.getText().toString());
-                postParams.put("producer", refProducentTxt.getText().toString());
-                postParams.put("postnummer", postNrTxt.getText().toString());
+//                Map<String,Object> postParams = new LinkedHashMap<>();
+//                postParams.put("itemheadline", titelTxt.getText().toString());
+//                postParams.put("itemdescription", beskrivelseTxt.getText().toString());
+//                postParams.put("itemreceived", modtagelsesDatoTxt.getText().toString());
+//                postParams.put("itemdatingfrom", dateringFraTxt.getText().toString());
+//                postParams.put("itemdatingto", dateringTilTxt.getText().toString());
+//                postParams.put("donator", refDonatorTxt.getText().toString());
+//                postParams.put("producer", refProducentTxt.getText().toString());
+//                postParams.put("postnummer", postNrTxt.getText().toString());
+//
+//                PostHTTP postHTTP = new PostHTTP(postParams, getActivity(), getFragmentManager());
+//                postHTTP.execute();
 
-                PostHTTP postHTTP = new PostHTTP(postParams, getActivity(), getFragmentManager());
-                postHTTP.execute();
+                try {
+                    JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
+                            .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer",  refProducentTxt.getText().toString())
+                            .put("postnummer", postNrTxt.getText().toString());
+                    PostHTTP postHTTP = new PostHTTP(JSONitem, getActivity(), getFragmentManager());
+                    postHTTP.execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.action_photo: //Der blev trykket på kamera ikonet
                 getFragmentManager().beginTransaction().addToBackStack(null).

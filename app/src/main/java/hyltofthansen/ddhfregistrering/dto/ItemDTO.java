@@ -20,6 +20,20 @@ public class ItemDTO {
         this.postnummer = postnummer;
     }
 
+    public ItemDTO(String itemheadline, String itemdescription,
+                   String itemreceived, String itemdatingfrom, String itemdatingto,
+                   String donator, String producer, int postnummer) {
+        this.itemid = -1;
+        this.itemheadline = itemheadline;
+        this.itemdescription = itemdescription;
+        this.itemreceived = itemreceived;
+        this.itemdatingfrom = itemdatingfrom;
+        this.itemdatingto = itemdatingto;
+        this.donator = donator;
+        this.producer = producer;
+        this.postnummer = postnummer;
+    }
+
     public int getItemid() {
         return itemid;
     }
