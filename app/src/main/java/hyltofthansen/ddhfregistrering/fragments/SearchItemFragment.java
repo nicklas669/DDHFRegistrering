@@ -65,6 +65,7 @@ public class SearchItemFragment extends Fragment {
             }
         });
 
+
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override

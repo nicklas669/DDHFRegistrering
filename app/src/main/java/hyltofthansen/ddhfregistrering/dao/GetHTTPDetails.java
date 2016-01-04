@@ -27,7 +27,7 @@ public class GetHTTPDetails extends AsyncTask {
 
     private Context context;
     private ArrayList<ItemDTO> items;
-    private static final String TAG = "GetHTTP";
+    private static final String TAG = "GetHTTPDetails";
     private int itemID;
     private ItemDetailsFragment detailsFragment;
 
@@ -41,50 +41,53 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-            String url = context.getString(R.string.API_URL) + "/items/" + itemID;
-            String USER_AGENT = "Mozilla/5.0";
+        // URL til Claus' API
+        //String url = context.getString(R.string.API_URL) + "/items/" + itemID;
 
-            StringBuffer response = new StringBuffer();
-            try {
-                URL obj = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-                // optional, default is GET
-                con.setRequestMethod("GET");
-                //add request header
-                con.setRequestProperty("User-Agent", USER_AGENT);
-                int responseCode = con.getResponseCode();
-                Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-                Log.d(TAG, "Response Code : " + responseCode);
+        // URL til Mathias' API
+        String url = context.getString(R.string.API_URL_MATHIAS)+itemID+"?userID=56837dedd2d76438906140";
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
+        String USER_AGENT = "Mozilla/5.0";
 
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    Log.d(TAG, String.valueOf(in.readLine()));
-                    response.append(inputLine);
-                    Log.d(TAG, String.valueOf(response));
-                }
-                in.close();
+        StringBuffer response = new StringBuffer();
+        try {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            // optional, default is GET
+            con.setRequestMethod("GET");
+            //add request header
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            int responseCode = con.getResponseCode();
+            //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
+            Log.d(TAG, "Response Code : " + responseCode);
 
-                JSONArray itemsfromDB = new JSONArray(response.toString());
-                Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
 
-                        JSONObject item = itemsfromDB.getJSONObject(0);
-                        items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
-                                item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.append("Der opstod en fejl! "+e.toString());
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                //Log.d(TAG, String.valueOf(in.readLine()));
+                response.append(inputLine);
+                //Log.d(TAG, String.valueOf(response));
             }
-            return response;
+            in.close();
+
+            JSONObject item = new JSONObject(response.toString());
+
+            items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
+                    item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.append("Der opstod en fejl! "+e.toString());
+        }
+        return response;
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        Log.d(TAG, String.valueOf(items.size() + " Item size"));
+        //Log.d(TAG, String.valueOf(items.size() + " Item size"));
         detailsFragment.updateTextViews();
         super.onPostExecute(o);
     }

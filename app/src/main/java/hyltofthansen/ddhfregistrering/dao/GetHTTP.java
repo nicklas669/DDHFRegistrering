@@ -35,51 +35,55 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-            String url = context.getString(R.string.API_URL) + "/items/" ;
-            String USER_AGENT = "Mozilla/5.0";
+        // URL til Claus' API
+        //String url = context.getString(R.string.API_URL) + "/items/" ;
 
-            StringBuffer response = new StringBuffer();
-            try {
-                URL obj = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-                // optional, default is GET
-                con.setRequestMethod("GET");
-                //add request header
-                con.setRequestProperty("User-Agent", USER_AGENT);
-                int responseCode = con.getResponseCode();
-                Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-                Log.d(TAG, "Response Code : " + responseCode);
+        // URL til Mathias' API
+        String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
+        String USER_AGENT = "Mozilla/5.0";
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
+        StringBuffer response = new StringBuffer();
+        try {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            // optional, default is GET
+            con.setRequestMethod("GET");
+            //add request header
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            int responseCode = con.getResponseCode();
+            //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
+            Log.d(TAG, "Response Code : " + responseCode);
 
-                int heste = 0;
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    heste++;
-                    Log.d(TAG, String.valueOf(in.readLine()));
-                    response.append(inputLine);
-                    Log.d(TAG, String.valueOf(response));
-                }
-                in.close();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
 
-                JSONArray itemsfromDB = new JSONArray(response.toString());
-                Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
-                Log.d(TAG, heste + " heste size");
-
-                for (int x = 0; x < itemsfromDB.length(); x++) {
-//                    if (x < 20) { // maks. 20 items til test      //TODO Sæt scrolling opdatering ind
-                        JSONObject item = itemsfromDB.getJSONObject(x);
-                        items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
-                                item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-//                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.append("Der opstod en fejl! "+e.toString());
+            int heste = 0;
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                heste++;
+                //Log.d(TAG, String.valueOf(in.readLine()));
+                response.append(inputLine);
+                //Log.d(TAG, String.valueOf(response));
             }
-            return response;
+            in.close();
+
+            JSONArray itemsfromDB = new JSONArray(response.toString());
+            Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
+            Log.d(TAG, heste + " heste size");
+
+            for (int x = 0; x < itemsfromDB.length(); x++) {
+//                    if (x < 20) { // maks. 20 items til test      //TODO Sæt scrolling opdatering ind
+                    JSONObject item = itemsfromDB.getJSONObject(x);
+                    items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
+                            item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
+//                    }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.append("Der opstod en fejl! "+e.toString());
+        }
+        return response;
     }
 
     @Override
