@@ -6,10 +6,14 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -28,12 +32,14 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
  */
 public class PostHTTP extends AsyncTask {
 
+    private static final String TAG = "PostHTTP";
     private JSONObject JSONitem;
     private int responseCode;
     URL url;
     StringBuffer response;
     Activity context;
     FragmentManager fm;
+    private JSONObject itemMedBilled;
 
     public PostHTTP(JSONObject JSONitem, Activity context, FragmentManager fm) {
         this.JSONitem = JSONitem;
@@ -49,7 +55,6 @@ public class PostHTTP extends AsyncTask {
 
             //Opretter POST URL
             try {
-                //String urlAPI = context.getString(R.string.API_URL);
                 String urlAPI = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
                 url = new URL(urlAPI);
                 System.out.println("URL: " + url);
@@ -60,36 +65,50 @@ public class PostHTTP extends AsyncTask {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            //conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Type", "application/json"); // content type til Mathias' API
-            //conn.setRequestProperty("Content-Length", String.valueOf(JSONitem.length()));
-
 
             OutputStream os = conn.getOutputStream();
             os.write(JSONitem.toString().getBytes());
             os.flush();
             os.close();
-//            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-//            wr.write(JSONitem.toString());
-//            wr.flush();
-//            wr.close();
 
             responseCode = conn.getResponseCode();
             String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
             System.out.println(responseMsg);
 
-            conn.disconnect();
 
             // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
-            //StringBuffer response = new StringBuffer();
-            //BufferedReader in = new BufferedReader(
-            //        new InputStreamReader(conn.getInputStream()));
-            //String inputLine;
+           StringBuffer response = new StringBuffer();
+           BufferedReader in = new BufferedReader(
+               new InputStreamReader(conn.getInputStream()));
+           String inputLine;
 
-            //while ((inputLine = in.readLine()) != null) {
-            //    response.append(inputLine);
-            //}
-            //in.close();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            Log.d(TAG, response.toString());
+
+            //Check om der blev taget fotografier
+            SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
+            if(prefs.contains("chosenImage")) {
+                Log.d(TAG, "Der er et billed");
+                //Der er et billed, så det bliver uploaded
+                try {
+                    itemMedBilled = new JSONObject(response.toString());
+                    pictureUpload();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d(TAG, "Der er IKKE et billed");
+            }
+
+            // Ryd gemt billede fra app's data
+            prefs.edit().remove("chosenImage").commit();
+
+           in.close();
+            conn.disconnect();
+
         }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -99,6 +118,69 @@ public class PostHTTP extends AsyncTask {
             e.printStackTrace();
         }
         return responseCode;
+    }
+
+    private void pictureUpload() {
+
+        try {
+            //Opretter POST URL
+            try {
+                String urlAPI = null;
+                try {
+                    urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemMedBilled.get("itemid").toString() + "?userID=56837dedd2d76438906140";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                url = new URL(urlAPI);
+                System.out.println("URL: " + url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/jpg"); // content type til Mathias' API
+
+
+            OutputStream os = conn.getOutputStream();
+            os.write(JSONitem.toString().getBytes());
+            os.flush();
+            os.close();
+
+            responseCode = conn.getResponseCode();
+            String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
+            Log.d(TAG, responseMsg);
+
+
+            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
+            StringBuffer response = new StringBuffer();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            Log.d(TAG, response.toString());
+
+            //Check om der blev taget fotografier
+            SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
+
+            // Ryd gemt billede fra app's data
+            prefs.edit().remove("chosenImage").commit();
+
+            in.close();
+            conn.disconnect();
+
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -122,9 +204,6 @@ public class PostHTTP extends AsyncTask {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Ryd gemt billede fra app's data
-        SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
-        prefs.edit().remove("chosenImage").commit();
     }
 }
 
