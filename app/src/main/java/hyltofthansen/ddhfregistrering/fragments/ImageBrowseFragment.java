@@ -42,6 +42,7 @@ public class ImageBrowseFragment extends Fragment {
     SharedPreferences prefs;
     private static final String TAG = "ImageBrowseFragment";
     private String mCurrentPhotoPath;
+    private File photoFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class ImageBrowseFragment extends Fragment {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    File photoFile = null;
+                    photoFile = null;
 
                     try {
                         photoFile = createImageFile();
@@ -131,14 +132,24 @@ public class ImageBrowseFragment extends Fragment {
 //                setHasOptionsMenu(true);
             }
             else if (requestCode == REQUEST_TAKE_PHOTO) {
-                Bundle extras = intent.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                galleryAddPic();
+//                Bundle extras = intent.getExtras();
+//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 iv_gallery.setImageBitmap(imageBitmap);
                 //Aktiver ActionBar "OK" knap
 //                setHasOptionsMenu(true);
             }
 
         }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
     }
 
     /**
@@ -151,7 +162,7 @@ public class ImageBrowseFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+                Environment.DIRECTORY_DCIM);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
