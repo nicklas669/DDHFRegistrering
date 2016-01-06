@@ -27,6 +27,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -84,29 +85,7 @@ public class ImageBrowseFragment extends Fragment {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    // Create the File where the photo should go
-                    File photoFile = null;
-                    File storageDir = Environment.getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES);
-                    try {
-                        photoFile = File.createTempFile(
-                                "DDHF_"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()),  /* prefix */
-                                ".jpg",         /* suffix */
-                                storageDir      /* directory */
-                        );
-                    } catch (IOException ex) {
-                        // Error occurred while creating the File
-                        Log.d(TAG, "Der skete en fejl ved oprettelse af fil!");
-                        Log.d(TAG, ex.toString());
-                        Log.d(TAG, storageDir.toString());
-                        Log.d(TAG, photoFile.toString());
-                    }
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(photoFile));
-                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                    }
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 } else { // device har ikke kamera features
                     //Viser AlertDialog med teksten "Enheden har ikke kamerafunktionalitet"
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -144,6 +123,7 @@ public class ImageBrowseFragment extends Fragment {
                 //Aktiver ActionBar "OK" knap
                 setHasOptionsMenu(true);
             }
+
         }
     }
 
