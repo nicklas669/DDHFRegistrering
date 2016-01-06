@@ -52,15 +52,13 @@ public class GetHTTP extends AsyncTask {
             con.setRequestProperty("User-Agent", USER_AGENT);
             int responseCode = con.getResponseCode();
             //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-            Log.d(TAG, "Response Code : " + responseCode);
+            //Log.d(TAG, "Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
 
-            int heste = 0;
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                heste++;
                 //Log.d(TAG, String.valueOf(in.readLine()));
                 response.append(inputLine);
                 //Log.d(TAG, String.valueOf(response));
@@ -69,7 +67,6 @@ public class GetHTTP extends AsyncTask {
 
             JSONArray itemsfromDB = new JSONArray(response.toString());
             Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
-            Log.d(TAG, heste + " heste size");
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
 //                    if (x < 20) { // maks. 20 items til test      //TODO Sæt scrolling opdatering ind
@@ -89,7 +86,7 @@ public class GetHTTP extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         listAdapter.notifyDataSetChanged();
-        Log.d(TAG, String.valueOf(items.size() + " Item size"));
+        //Log.d(TAG, String.valueOf(items.size() + " Item size"));
         super.onPostExecute(o);
     }
 

@@ -64,6 +64,7 @@ public class SearchItemFragment extends Fragment {
 
         lv.setAdapter(listAdapter);
 
+        // ** Når der klikkes på en række i listen, åbnes et fragment der viser genstandens detaljer **
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -1,10 +1,14 @@
 package hyltofthansen.ddhfregistrering.dto;
 
 
+import java.util.ArrayList;
+
 public class ItemDTO {
     private int itemid, postnummer;
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
+    private ArrayList<String> images;
+
 
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
                    String itemreceived, String itemdatingfrom, String itemdatingto,
@@ -20,6 +24,39 @@ public class ItemDTO {
         this.postnummer = postnummer;
     }
 
+    // Constructor med item ID og billeder
+    public ItemDTO(int itemid, String itemheadline, String itemdescription,
+                   String itemreceived, String itemdatingfrom, String itemdatingto,
+                   String donator, String producer, int postnummer, ArrayList<String> images) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+        this.itemdescription = itemdescription;
+        this.itemreceived = itemreceived;
+        this.itemdatingfrom = itemdatingfrom;
+        this.itemdatingto = itemdatingto;
+        this.donator = donator;
+        this.producer = producer;
+        this.postnummer = postnummer;
+        this.images = images;
+    }
+
+    // Constructor uden Item ID men med billeder
+    public ItemDTO(String itemheadline, String itemdescription,
+                   String itemreceived, String itemdatingfrom, String itemdatingto,
+                   String donator, String producer, int postnummer, ArrayList<String> images) {
+        this.itemid = -1;
+        this.itemheadline = itemheadline;
+        this.itemdescription = itemdescription;
+        this.itemreceived = itemreceived;
+        this.itemdatingfrom = itemdatingfrom;
+        this.itemdatingto = itemdatingto;
+        this.donator = donator;
+        this.producer = producer;
+        this.postnummer = postnummer;
+        this.images = images;
+    }
+
+    // Constructor uden item ID og billede
     public ItemDTO(String itemheadline, String itemdescription,
                    String itemreceived, String itemdatingfrom, String itemdatingto,
                    String donator, String producer, int postnummer) {
@@ -104,6 +141,10 @@ public class ItemDTO {
 
     public void setpostnummer(int postnummer) {
         this.postnummer = postnummer;
+    }
+
+    public String getImage(int index) {
+        return images.get(index);
     }
 
 
