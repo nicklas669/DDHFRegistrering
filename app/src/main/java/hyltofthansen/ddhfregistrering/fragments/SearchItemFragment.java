@@ -28,13 +28,25 @@ public class SearchItemFragment extends Fragment {
     private CustomArrayAdapter listAdapter;
     private GetHTTP getHTTP;
     private ArrayList<ItemDTO> items;
-    // Search EditText
     private EditText inputSearch;
     private static final String TAG = "SearchItemFragment";
 
 
     @Override
+    public void onResume() {
+        //Et midlertidigt fix for blankt søgeresultat efter back button
+        //TODO Gør så søgeresultat stadig gemmes
+        if (inputSearch != null) {
+            inputSearch.setText("");
+            listAdapter.getFilter().filter(inputSearch.toString());
+        }
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d(TAG, "OnCreateView kørt");
 
         items = new ArrayList<ItemDTO>();
 
@@ -46,10 +58,12 @@ public class SearchItemFragment extends Fragment {
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og søges i
         listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist, R.id.search_tvheadline, items);
-        lv.setAdapter(listAdapter);
 
+        //Henter items ned fra DB
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);
         getHTTP.fetchItems();
+
+        lv.setAdapter(listAdapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,7 +78,6 @@ public class SearchItemFragment extends Fragment {
                 ft.commit();
             }
         });
-
 
         inputSearch.addTextChangedListener(new TextWatcher() {
 
