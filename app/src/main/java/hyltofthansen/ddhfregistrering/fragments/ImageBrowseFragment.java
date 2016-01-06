@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,17 +26,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import hyltofthansen.ddhfregistrering.MainActivity;
 import hyltofthansen.ddhfregistrering.R;
 
 public class ImageBrowseFragment extends Fragment {
-    private static final int PICK_IMAGE = 100, IMAGE_TAKEN = 99;
+    private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
     ImageView iv_gallery;
     Uri imageUri;
     SharedPreferences prefs;
     private static final String TAG = "ImageBrowseFragment";
+    private String mCurrentPhotoPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,27 +55,26 @@ public class ImageBrowseFragment extends Fragment {
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
 
         // Læs om der er valgt et billede i forvejen
-        String imgURI = prefs.getString("chosenImage", null);
-        if (imgURI != null) {
-            // Hvis der er et gemt billede så vis det i imageViewet
-            try {
-                imageUri = Uri.parse(imgURI);
-                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                iv_gallery.setImageBitmap(img);
-                setHasOptionsMenu(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+//        String imgURI = prefs.getString("chosenImage", null);
+//        if (imgURI != null) {
+//            // Hvis der er et valgt billede så vis det i imageViewet
+//            try {
+//                imageUri = Uri.parse(imgURI);
+//                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+//                iv_gallery.setImageBitmap(img);
+//                setHasOptionsMenu(true);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
 
         Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gallery =
-                        new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//                Intent gallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                Intent gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*");
                 startActivityForResult(gallery, PICK_IMAGE);
             }
         });
@@ -78,17 +83,23 @@ public class ImageBrowseFragment extends Fragment {
         b_newImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) { // device har kamera feature
-//                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);   //TODO Fjern hvis ikke skal bruges længere
-                    Intent takePictureIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    File photoFile = null;
 
-                    File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "picture.jpg");
-                    imageUri = Uri.fromFile(photo);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-
-                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, IMAGE_TAKEN);
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        Log.d(TAG, ex.toString());
                     }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(photoFile));
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    }
+
                 } else { // device har ikke kamera features
                     //Viser AlertDialog med teksten "Enheden har ikke kamerafunktionalitet"
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -104,22 +115,52 @@ public class ImageBrowseFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (resultCode == Activity.RESULT_OK && (requestCode == PICK_IMAGE || requestCode == IMAGE_TAKEN)) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_IMAGE) {
+                imageUri = intent.getData();
+                InputStream imageStream = null;
+                try {
+                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
 
-//            imageUri = intent.getData();      //TODO Fjern hvis ikke skal bruges længere
-            getActivity().getContentResolver().notifyChange(imageUri, null);
-            ContentResolver cr = getActivity().getContentResolver();
-
-//            imageUri = intent.getData();  //TODO Fjern hvis ikke skal bruges længere
-            try {
-                Bitmap img = MediaStore.Images.Media.getBitmap(cr, imageUri);
-                iv_gallery.setImageBitmap(img);
-                //Aktiver ActionBar menu
-                setHasOptionsMenu(true);
-            } catch (IOException e) {
-                Log.d(TAG, e.toString());
+                iv_gallery.setImageBitmap(imageBitmap);
+                //Aktiver ActionBar "OK" knap
+//                setHasOptionsMenu(true);
             }
+            else if (requestCode == REQUEST_TAKE_PHOTO) {
+                Bundle extras = intent.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                iv_gallery.setImageBitmap(imageBitmap);
+                //Aktiver ActionBar "OK" knap
+//                setHasOptionsMenu(true);
+            }
+
         }
+    }
+
+    /**
+     * http://developer.android.com/training/camera/photobasics.html
+     * @return
+     * @throws IOException
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 
     //Inflate ActionBar for OK knap
@@ -132,12 +173,12 @@ public class ImageBrowseFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
-                    // Gem URI til valgt billede
-                    SharedPreferences.Editor prefedit = prefs.edit();
-                    prefedit.putString("chosenImage", imageUri.toString());
-                    prefedit.commit();
-                    // Hop tilbage til Opret genstand fragment
-                    getFragmentManager().popBackStack();
+                // Gem URI til valgt billede
+                SharedPreferences.Editor prefedit = prefs.edit();
+//                prefedit.putString("chosenImage", imageUri.toString());
+//                prefedit.commit();
+                // Hop tilbage til Opret genstand fragment
+                getFragmentManager().popBackStack();
                 break;
         }
         return true;
