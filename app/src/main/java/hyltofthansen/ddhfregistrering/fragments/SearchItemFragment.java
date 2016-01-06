@@ -38,7 +38,6 @@ public class SearchItemFragment extends Fragment {
         //TODO Gør så søgeresultat stadig gemmes
         if (inputSearch != null) {
             inputSearch.setText("");
-            listAdapter.getFilter().filter(inputSearch.toString());
         }
         super.onResume();
     }
