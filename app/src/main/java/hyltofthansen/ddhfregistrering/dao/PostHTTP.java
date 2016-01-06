@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -40,6 +41,7 @@ public class PostHTTP extends AsyncTask {
     Activity context;
     FragmentManager fm;
     private JSONObject itemMedBilled;
+    private SharedPreferences prefs;
 
     public PostHTTP(JSONObject JSONitem, Activity context, FragmentManager fm) {
         this.JSONitem = JSONitem;
@@ -74,7 +76,7 @@ public class PostHTTP extends AsyncTask {
 
             responseCode = conn.getResponseCode();
             String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
-            System.out.println(responseMsg);
+            Log.d(TAG, responseMsg);
 
 
             // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
@@ -89,7 +91,7 @@ public class PostHTTP extends AsyncTask {
             Log.d(TAG, response.toString());
 
             //Check om der blev taget fotografier
-            SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
+            prefs = context.getPreferences(Context.MODE_PRIVATE);
             if(prefs.contains("chosenImage")) {
                 Log.d(TAG, "Der er et billed");
                 //Der er et billed, så det bliver uploaded
@@ -144,7 +146,21 @@ public class PostHTTP extends AsyncTask {
 
 
             OutputStream os = conn.getOutputStream();
-            os.write(JSONitem.toString().getBytes());
+            Log.d(TAG, String.valueOf(prefs.getString("chosenImage", null)));
+            String filePath = String.valueOf(prefs.getString("chosenImage", null));
+
+            filePath = filePath.replace("/file:", "");
+
+            FileInputStream inputStream = new FileInputStream("/storage/sdcard0/Pictures/picture.jpg");
+
+
+            byte[] data = new byte[1024];
+            int read;
+
+            while((read = inputStream.read(data)) != -1) {
+                os.write(data,0,read);
+            }
+            inputStream.close();
             os.flush();
             os.close();
 
@@ -164,9 +180,6 @@ public class PostHTTP extends AsyncTask {
             }
             Log.d(TAG, response.toString());
 
-            //Check om der blev taget fotografier
-            SharedPreferences prefs = context.getPreferences(Context.MODE_PRIVATE);
-
             // Ryd gemt billede fra app's data
             prefs.edit().remove("chosenImage").commit();
 
@@ -175,11 +188,11 @@ public class PostHTTP extends AsyncTask {
 
         }
         catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.d(TAG,e.toString());
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.toString());
         }
     }
 

@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
  * Custom Adapter for at muliggøre søgningen med filter() i ArrayAdapter.
- * Inspiration fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
+ * Fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
  *
  **/
 public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
@@ -91,6 +92,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
                     results.values = mOriginalValues;
                 } else {
                     constraint = constraint.toString().toLowerCase();
+                    Log.d(TAG, "Constraint:" + constraint.toString().toLowerCase());
                     for (int i = 0; i < mOriginalValues.size(); i++) {
                         String data = mOriginalValues.get(i).getItemheadline();
                         if (data.toLowerCase().startsWith(constraint.toString())) {
