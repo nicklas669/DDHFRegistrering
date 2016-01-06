@@ -136,12 +136,40 @@ public class ImageBrowseFragment extends Fragment {
 //                Bundle extras = intent.getExtras();
 //                Bitmap imageBitmap = (Bitmap) extras.get("data");
                 Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                iv_gallery.setImageBitmap(imageBitmap);
+//                iv_gallery.setImageBitmap(imageBitmap);
+                setPic();
                 //Aktiver ActionBar "OK" knap
 //                setHasOptionsMenu(true);
             }
 
         }
+    }
+
+    /**
+     * http://developer.android.com/training/camera/photobasics.html
+     */
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = iv_gallery.getWidth();
+        int targetH = iv_gallery.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
+        iv_gallery.setImageBitmap(bitmap);
     }
 
     private void galleryAddPic() {
