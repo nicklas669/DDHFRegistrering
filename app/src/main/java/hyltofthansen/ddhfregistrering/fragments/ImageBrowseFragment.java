@@ -136,8 +136,10 @@ public class ImageBrowseFragment extends Fragment {
 //                Bundle extras = intent.getExtras();
 //                Bitmap imageBitmap = (Bitmap) extras.get("data");
                 Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-//                iv_gallery.setImageBitmap(imageBitmap);
-                setPic();
+                iv_gallery.setImageBitmap(setPic());
+                SharedPreferences.Editor prefedit = prefs.edit();
+                prefedit.putString("chosenImage", photoFile.getAbsolutePath());
+                prefedit.commit();
                 //Aktiver ActionBar "OK" knap
 //                setHasOptionsMenu(true);
             }
@@ -148,7 +150,7 @@ public class ImageBrowseFragment extends Fragment {
     /**
      * http://developer.android.com/training/camera/photobasics.html
      */
-    private void setPic() {
+    private Bitmap setPic() {
         // Get the dimensions of the View
         int targetW = iv_gallery.getWidth();
         int targetH = iv_gallery.getHeight();
@@ -169,7 +171,7 @@ public class ImageBrowseFragment extends Fragment {
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
-        iv_gallery.setImageBitmap(bitmap);
+        return bitmap;
     }
 
     private void galleryAddPic() {
@@ -202,24 +204,19 @@ public class ImageBrowseFragment extends Fragment {
         return image;
     }
 
-    //Inflate ActionBar for OK knap
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_confirmimg, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
-                // Gem URI til valgt billede
-                SharedPreferences.Editor prefedit = prefs.edit();
-//                prefedit.putString("chosenImage", imageUri.toString());
-//                prefedit.commit();
-                // Hop tilbage til Opret genstand fragment
-                getFragmentManager().popBackStack();
-                break;
-        }
-        return true;
-    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
+//                // Gem URI til valgt billede
+//                SharedPreferences.Editor prefedit = prefs.edit();
+////                prefedit.putString("chosenImage", imageUri.toString());
+////                prefedit.commit();
+//                // Hop tilbage til Opret genstand fragment
+//                getFragmentManager().popBackStack();
+//                break;
+//        }
+//        return true;
+//    }
 }
