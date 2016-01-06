@@ -80,7 +80,7 @@ public class PostHTTP extends AsyncTask {
 
 
             // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
-           StringBuffer response = new StringBuffer();
+           response = new StringBuffer();
            BufferedReader in = new BufferedReader(
                new InputStreamReader(conn.getInputStream()));
            String inputLine;
@@ -90,25 +90,7 @@ public class PostHTTP extends AsyncTask {
             }
             Log.d(TAG, response.toString());
 
-            //Check om der blev taget fotografier
-            prefs = context.getPreferences(Context.MODE_PRIVATE);
-            if(prefs.contains("chosenImage")) {
-                Log.d(TAG, "Der er et billed");
-                //Der er et billed, så det bliver uploaded
-                try {
-                    itemMedBilled = new JSONObject(response.toString());
-                    pictureUpload();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.d(TAG, "Der er IKKE et billed");
-            }
-
-            // Ryd gemt billede fra app's data
-            prefs.edit().remove("chosenImage").commit();
-
-           in.close();
+            in.close();
             conn.disconnect();
 
         }
@@ -122,79 +104,6 @@ public class PostHTTP extends AsyncTask {
         return responseCode;
     }
 
-    private void pictureUpload() {
-
-        try {
-            //Opretter POST URL
-            try {
-                String urlAPI = null;
-                try {
-                    urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemMedBilled.get("itemid").toString() + "?userID=56837dedd2d76438906140";
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                url = new URL(urlAPI);
-                System.out.println("URL: " + url);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/jpg"); // content type til Mathias' API
-
-
-            OutputStream os = conn.getOutputStream();
-            Log.d(TAG, String.valueOf(prefs.getString("chosenImage", null)));
-            String filePath = String.valueOf(prefs.getString("chosenImage", null));
-
-            filePath = filePath.replace("/file:", "");
-
-            FileInputStream inputStream = new FileInputStream("/storage/sdcard0/Pictures/picture.jpg");
-
-
-            byte[] data = new byte[1024];
-            int read;
-
-            while((read = inputStream.read(data)) != -1) {
-                os.write(data,0,read);
-            }
-            inputStream.close();
-            os.flush();
-            os.close();
-
-            responseCode = conn.getResponseCode();
-            String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
-            Log.d(TAG, responseMsg);
-
-
-            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
-            StringBuffer response = new StringBuffer();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            Log.d(TAG, response.toString());
-
-            // Ryd gemt billede fra app's data
-            prefs.edit().remove("chosenImage").commit();
-
-            in.close();
-            conn.disconnect();
-
-        }
-        catch (UnsupportedEncodingException e) {
-            Log.d(TAG,e.toString());
-        } catch (ProtocolException e) {
-            Log.d(TAG, e.toString());
-        } catch (IOException e) {
-            Log.d(TAG, e.toString());
-        }
-    }
 
     @Override
     protected void onPostExecute(Object o) {
@@ -204,6 +113,22 @@ public class PostHTTP extends AsyncTask {
         responseCode = Integer.valueOf(o.toString());
         //int responseCode = 201;
         if (responseCode == 201) {
+            //Check om der blev taget fotografier
+            prefs = context.getPreferences(Context.MODE_PRIVATE);
+            if (prefs.contains("chosenImage")) {
+                Log.d(TAG, "Der er et billede!");
+                //Der er et billed, så det bliver uploaded
+                try {
+                    Log.d(TAG, "response 2: " + response.toString());
+                    itemMedBilled = new JSONObject(response.toString());
+                    PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, itemMedBilled.getInt("itemid"));
+                    postHTTPPicture.execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d(TAG, "Der er IKKE et billede!");
+            }
             // 2. Chain together various setter methods to set the dialog characteristics
             builder.setMessage("Genstand oprettet successfuldt. Responskode: " + responseCode)
                     .setTitle("Success");

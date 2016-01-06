@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,11 +39,13 @@ public class PostHTTPPicture extends AsyncTask {
     FragmentManager fm;
     private JSONObject itemMedBilled;
     private SharedPreferences prefs;
+    private int itemid;
 
-    public PostHTTPPicture( Activity context, FragmentManager fm) {
+    public PostHTTPPicture(Activity context, FragmentManager fm, int itemid) {
 //        this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;
+        this.itemid = itemid;
     }
 
 
@@ -52,7 +55,7 @@ public class PostHTTPPicture extends AsyncTask {
             //Opretter POST URL
             try {
                 String urlAPI = null;
-                urlAPI = context.getString(R.string.API_URL_MATHIAS) + String.valueOf(32) + "?userID=56837dedd2d76438906140";
+                urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemid + "?userID=56837dedd2d76438906140";
                 url = new URL(urlAPI);
                 System.out.println("URL: " + url);
             } catch (MalformedURLException e) {
@@ -64,15 +67,14 @@ public class PostHTTPPicture extends AsyncTask {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "image/jpg"); // content type til Mathias' API
 
-
-            OutputStream os = conn.getOutputStream();
 //            Log.d(TAG, String.valueOf(prefs.getString("chosenImage", null)));
 //            String filePath = String.valueOf(prefs.getString("chosenImage", null));
+            prefs = context.getPreferences(Context.MODE_PRIVATE);
+            String imgPath = prefs.getString("chosenImage", null);
+            Log.d(TAG, imgPath);
 
-//            filePath = filePath.replace("/file:", "");
-
-            FileInputStream inputStream = new FileInputStream("/storage/sdcard0/Pictures/picture.jpg");
-
+            OutputStream os = conn.getOutputStream();
+            FileInputStream inputStream = new FileInputStream(imgPath);
 
             byte[] data = new byte[1024];
             int read;
@@ -99,9 +101,6 @@ public class PostHTTPPicture extends AsyncTask {
                 response.append(inputLine);
             }
             Log.d(TAG, response.toString());
-
-            // Ryd gemt billede fra app's data
-//            prefs.edit().remove("chosenImage").commit();
 
             in.close();
             conn.disconnect();
@@ -140,6 +139,8 @@ public class PostHTTPPicture extends AsyncTask {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+        // Ryd gemt billede fra app's data
+        prefs.edit().remove("chosenImage").commit();
     }
 }
 
