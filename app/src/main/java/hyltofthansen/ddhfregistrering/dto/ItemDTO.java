@@ -1,13 +1,15 @@
 package hyltofthansen.ddhfregistrering.dto;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class ItemDTO {
     private int itemid, postnummer;
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
-    private ArrayList<String> images;
+    private ArrayList<String> images = new ArrayList<String>();
 
 
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
@@ -69,6 +71,16 @@ public class ItemDTO {
         this.donator = donator;
         this.producer = producer;
         this.postnummer = postnummer;
+    }
+
+    public ItemDTO(int itemid, String itemheadline, String defaultimage) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+        if (defaultimage != "null") {
+            //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
+            images.add(defaultimage);
+        }
+        //Log.e("ItemDTO", itemid +" har IKKE image!");
     }
 
     public int getItemid() {
@@ -145,6 +157,10 @@ public class ItemDTO {
 
     public String getImage(int index) {
         return images.get(index);
+    }
+
+    public int getImageArraySize() {
+        return images.size();
     }
 
 
