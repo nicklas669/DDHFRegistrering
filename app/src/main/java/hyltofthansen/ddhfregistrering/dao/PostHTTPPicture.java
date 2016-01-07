@@ -36,12 +36,13 @@ public class PostHTTPPicture extends AsyncTask {
     URL url;
     StringBuffer response;
     Activity context;
-    FragmentManager fm;
     private JSONObject itemMedBilled;
     private SharedPreferences prefs;
     private int itemid;
+    private android.support.v4.app.FragmentManager fm;
 
-    public PostHTTPPicture(Activity context, FragmentManager fm, int itemid) {
+
+    public PostHTTPPicture(Activity context, android.support.v4.app.FragmentManager fm, int itemid) {
 //        this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;

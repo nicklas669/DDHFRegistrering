@@ -29,7 +29,7 @@
 //
 //import hyltofthansen.ddhfregistrering.R;
 //import hyltofthansen.ddhfregistrering.dao.PostHTTP;
-//import hyltofthansen.ddhfregistrering.fragments.ImageBrowseFragment;
+//import hyltofthansen.ddhfregistrering.fragments.NewItemPicturesFragment;
 //
 //@Deprecated
 //public class NewItemFragmentDeprecated extends Fragment {
@@ -71,7 +71,7 @@
 //                break;
 //            case R.id.action_photo: //Der blev trykket på kamera ikonet
 //                getFragmentManager().beginTransaction().addToBackStack(null).
-//                        replace(R.id.fragmentContainer, new ImageBrowseFragment())
+//                        replace(R.id.fragmentContainer, new NewItemPicturesFragment())
 //                        .commit();
 //                break;
 //        }

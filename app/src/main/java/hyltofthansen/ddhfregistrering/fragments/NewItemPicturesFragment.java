@@ -2,12 +2,10 @@ package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.ContentResolver;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,17 +15,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -35,12 +28,12 @@ import java.util.Date;
 
 import hyltofthansen.ddhfregistrering.R;
 
-public class ImageBrowseFragment extends Fragment {
+public class NewItemPicturesFragment extends Fragment {
     private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
     ImageView iv_gallery;
     Uri imageUri;
     SharedPreferences prefs;
-    private static final String TAG = "ImageBrowseFragment";
+    private static final String TAG = "NewItemPicturesFragment";
     private String mCurrentPhotoPath;
     private File photoFile;
 

@@ -2,31 +2,24 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
-
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+
 
 /**
  * Class responsible for POST HTTP functionality to API 0.1 on CreateItem
@@ -39,9 +32,10 @@ public class PostHTTP extends AsyncTask {
     URL url;
     StringBuffer response;
     Activity context;
-    FragmentManager fm;
     private JSONObject itemMedBilled;
     private SharedPreferences prefs;
+    private android.support.v4.app.FragmentManager fm;
+
 
     public PostHTTP(JSONObject JSONitem, Activity context, FragmentManager fm) {
         this.JSONitem = JSONitem;

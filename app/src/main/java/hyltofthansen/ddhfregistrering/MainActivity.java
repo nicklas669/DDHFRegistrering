@@ -1,9 +1,6 @@
 package hyltofthansen.ddhfregistrering;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,15 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-
-import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
-import hyltofthansen.ddhfregistrering.fragments.NewItemFragment;
+import hyltofthansen.ddhfregistrering.fragments.NewItemInfoFragment;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Fragment searchFragment = new SearchItemFragment();
+    private SearchItemFragment searchFragment = new SearchItemFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_create_main:   //Hvis man klikker på + knappen i action bar
-                Fragment createItemFragment = new NewItemFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                NewItemInfoFragment createItemFragment = new NewItemInfoFragment();
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.fragmentContainer, createItemFragment);
                 ft.commit();
