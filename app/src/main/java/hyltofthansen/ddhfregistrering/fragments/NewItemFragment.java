@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import hyltofthansen.ddhfregistrering.R;
 
@@ -51,11 +53,16 @@ public class NewItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getActivity().setContentView(R.layout.activity_main);
+        getActivity().setTitle("Vedhæft billede");
+
+        View root = inflater.inflate(R.layout.activity_main, container, false); // sæt layout op
+
+        getActivity().setContentView(R.layout.newitemlayout);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 //        getActivity().setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tab_layout);
+
         tabLayout.addTab(tabLayout.newTab().setText("Info"));
         tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
         tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
@@ -86,6 +93,7 @@ public class NewItemFragment extends Fragment {
 
             }
         });
-        return super.onCreateView(inflater, container, savedInstanceState);
+//        return super.onCreateView(inflater, container, savedInstanceState);
+        return root;
     }
 }
