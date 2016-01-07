@@ -4,11 +4,16 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import hyltofthansen.ddhfregistrering.fragments.NewItemFragment;
 import hyltofthansen.ddhfregistrering.fragments.NewItemInfoFragment;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
@@ -65,10 +70,12 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_create_main:   //Hvis man klikker på + knappen i action bar
-                NewItemInfoFragment createItemFragment = new NewItemInfoFragment();
-                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Log.d("MainActivity", "Der blev trykket på plus-knappen!");
+                NewItemFragment newItemFragment = new NewItemFragment();
+                //android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
-                ft.replace(R.id.fragmentContainer, createItemFragment);
+                ft.replace(R.id.fragmentContainer, newItemFragment);
                 ft.commit();
             default:
                 return super.onOptionsItemSelected(item);

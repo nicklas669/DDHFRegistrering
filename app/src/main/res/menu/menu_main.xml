@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_plussign"
         app:showAsAction="ifRoom"
         android:title=""
-        android:orderInCategory="1"/> <!--Får plus-tegnet til altid af være til højre -->
+        android:orderInCategory="1"/> <!--Får plus-tegnet til altid at være til højre -->
 </menu>
 
 

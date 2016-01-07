@@ -1,6 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
-import android.support.v4.app.Fragment
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,8 +50,6 @@ public class NewItemFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-
 
         getActivity().setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -68,9 +66,7 @@ public class NewItemFragment extends Fragment {
         final ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
 
 
-
-        final PagerAdapter adapter = new PagerAdapter
-                (fragManager, tabLayout.getTabCount());
+        final PagerAdapter adapter = new hyltofthansen.ddhfregistrering.PagerAdapter(fragManager, tabLayout.getTabCount());
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -90,6 +86,6 @@ public class NewItemFragment extends Fragment {
 
             }
         });
-
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }
