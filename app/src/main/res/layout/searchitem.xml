@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize">
 
-
-
     <!-- Editext for Search (lånt fra http://www.androidhive.info/2012/09/android-adding-search-functionality-to-listview/) -->
     <EditText android:id="@+id/inputSearch"
         android:layout_marginLeft="8dp"

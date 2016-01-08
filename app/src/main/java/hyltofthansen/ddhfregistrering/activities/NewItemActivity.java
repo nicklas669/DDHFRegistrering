@@ -37,7 +37,6 @@ public class NewItemActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-//        this.setTitle("Opret genstand");
         FragmentActivity v = this;
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Info"));
