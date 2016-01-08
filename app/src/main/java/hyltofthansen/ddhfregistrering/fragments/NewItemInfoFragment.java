@@ -36,10 +36,10 @@ public class NewItemInfoFragment extends Fragment {
     private android.support.v4.app.FragmentManager fm;
 
     //Inflate ActionBar for Opret Genstand fragment
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_createitem, menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_createitem, menu);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,7 +72,7 @@ public class NewItemInfoFragment extends Fragment {
         getActivity().setTitle("Registrer genstand");
         //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
         View root = inflater.inflate(R.layout.newitemdetailslayout, container, false);
         titelTxt = (EditText) root.findViewById(R.id.titelTextEdit);
         beskrivelseTxt = (EditText) root.findViewById(R.id.beskrivelseTextEdit);
