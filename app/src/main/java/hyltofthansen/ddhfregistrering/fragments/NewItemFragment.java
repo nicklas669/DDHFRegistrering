@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,13 +57,10 @@ public class NewItemFragment extends Fragment {
         getActivity().setTitle("Opret genstand");
         FragmentActivity v = getActivity();
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.addTab(tabLayout.newTab().setText("Info"));
+        tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
+        tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-//        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-//        getActivity().setSupportActionBar(toolbar);
 
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
@@ -85,6 +84,10 @@ public class NewItemFragment extends Fragment {
 
             }
         });
+        //Toolbaren skal init's som noget af det sidste - ellers kommer den ikke frem
+        Toolbar myToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        setHasOptionsMenu(true);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 }
