@@ -54,15 +54,19 @@ public class SearchItemFragment extends Fragment {
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og søges i
+        Log.d(TAG, "CustomArrayAdapter initialiseres!!");
         listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist, R.id.search_tvheadline, items);
 
         //Henter items ned fra DB
+        Log.d(TAG, "Items hentes fra DB!!");
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);
         getHTTP.fetchItems();
 
+        Log.d(TAG, "Listview adapter sættes!!");
         lv.setAdapter(listAdapter);
 
         // ** Når der klikkes på en række i listen, åbnes et fragment der viser genstandens detaljer **
+        Log.d(TAG, "Listview clickListener sættes!!");
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,6 +81,7 @@ public class SearchItemFragment extends Fragment {
             }
         });
 
+        Log.d(TAG, "inputSearch textChangeDListener sættes!!");
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override

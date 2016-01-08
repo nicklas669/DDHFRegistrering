@@ -66,14 +66,21 @@ public class GetHTTP extends AsyncTask {
             in.close();
 
             JSONArray itemsfromDB = new JSONArray(response.toString());
-            Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
+            //Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
-//                    if (x < 20) { // maks. 20 items til test      //TODO Sæt scrolling opdatering ind
-                    JSONObject item = itemsfromDB.getJSONObject(x);
-                    items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
-                            item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
-//                    }
+//            for (int x = 0; x < 30; x++) {
+                JSONObject item = itemsfromDB.getJSONObject(x);
+                //Log.d(TAG, item.getString("itemid")+" defaultimage: "+item.getString("defaultimage"));
+                if (item.getInt("itemid") == 42 || item.getInt("itemid") == 90
+                        || item.getInt("itemid") == 95 || item.getInt("itemid") == 97
+                        || item.getInt("itemid") == 98 ||item.getInt("itemid") == 99) {
+                    //Log.d(TAG, "itemid 42, 90, 97, 98, 99!");
+                    continue; // Skip disse items da de har et korrupt billede!! TODO: Vi skal have slettet de items!
+                }
+                if (item.getString("defaultimage") != "null") {
+                    items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
+                }
             }
 
         } catch (Exception e) {
