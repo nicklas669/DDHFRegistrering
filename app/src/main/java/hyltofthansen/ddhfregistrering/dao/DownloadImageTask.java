@@ -3,21 +3,20 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by Nicklas on 07-01-2016.
  * http://stackoverflow.com/a/10868126
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
+    ArrayList<Bitmap> imageList;
 
-    public DownloadImageTask(ImageView bmImage) {
-        this.bmImage = bmImage;
+    public DownloadImageTask(ArrayList<Bitmap> imageList) {
+        this.imageList = imageList;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -54,7 +53,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
+        imageList.add(result);
     }
 
     public static int calculateInSampleSize(

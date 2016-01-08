@@ -1,15 +1,18 @@
 package hyltofthansen.ddhfregistrering.dto;
 
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO {
     private int itemid, postnummer;
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
-    private ArrayList<String> images = new ArrayList<String>();
+    private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
 
 
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
@@ -29,7 +32,7 @@ public class ItemDTO {
     // Constructor med item ID og billeder
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
                    String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer, ArrayList<String> images) {
+                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;
@@ -45,7 +48,7 @@ public class ItemDTO {
     // Constructor uden Item ID men med billeder
     public ItemDTO(String itemheadline, String itemdescription,
                    String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer, ArrayList<String> images) {
+                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
         this.itemid = -1;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;
@@ -73,12 +76,12 @@ public class ItemDTO {
         this.postnummer = postnummer;
     }
 
-    public ItemDTO(int itemid, String itemheadline, String defaultimage) {
+    public ItemDTO(int itemid, String itemheadline, String imgurl) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
-        if (defaultimage != "null") {
+        if (imgurl != "null") {
             //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
-            images.add(defaultimage);
+            new DownloadImageTask(images).execute(imgurl);
         }
         //Log.e("ItemDTO", itemid +" har IKKE image!");
     }
@@ -155,7 +158,7 @@ public class ItemDTO {
         this.postnummer = postnummer;
     }
 
-    public String getImage(int index) {
+    public Bitmap getImage(int index) {
         return images.get(index);
     }
 

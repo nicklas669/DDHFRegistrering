@@ -64,6 +64,7 @@ public class GetHTTP extends AsyncTask {
                 //Log.d(TAG, String.valueOf(response));
             }
             in.close();
+            con.disconnect();
 
             JSONArray itemsfromDB = new JSONArray(response.toString());
             //Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
@@ -78,9 +79,9 @@ public class GetHTTP extends AsyncTask {
                     //Log.d(TAG, "itemid 42, 90, 97, 98, 99!");
                     continue; // Skip disse items da de har et korrupt billede!! TODO: Vi skal have slettet de items!
                 }
-                if (item.getString("defaultimage") != "null") {
+//                if (item.getString("defaultimage") != "null") {
                     items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
-                }
+//                }
             }
 
         } catch (Exception e) {

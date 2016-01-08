@@ -31,7 +31,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
     public CustomArrayAdapter(Context context, int layout, int layout_textview, ArrayList<ItemDTO> mItemArrayList) {
         super(context, layout, layout_textview, mItemArrayList);
-        Log.d(TAG, "Constructor kørt!");
         this.mDisplayedValues = mItemArrayList;
         this.mOriginalValues = mItemArrayList;
     }
@@ -54,7 +53,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView was called..");
+        Log.d(TAG, "getView pos: "+position+", genstandid: "+mDisplayedValues.get(position).getItemid());
         View view = super.getView(position, convertView, parent);
         TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
@@ -63,10 +62,11 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         itemID.setText(String.valueOf(mDisplayedValues.get(position).getItemid()));
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
-//        if (mDisplayedValues.get(position).getImageArraySize() > 0) {
+        if (mDisplayedValues.get(position).getImageArraySize() > 0) {
 //            new DownloadImageTask(itemImage)
 //                    .execute(mDisplayedValues.get(position).getImage(0));
-//        }
+            itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
+        }
 
         return view;
     }
