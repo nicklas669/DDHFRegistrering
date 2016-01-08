@@ -1,9 +1,8 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -71,8 +69,8 @@ public class SearchItemFragment extends Fragment {
                 ItemDetailsFragment itemfragment = new ItemDetailsFragment();
                 itemfragment.setItem(listAdapter.getItem(position));
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
+                android.support.v4.app.FragmentManager fm = getFragmentManager();
+                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.fragmentContainer, itemfragment);
                 ft.commit();

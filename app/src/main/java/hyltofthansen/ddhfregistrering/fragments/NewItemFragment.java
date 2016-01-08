@@ -6,19 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
+import hyltofthansen.ddhfregistrering.PagerAdapter;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -53,27 +48,24 @@ public class NewItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getActivity().setTitle("Vedhæft billede");
-
-        View root = inflater.inflate(R.layout.activity_main, container, false); // sæt layout op
-
         getActivity().setContentView(R.layout.newitemlayout);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-//        getActivity().setSupportActionBar(toolbar);
 
-        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tab_layout);
+        setHasOptionsMenu(true);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Info"));
-        tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
-        tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
+        getActivity().setTitle("Opret genstand");
+        FragmentActivity v = getActivity();
+        TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        FragmentManager fragManager = myContext.getSupportFragmentManager(); //If using fragments from support v4
+//        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+//        getActivity().setSupportActionBar(toolbar);
 
-        final ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
-
-
-        final PagerAdapter adapter = new hyltofthansen.ddhfregistrering.PagerAdapter(fragManager, tabLayout.getTabCount());
+        final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (v.getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -93,7 +85,6 @@ public class NewItemFragment extends Fragment {
 
             }
         });
-//        return super.onCreateView(inflater, container, savedInstanceState);
-        return root;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

@@ -16,7 +16,7 @@ import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchItemFragment searchFragment = new SearchItemFragment();
+    private SearchItemFragment searchFragment;
     private final String TAG = "MainActivity";
 
     @Override
@@ -31,8 +31,15 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         prefs.edit().remove("chosenImage").commit();
 
+        searchFragment = new SearchItemFragment();
+//
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//        ft.add(searchFragment, null);
+//        ft.addToBackStack(null);
+//        ft.commit();
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, searchFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, searchFragment).commit();
             getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                 @Override
                 public void onBackStackChanged() {
@@ -47,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -68,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_create_main:   //Hvis man klikker på + knappen i action bar
-                Log.d("MainActivity", "Der blev trykket på plus-knappen!");
                 NewItemFragment newItemFragment = new NewItemFragment();
-                //android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.fragmentContainer, newItemFragment);
