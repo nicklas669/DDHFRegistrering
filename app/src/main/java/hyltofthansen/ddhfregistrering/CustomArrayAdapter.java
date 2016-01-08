@@ -28,9 +28,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     private ArrayList<ItemDTO> mDisplayedValues;
     private static final String TAG = "CustomArrayAdapter";
     private LayoutInflater inflater;
+    private Context context;
+
 
     public CustomArrayAdapter(Context context, int layout, int layout_textview, ArrayList<ItemDTO> mItemArrayList) {
         super(context, layout, layout_textview, mItemArrayList);
+        this.context = context;
         this.mDisplayedValues = mItemArrayList;
         this.mOriginalValues = mItemArrayList;
     }
@@ -46,14 +49,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
+    public long getItemId(int position) { return mDisplayedValues.get(position).getItemid(); }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView pos: "+position+", genstandid: "+mDisplayedValues.get(position).getItemid());
+        Log.d(TAG, "getView pos: " + position + ", genstandid: " + mDisplayedValues.get(position).getItemid());
         View view = super.getView(position, convertView, parent);
         TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
@@ -63,9 +64,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
         if (mDisplayedValues.get(position).getImageArraySize() > 0) {
-//            new DownloadImageTask(itemImage)
-//                    .execute(mDisplayedValues.get(position).getImage(0));
             itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
+        } else {
+            //drawable/ic_menu_report_image
+            itemImage.setImageResource(R.drawable.noimage);
+            //itemImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_report_image, null));
+            //itemImage.setImageResource();
         }
 
         return view;

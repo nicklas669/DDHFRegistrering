@@ -33,7 +33,7 @@ public class SearchItemFragment extends Fragment {
     @Override
     public void onResume() {
         //Et midlertidigt fix for blankt søgeresultat efter back button
-        //TODO Gør så søgeresultat stadig gemmes
+        //TODO: Gør så søgeresultat stadig gemmes
         if (inputSearch != null) {
             inputSearch.setText("");
         }
@@ -42,8 +42,6 @@ public class SearchItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         items = new ArrayList<ItemDTO>();
 
         getActivity().setTitle("DDHF Registering");
@@ -60,6 +58,7 @@ public class SearchItemFragment extends Fragment {
         getHTTP.fetchItems();
 
         lv.setAdapter(listAdapter);
+
 
         // ** Når der klikkes på en række i listen, åbnes et fragment der viser genstandens detaljer **
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
