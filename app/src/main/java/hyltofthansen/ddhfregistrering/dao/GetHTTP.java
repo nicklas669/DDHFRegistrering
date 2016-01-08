@@ -73,15 +73,8 @@ public class GetHTTP extends AsyncTask {
 //            for (int x = 0; x < 30; x++) {
                 JSONObject item = itemsfromDB.getJSONObject(x);
                 //Log.d(TAG, item.getString("itemid")+" defaultimage: "+item.getString("defaultimage"));
-                if (item.getInt("itemid") == 42 || item.getInt("itemid") == 90
-                        || item.getInt("itemid") == 95 || item.getInt("itemid") == 97
-                        || item.getInt("itemid") == 98 ||item.getInt("itemid") == 99) {
-                    //Log.d(TAG, "itemid 42, 90, 97, 98, 99!");
-                    continue; // Skip disse items da de har et korrupt billede!! TODO: Vi skal have slettet de items!
-                }
-//                if (item.getString("defaultimage") != "null") {
-                    items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
-//                }
+
+                items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
             }
 
         } catch (Exception e) {
