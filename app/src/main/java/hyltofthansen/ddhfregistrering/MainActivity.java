@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         // Ryd gemt billede fra app's data
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         prefs.edit().remove("chosenImage").commit();
@@ -50,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
