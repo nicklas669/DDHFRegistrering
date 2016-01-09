@@ -16,7 +16,8 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
- * Class responsible for GET HTTP functionality to API 0.1 on searchItem
+ * Class responsible for GET HTTP functionality to API
+ * Reads JSON objects from the /items/ URL, which shows an overview of all the items in the database
  */
 
 public class GetHTTP extends AsyncTask {
@@ -73,8 +74,8 @@ public class GetHTTP extends AsyncTask {
 //            for (int x = 0; x < 30; x++) {
                 JSONObject item = itemsfromDB.getJSONObject(x);
                 //Log.d(TAG, item.getString("itemid")+" defaultimage: "+item.getString("defaultimage"));
-
-                items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
+                //items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
+                items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage"), listAdapter));
             }
 
         } catch (Exception e) {

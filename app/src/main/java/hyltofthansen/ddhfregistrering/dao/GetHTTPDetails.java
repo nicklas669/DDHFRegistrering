@@ -20,7 +20,8 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.fragments.ItemDetailsFragment;
 
 /**
- * Class responsible for GET HTTP functionality to API 0.1 on searchItem
+ * Class responsible for GET HTTP functionality to API
+ * Reads JSON object details from a specific item id /items/"id" URL, which shows the details of a given item
  */
 
 public class GetHTTPDetails extends AsyncTask {

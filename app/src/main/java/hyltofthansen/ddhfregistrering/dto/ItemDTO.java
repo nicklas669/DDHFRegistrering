@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.dto;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
@@ -84,6 +85,15 @@ public class ItemDTO {
             new DownloadImageTask(images).execute(imgurl);
         }
         //Log.e("ItemDTO", itemid +" har IKKE image!");
+    }
+
+    public ItemDTO(int itemid, String itemheadline, String imgurl, BaseAdapter listAdapter) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+        if (imgurl != "null") {
+            //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
+            new DownloadImageTask(images, listAdapter).execute(imgurl);
+        }
     }
 
     public int getItemid() {
