@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -70,7 +71,7 @@ public class PostHTTPPicture extends AsyncTask {
 
 //            Log.d(TAG, String.valueOf(prefs.getString("chosenImage", null)));
 //            String filePath = String.valueOf(prefs.getString("chosenImage", null));
-            prefs = context.getPreferences(Context.MODE_PRIVATE);
+            prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String imgPath = prefs.getString("chosenImage", null);
             Log.d(TAG, imgPath);
 
@@ -128,12 +129,12 @@ public class PostHTTPPicture extends AsyncTask {
         //int responseCode = 201;
         if (responseCode == 201) {
             // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("Genstand oprettet successfuldt. Responskode: " + responseCode)
+            builder.setMessage("Genstand m. billede oprettet. Responskode: " + responseCode)
                     .setTitle("Success");
             //Gå tilbage til hovedmenu her
             fm.popBackStack();
         } else {
-            builder.setMessage("Fejl ved oprettelse. Responskode: " + responseCode)
+            builder.setMessage("Fejl v. oprettelse m. billede. Responskode: " + responseCode)
                     .setTitle("Fejl");
         }
         // 3. Get the AlertDialog from create()

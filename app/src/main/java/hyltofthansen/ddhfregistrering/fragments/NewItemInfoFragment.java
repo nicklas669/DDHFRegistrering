@@ -58,11 +58,6 @@ public class NewItemInfoFragment extends Fragment {
                     e.printStackTrace();
                 }
                 break;
-            case R.id.action_photo: //Der blev trykket på kamera ikonet
-                getFragmentManager().beginTransaction().addToBackStack(null).
-                        replace(R.id.fragmentContainer, new NewItemPicturesFragment())
-                        .commit();
-                break;
         }
         return true;
     }

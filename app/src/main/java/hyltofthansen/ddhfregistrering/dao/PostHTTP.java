@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -107,12 +108,13 @@ public class PostHTTP extends AsyncTask {
         responseCode = Integer.valueOf(o.toString());
         //int responseCode = 201;
         if (responseCode == 201) {
-            //Check om der blev taget fotografier
-            prefs = context.getPreferences(Context.MODE_PRIVATE);
+            //Check om der er valgt et billede
+            prefs = PreferenceManager.getDefaultSharedPreferences(context);
             if (prefs.contains("chosenImage")) {
-                Log.d(TAG, "Der er et billede!");
-                //Der er et billed, så det bliver uploaded
+                Log.d(TAG, "Der hører et billede til genstanden!!");
+                //Der er et billed, så det skal uploades efter genstanden er oprettet
                 try {
+                    // Et item er oprettet og det gemmes som JSONObject ud fra response
                     Log.d(TAG, "response 2: " + response.toString());
                     itemMedBilled = new JSONObject(response.toString());
                     PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, itemMedBilled.getInt("itemid"));
@@ -121,21 +123,22 @@ public class PostHTTP extends AsyncTask {
                     e.printStackTrace();
                 }
             } else {
-                Log.d(TAG, "Der er IKKE et billede!");
+                Log.d(TAG, "Der hører IKKE et billede til genstanden!!");
+                builder.setMessage("Genstand oprettet. Responskode: " + responseCode)
+                        .setTitle("Success");
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
-            // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("Genstand oprettet successfuldt. Responskode: " + responseCode)
-                    .setTitle("Success");
             //Gå tilbage til hovedmenu her
-            fm.popBackStack();
+            //fm.popBackStack();
         } else {
-            builder.setMessage("Fejl ved oprettelse. Responskode: " + responseCode)
+            builder.setMessage("Fejl v. oprettelse af genstand. Responskode: " + responseCode)
                     .setTitle("Fejl");
+            // 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-        // 3. Get the AlertDialog from create()
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
     }
 }
 

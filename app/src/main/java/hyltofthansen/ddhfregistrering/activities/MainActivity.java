@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Ryd gemt billede fra app's data
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        //SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Log.d(TAG, "App startes op, chosenImage: "+prefs.getString("chosenImage", "null"));
         prefs.edit().remove("chosenImage").commit();
+        Log.d(TAG, "chosenImages remove kørt, chosenImage: " + prefs.getString("chosenImage", "null"));
 
         searchFragment = new SearchItemFragment();
 

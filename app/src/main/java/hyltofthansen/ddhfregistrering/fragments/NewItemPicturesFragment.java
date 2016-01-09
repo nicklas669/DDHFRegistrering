@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -45,23 +46,26 @@ public class NewItemPicturesFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.imagebrowse, container, false); // sæt layout op
 
-        prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
 
-        // Læs om der er valgt et billede i forvejen
-//        String imgURI = prefs.getString("chosenImage", null);
-//        if (imgURI != null) {
-//            // Hvis der er et valgt billede så vis det i imageViewet
-//            try {
-//                imageUri = Uri.parse(imgURI);
-//                Bitmap img = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-//                iv_gallery.setImageBitmap(img);
-//                setHasOptionsMenu(true);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+        //Læs om der er valgt et billede i forvejen
+        String imgURI = prefs.getString("chosenImage", null);
+        if (imgURI != null) {
+            Log.d(TAG, "Læser chosenImage: "+imgURI);
+            // Hvis der er et valgt billede så vis det i imageViewet
+            imageUri = Uri.parse(imgURI);
+            InputStream imageStream = null;
+            try {
+                imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+            iv_gallery.setImageBitmap(imageBitmap);
+        } else {
+            Log.d(TAG, "Læser chosenImage: null");
+        }
 
         Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
         b_gallery.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +115,7 @@ public class NewItemPicturesFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE) {
+                //Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
                 InputStream imageStream = null;
                 try {
@@ -121,6 +126,12 @@ public class NewItemPicturesFragment extends Fragment {
                 Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
 
                 iv_gallery.setImageBitmap(imageBitmap);
+
+                // Gem path til valgt billede
+                SharedPreferences.Editor prefedit = prefs.edit();
+                //Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString());
+                prefedit.putString("chosenImage", imageUri.toString());
+                prefedit.commit();
                 //Aktiver ActionBar "OK" knap
 //                setHasOptionsMenu(true);
             }
@@ -131,6 +142,7 @@ public class NewItemPicturesFragment extends Fragment {
                 Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 iv_gallery.setImageBitmap(setPic());
                 SharedPreferences.Editor prefedit = prefs.edit();
+                Log.d(TAG, "Gemmer chosenImage: "+photoFile.getAbsolutePath());
                 prefedit.putString("chosenImage", photoFile.getAbsolutePath());
                 prefedit.commit();
                 //Aktiver ActionBar "OK" knap

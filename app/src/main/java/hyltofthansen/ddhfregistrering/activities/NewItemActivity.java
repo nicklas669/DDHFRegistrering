@@ -21,10 +21,12 @@ public class NewItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_create_main) {
-            Toast.makeText(this,"Genstand blev .... IKKE oprettet", Toast.LENGTH_SHORT).show();
-        }
+//        int id = item.getItemId();
+//        if (id == R.id.action_create_main) {
+//            Toast.makeText(this,"Genstand blev .... IKKE oprettet", Toast.LENGTH_SHORT).show();
+//        }
+
+        // NewItemInfoFragment's onOptionsItemSelected() bliver kørt
         return super.onOptionsItemSelected(item);
     }
 
