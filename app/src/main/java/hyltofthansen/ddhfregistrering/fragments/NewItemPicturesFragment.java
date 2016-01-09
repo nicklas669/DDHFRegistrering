@@ -63,8 +63,6 @@ public class NewItemPicturesFragment extends Fragment {
             }
             Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
             iv_gallery.setImageBitmap(imageBitmap);
-        } else {
-            Log.d(TAG, "Læser chosenImage: null");
         }
 
         Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
@@ -81,6 +79,7 @@ public class NewItemPicturesFragment extends Fragment {
         b_newImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "takePictureIntent startes");
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -88,13 +87,16 @@ public class NewItemPicturesFragment extends Fragment {
 
                     try {
                         photoFile = createImageFile();
+                        Log.d(TAG, "photoFile er instantieret...");
                     } catch (IOException ex) {
                         Log.d(TAG, ex.toString());
                     }
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
+                        Log.d(TAG, "putExtra på takePictureIntent");
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                                 Uri.fromFile(photoFile));
+                        Log.d(TAG, "takePictureIntent startActivityForResult");
                         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                     }
 
@@ -115,7 +117,7 @@ public class NewItemPicturesFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE) {
-                //Log.d(TAG, "intent.getData(): "+intent.getData());
+                Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
                 InputStream imageStream = null;
                 try {
@@ -129,7 +131,7 @@ public class NewItemPicturesFragment extends Fragment {
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
-                //Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString());
+                Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString());
                 prefedit.putString("chosenImage", imageUri.toString());
                 prefedit.commit();
                 //Aktiver ActionBar "OK" knap
@@ -139,11 +141,16 @@ public class NewItemPicturesFragment extends Fragment {
                 galleryAddPic();
 //                Bundle extras = intent.getExtras();
 //                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                //Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+
                 iv_gallery.setImageBitmap(setPic());
+
                 SharedPreferences.Editor prefedit = prefs.edit();
-                Log.d(TAG, "Gemmer chosenImage: "+photoFile.getAbsolutePath());
-                prefedit.putString("chosenImage", photoFile.getAbsolutePath());
+//                Log.d(TAG, "Gemmer chosenImage: " + photoFile.getAbsolutePath());
+//                prefedit.putString("chosenImage", photoFile.getAbsolutePath());
+
+                Log.d(TAG, "Gemmer chosenImage: "+photoFile.toURI());
+                prefedit.putString("chosenImage", photoFile.toURI().toString());
                 prefedit.commit();
                 //Aktiver ActionBar "OK" knap
 //                setHasOptionsMenu(true);
@@ -196,8 +203,10 @@ public class NewItemPicturesFragment extends Fragment {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
+        Log.d(TAG, "storageDir fil oprettes!");
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM);
+        Log.d(TAG, "image fil oprettes!");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
