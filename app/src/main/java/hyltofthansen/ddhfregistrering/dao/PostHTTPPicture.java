@@ -3,10 +3,14 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -14,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,7 +64,7 @@ public class PostHTTPPicture extends AsyncTask {
                 String urlAPI = null;
                 urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemid + "?userID=56837dedd2d76438906140";
                 url = new URL(urlAPI);
-                System.out.println("URL: " + url);
+                System.out.println("URL til at uploade bilede: " + url);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -73,9 +78,18 @@ public class PostHTTPPicture extends AsyncTask {
 //            String filePath = String.valueOf(prefs.getString("chosenImage", null));
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String imgPath = prefs.getString("chosenImage", null);
-            Log.d(TAG, imgPath);
+            Log.d(TAG, "imgPath: "+imgPath);
+            // Lav file path om
+            if (imgPath.contains("file:")) {
+                imgPath = imgPath.split(":/")[1];
+            } else {
+                imgPath = getFilePathFromContentUri(Uri.parse(imgPath), context.getContentResolver());
+                //Log.d(TAG, "ny imgPath: "+imgPath);
+            }
+            Log.d(TAG, "ny imgPath: "+imgPath);
 
             OutputStream os = conn.getOutputStream();
+//            File imgFile = new File(imgPath);
             FileInputStream inputStream = new FileInputStream(imgPath);
 
             byte[] data = new byte[1024];
@@ -126,15 +140,14 @@ public class PostHTTPPicture extends AsyncTask {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         responseCode = Integer.valueOf(o.toString());
-        //int responseCode = 201;
-        if (responseCode == 201) {
+        if (responseCode == 200) {
             // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("Genstand m. billede oprettet. Responskode: " + responseCode)
+            builder.setMessage("Genstand oprettet og billede uploadet. Responskode: " + responseCode)
                     .setTitle("Success");
             //Gå tilbage til hovedmenu her
-            fm.popBackStack();
+            //fm.popBackStack();
         } else {
-            builder.setMessage("Fejl v. oprettelse m. billede. Responskode: " + responseCode)
+            builder.setMessage("Genstand oprettet men fejl ved upload af billede. Responskode: " + responseCode)
                     .setTitle("Fejl");
         }
         // 3. Get the AlertDialog from create()
@@ -143,6 +156,26 @@ public class PostHTTPPicture extends AsyncTask {
 
         // Ryd gemt billede fra app's data
         prefs.edit().remove("chosenImage").commit();
+    }
+
+    /**
+     * Gets the corresponding path to a file from the given content:// URI
+     * @param selectedImageUri The content:// URI to find the file path from
+     * @param contentResolver The content resolver to use to perform the query.
+     * @return the file path as a string
+     */
+    private String getFilePathFromContentUri(Uri selectedImageUri,
+                                             ContentResolver contentResolver) {
+        String filePath;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+
+        Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        filePath = cursor.getString(columnIndex);
+        cursor.close();
+        return filePath;
     }
 }
 
