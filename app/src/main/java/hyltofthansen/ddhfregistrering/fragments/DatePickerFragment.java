@@ -31,7 +31,8 @@ public class DatePickerFragment extends DialogFragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        editText.setText("" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+        //editText.setText("" + dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+        editText.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
     }
 
     @Override
