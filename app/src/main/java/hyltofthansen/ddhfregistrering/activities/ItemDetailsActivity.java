@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsPagerAdapter;
 
@@ -56,7 +59,19 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_itemdetails, menu);
         return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_delete_item:   //Hvis man klikker på skraldespanden
+                // slet genstand her
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
