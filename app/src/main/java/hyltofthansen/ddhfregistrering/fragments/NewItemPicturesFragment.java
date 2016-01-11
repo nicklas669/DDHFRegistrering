@@ -2,6 +2,8 @@ package hyltofthansen.ddhfregistrering.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -117,42 +119,37 @@ public class NewItemPicturesFragment extends Fragment {
             if (requestCode == PICK_IMAGE) {
                 Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
-                InputStream imageStream = null;
-                try {
-                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+//                InputStream imageStream = null;
+//                try {
+//                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
 
-                iv_gallery.setImageBitmap(imageBitmap);
+                //iv_gallery.setImageBitmap(imageBitmap);
+                setPic(iv_gallery, imageUri.toString());
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
                 Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString());
                 prefedit.putString("chosenImage", imageUri.toString());
                 prefedit.commit();
-                //Aktiver ActionBar "OK" knap
-//                setHasOptionsMenu(true);
             }
             else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic();
-//                Bundle extras = intent.getExtras();
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+
                 Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
                 //iv_gallery.setImageBitmap(setPic());
-                iv_gallery.setImageBitmap(imageBitmap);
+                //iv_gallery.setImageBitmap(imageBitmap);
+                setPic(iv_gallery, photoFile.getAbsolutePath());
 
                 SharedPreferences.Editor prefedit = prefs.edit();
-//                Log.d(TAG, "Gemmer chosenImage: " + photoFile.getAbsolutePath());
-//                prefedit.putString("chosenImage", photoFile.getAbsolutePath());
 
                 Log.d(TAG, "Gemmer chosenImage: "+photoFile.toURI());
                 prefedit.putString("chosenImage", photoFile.toURI().toString());
                 prefedit.commit();
-                //Aktiver ActionBar "OK" knap
-//                setHasOptionsMenu(true);
             }
 
         }
@@ -161,18 +158,36 @@ public class NewItemPicturesFragment extends Fragment {
     /**
      * http://developer.android.com/training/camera/photobasics.html
      */
-    // TODO: Slet hvis den ikke skal bruges længere...
-    private Bitmap setPic() {
+
+    private void setPic(ImageView gallery, String path) {
+        Log.d(TAG, "path: "+path);
+//        InputStream imageStream = null;
+//        try {
+//            imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+
+        if (path.contains("content:")) {
+            path = getFilePathFromContentUri(Uri.parse(path), getContext().getContentResolver());
+            Log.d(TAG, "path er content, ny path er: "+path);
+        }
+
         // Get the dimensions of the View
-        int targetW = iv_gallery.getWidth();
-        int targetH = iv_gallery.getHeight();
+        int targetW = gallery.getWidth();
+        int targetH = gallery.getHeight();
+        Log.d(TAG, "imageView bredde: "+targetW+", højde: "+targetH);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
+        //BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
+        //Log.d(TAG, "path: "+path);
+        BitmapFactory.decodeFile(path, bmOptions);
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
+        Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
 
         // Determine how much to scale down the image
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
@@ -182,8 +197,10 @@ public class NewItemPicturesFragment extends Fragment {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
-        return bitmap;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+        Log.d(TAG, "Ny billede bredde: "+bitmap.getWidth()+", højde: "+bitmap.getHeight());
+        gallery.setImageBitmap(bitmap);
+        //return bitmap;
     }
 
     private void galleryAddPic() {
@@ -233,4 +250,24 @@ public class NewItemPicturesFragment extends Fragment {
 //        }
 //        return true;
 //    }
+
+    /**
+     * Gets the corresponding path to a file from the given content:// URI
+     * @param selectedImageUri The content:// URI to find the file path from
+     * @param contentResolver The content resolver to use to perform the query.
+     * @return the file path as a string
+     */
+    private String getFilePathFromContentUri(Uri selectedImageUri,
+                                             ContentResolver contentResolver) {
+        String filePath;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+
+        Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        filePath = cursor.getString(columnIndex);
+        cursor.close();
+        return filePath;
+    }
 }
