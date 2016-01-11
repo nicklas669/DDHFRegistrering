@@ -43,8 +43,9 @@ public class NewItemInfoFragment extends Fragment {
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
                 if(titelTxt.getText().toString().trim().equals("")) {
-                    manglerTitelDialog();
-                    titelTxt.setText("");
+                    //manglerTitelDialog();
+                    titelTxt.setError("Indtast en titel!");
+                    //titelTxt.setText("");
                 } else {
                     try {
                         JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
