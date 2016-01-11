@@ -119,15 +119,6 @@ public class NewItemPicturesFragment extends Fragment {
             if (requestCode == PICK_IMAGE) {
                 Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
-//                InputStream imageStream = null;
-//                try {
-//                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-
-                //iv_gallery.setImageBitmap(imageBitmap);
                 setPic(iv_gallery, imageUri.toString());
 
                 // Gem path til valgt billede
@@ -138,15 +129,10 @@ public class NewItemPicturesFragment extends Fragment {
             }
             else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic();
-
-                Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
-                //iv_gallery.setImageBitmap(setPic());
-                //iv_gallery.setImageBitmap(imageBitmap);
                 setPic(iv_gallery, photoFile.getAbsolutePath());
 
+                // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
-
                 Log.d(TAG, "Gemmer chosenImage: "+photoFile.toURI());
                 prefedit.putString("chosenImage", photoFile.toURI().toString());
                 prefedit.commit();
@@ -259,15 +245,21 @@ public class NewItemPicturesFragment extends Fragment {
      */
     private String getFilePathFromContentUri(Uri selectedImageUri,
                                              ContentResolver contentResolver) {
+        Log.d(TAG, "selectedImageUri: "+selectedImageUri.toString());
+        Log.d(TAG, "conrentResolver: "+contentResolver);
         String filePath;
         String[] filePathColumn = {MediaStore.MediaColumns.DATA};
 
         Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
+        Log.d(TAG, "cursor: "+cursor.toString());
         cursor.moveToFirst();
+        Log.d(TAG, "cursor efter moveToFirst(): " + cursor.toString());
 
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        Log.d(TAG, "columnIndex: " + columnIndex);
         filePath = cursor.getString(columnIndex);
         cursor.close();
+        Log.d(TAG, "filePath returneres: " + filePath);
         return filePath;
     }
 }
