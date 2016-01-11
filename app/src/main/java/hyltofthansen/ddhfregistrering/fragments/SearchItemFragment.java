@@ -18,7 +18,7 @@ import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailsFragment;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
 
 public class SearchItemFragment extends Fragment {
 
@@ -64,7 +64,7 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemDetailsFragment itemfragment = new ItemDetailsFragment();
+                ItemDetailInfoFragment itemfragment = new ItemDetailInfoFragment();
                 itemfragment.setItem(listAdapter.getItem(position));
 
                 android.support.v4.app.FragmentManager fm = getFragmentManager();

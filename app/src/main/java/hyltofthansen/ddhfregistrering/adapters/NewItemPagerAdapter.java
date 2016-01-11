@@ -7,10 +7,10 @@ import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemInfoFrag
 import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemPicturesFragment;
 import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemSoundFragment;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class NewItemPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public NewItemPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }

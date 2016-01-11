@@ -12,9 +12,9 @@ import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
- * ItemDetailsFragment is showing detailed informaiton about a specific item which the user has clicked on
+ * ItemDetailInfoFragment is showing detailed informaiton about a specific item which the user has clicked on
  */
-public class ItemDetailsFragment extends Fragment {
+public class ItemDetailInfoFragment extends Fragment {
 
     ItemDTO item;
     View root;

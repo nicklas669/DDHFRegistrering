@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-import hyltofthansen.ddhfregistrering.adapters.PagerAdapter;
+import hyltofthansen.ddhfregistrering.adapters.NewItemPagerAdapter;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -33,7 +33,7 @@ public class NewItemActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
+        final NewItemPagerAdapter adapter = new NewItemPagerAdapter
                 (v.getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(adapter);

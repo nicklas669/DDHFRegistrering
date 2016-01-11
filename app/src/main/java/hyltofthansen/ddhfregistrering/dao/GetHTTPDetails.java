@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
-import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailsFragment;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
 
 /**
  * Class responsible for GET HTTP functionality to API
@@ -27,10 +27,10 @@ public class GetHTTPDetails extends AsyncTask {
     private ArrayList<ItemDTO> items;
     private static final String TAG = "GetHTTPDetails";
     private int itemID;
-    private ItemDetailsFragment detailsFragment;
+    private ItemDetailInfoFragment detailsFragment;
 
 
-    public GetHTTPDetails(Context context, int itemID, ArrayList<ItemDTO> items, ItemDetailsFragment detailsFragment) {
+    public GetHTTPDetails(Context context, int itemID, ArrayList<ItemDTO> items, ItemDetailInfoFragment detailsFragment) {
         this.context = context;
         this.itemID = itemID;
         this.items = items;
