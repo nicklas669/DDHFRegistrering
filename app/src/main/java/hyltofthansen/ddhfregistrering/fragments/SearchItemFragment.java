@@ -31,6 +31,8 @@ public class SearchItemFragment extends Fragment {
     private ArrayList<ItemDTO> items;
     private EditText inputSearch;
     private static final String TAG = "SearchItemFragment";
+    private ItemDTO item;
+    private Intent seeItemDetails;
 
 
     @Override
@@ -67,20 +69,9 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent seeItemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
-                ItemDTO item = listAdapter.getItem(position);
-
-                seeItemDetails.putExtra("itemid", item.getItemid());
-                seeItemDetails.putExtra("itemheadline", item.getItemheadline());
-                seeItemDetails.putExtra("itemdescription", item.getItemdescription());
-                seeItemDetails.putExtra("itemreceived", item.getItemreceived());
-                seeItemDetails.putExtra("itemdatingfrom", item.getItemdatingfrom());
-                seeItemDetails.putExtra("itemdatingto", item.getItemdatingfrom());
-                seeItemDetails.putExtra("donator", item.getDonator());
-                seeItemDetails.putExtra("producer", item.getProducer());
-                seeItemDetails.putExtra("postnummer", item.getpostnummer());
-
-
+                seeItemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
+                item = listAdapter.getItem(position);
+                putInExtra();
                 startActivity(seeItemDetails);
 //                ItemDetailInfoFragment itemfragment = new ItemDetailInfoFragment();
 //                itemfragment.setItem(listAdapter.getItem(position));
@@ -111,5 +102,17 @@ public class SearchItemFragment extends Fragment {
 
         });
         return root;
+    }
+
+    private void putInExtra() {
+        seeItemDetails.putExtra("itemid", item.getItemid());
+        seeItemDetails.putExtra("itemheadline", item.getItemheadline());
+//        seeItemDetails.putExtra("itemdescription", item.getItemdescription());
+//        seeItemDetails.putExtra("itemreceived", item.getItemreceived());
+//        seeItemDetails.putExtra("itemdatingfrom", item.getItemdatingfrom());
+//        seeItemDetails.putExtra("itemdatingto", item.getItemdatingfrom());
+//        seeItemDetails.putExtra("donator", item.getDonator());
+//        seeItemDetails.putExtra("producer", item.getProducer());
+//        seeItemDetails.putExtra("postnummer", item.getpostnummer());
     }
 }
