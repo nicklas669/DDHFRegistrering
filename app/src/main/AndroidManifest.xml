@@ -28,5 +28,8 @@
         <activity android:name=".activities.NewItemActivity"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".activities.ItemDetailsActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 </manifest>

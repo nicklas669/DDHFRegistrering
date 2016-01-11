@@ -19,10 +19,12 @@ public class ItemDetailInfoFragment extends Fragment {
     ItemDTO item;
     View root;
     ArrayList<ItemDTO> items;
+    private ItemDTO itemFromExtra;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.itemdetailsinfolayout, container, false);
+        item = getItemFromExtra();
         getActivity().setTitle(item.getItemheadline().toString()); //FRÆKT AT SÆTTE GENSTANDSNAVN HER
         items = new ArrayList<ItemDTO>();
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
@@ -60,5 +62,13 @@ public class ItemDetailInfoFragment extends Fragment {
 
     public void setItem(ItemDTO item) {
         this.item = item;
+    }
+
+    public ItemDTO getItemFromExtra() {
+        Bundle extras = getActivity().getIntent().getExtras();
+        item = new ItemDTO(extras.getInt("itemid"),extras.getString("itemheadline"),extras.getString("itemdescription"),extras.getString("itemreceived")
+                ,extras.getString("itemdatingfrom"),extras.getString("itemdatingto"),extras.getString("donator")
+                ,extras.getString("producer"), extras.getInt("postnummer"));
+        return item;
     }
 }

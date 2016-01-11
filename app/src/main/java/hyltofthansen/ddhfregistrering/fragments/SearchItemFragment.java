@@ -1,6 +1,7 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -14,6 +15,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
+import hyltofthansen.ddhfregistrering.activities.NewItemActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
@@ -64,14 +67,29 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemDetailInfoFragment itemfragment = new ItemDetailInfoFragment();
-                itemfragment.setItem(listAdapter.getItem(position));
+                Intent seeItemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
+                ItemDTO item = listAdapter.getItem(position);
 
-                android.support.v4.app.FragmentManager fm = getFragmentManager();
-                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-                ft.addToBackStack(null);
-                ft.replace(R.id.fragmentContainer, itemfragment);
-                ft.commit();
+                seeItemDetails.putExtra("itemid", item.getItemid());
+                seeItemDetails.putExtra("itemheadline", item.getItemheadline());
+                seeItemDetails.putExtra("itemdescription", item.getItemdescription());
+                seeItemDetails.putExtra("itemreceived", item.getItemreceived());
+                seeItemDetails.putExtra("itemdatingfrom", item.getItemdatingfrom());
+                seeItemDetails.putExtra("itemdatingto", item.getItemdatingfrom());
+                seeItemDetails.putExtra("donator", item.getDonator());
+                seeItemDetails.putExtra("producer", item.getProducer());
+                seeItemDetails.putExtra("postnummer", item.getpostnummer());
+
+
+                startActivity(seeItemDetails);
+//                ItemDetailInfoFragment itemfragment = new ItemDetailInfoFragment();
+//                itemfragment.setItem(listAdapter.getItem(position));
+//
+//                android.support.v4.app.FragmentManager fm = getFragmentManager();
+//                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+//                ft.addToBackStack(null);
+//                ft.replace(R.id.fragmentContainer, itemfragment);
+//                ft.commit();
             }
         });
 
