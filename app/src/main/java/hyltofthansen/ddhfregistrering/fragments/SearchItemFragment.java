@@ -18,6 +18,7 @@ import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailsFragment;
 
 public class SearchItemFragment extends Fragment {
 

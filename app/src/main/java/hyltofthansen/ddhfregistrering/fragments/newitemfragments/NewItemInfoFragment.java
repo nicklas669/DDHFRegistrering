@@ -1,14 +1,11 @@
-package hyltofthansen.ddhfregistrering.fragments;
+package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +18,9 @@ import org.json.JSONObject;
 
 import java.lang.Override;import java.lang.String;
 
-import hyltofthansen.ddhfregistrering.dao.PostHTTP;
+import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
 
 public class NewItemInfoFragment extends Fragment {
 
@@ -51,8 +49,8 @@ public class NewItemInfoFragment extends Fragment {
                     JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
                             .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer",  refProducentTxt.getText().toString())
                             .put("postnummer", postNrTxt.getText().toString());
-                    PostHTTP postHTTP = new PostHTTP(JSONitem, getActivity(), fm);
-                    postHTTP.execute();
+                    PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
+                    postHTTPController.execute();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

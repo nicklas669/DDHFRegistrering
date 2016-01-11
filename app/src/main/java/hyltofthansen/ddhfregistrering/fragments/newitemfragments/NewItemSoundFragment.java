@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering.fragments;
+package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.support.v4.app.Fragment;
 

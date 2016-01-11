@@ -36,7 +36,7 @@ import hyltofthansen.ddhfregistrering.R;
  */
 public class PostHTTPPicture extends AsyncTask {
 
-    private static final String TAG = "PostHTTP";
+    private static final String TAG = "PostHTTPController";
     private JSONObject JSONitem;
     private int responseCode;
     URL url;
@@ -103,7 +103,7 @@ public class PostHTTPPicture extends AsyncTask {
             os.close();
 
             responseCode = conn.getResponseCode();
-            String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
+            String responseMsg = "PostHTTPController.java - Response Code: " + responseCode;
             Log.d(TAG, responseMsg);
 
 

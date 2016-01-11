@@ -3,9 +3,9 @@ package hyltofthansen.ddhfregistrering.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentManager;
-import hyltofthansen.ddhfregistrering.fragments.NewItemInfoFragment;
-import hyltofthansen.ddhfregistrering.fragments.NewItemPicturesFragment;
-import hyltofthansen.ddhfregistrering.fragments.NewItemSoundFragment;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemInfoFragment;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemPicturesFragment;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemSoundFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

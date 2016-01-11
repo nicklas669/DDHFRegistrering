@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering.fragments;
+package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;

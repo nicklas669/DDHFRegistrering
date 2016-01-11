@@ -28,8 +28,8 @@
 //import java.util.Map;
 //
 //import hyltofthansen.ddhfregistrering.R;
-//import hyltofthansen.ddhfregistrering.dao.PostHTTP;
-//import hyltofthansen.ddhfregistrering.fragments.NewItemPicturesFragment;
+//import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
+//import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemPicturesFragment;
 //
 //@Deprecated
 //public class NewItemFragmentDeprecated extends Fragment {
@@ -66,7 +66,7 @@
 //                postParams.put("producer", descriptions[6]);
 //                postParams.put("postnummer", descriptions[7]);
 //
-//                PostHTTP postHTTP = new PostHTTP(postParams, getActivity(), getFragmentManager());
+//                PostHTTPController postHTTP = new PostHTTPController(postParams, getActivity(), getFragmentManager());
 //                postHTTP.execute();
 //                break;
 //            case R.id.action_photo: //Der blev trykket på kamera ikonet

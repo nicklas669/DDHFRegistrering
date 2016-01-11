@@ -25,9 +25,9 @@ import hyltofthansen.ddhfregistrering.R;
 /**
  * Class responsible for POST HTTP functionality to API 0.1 on CreateItem
  */
-public class PostHTTP extends AsyncTask {
+public class PostHTTPController extends AsyncTask {
 
-    private static final String TAG = "PostHTTP";
+    private static final String TAG = "PostHTTPController";
     private JSONObject JSONitem;
     private int responseCode;
     URL url;
@@ -38,7 +38,7 @@ public class PostHTTP extends AsyncTask {
     private android.support.v4.app.FragmentManager fm;
 
 
-    public PostHTTP(JSONObject JSONitem, Activity context, FragmentManager fm) {
+    public PostHTTPController(JSONObject JSONitem, Activity context, FragmentManager fm) {
         this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;
@@ -70,7 +70,7 @@ public class PostHTTP extends AsyncTask {
             os.close();
 
             responseCode = conn.getResponseCode();
-            String responseMsg = "PostHTTP.java - Response Code: " + responseCode;
+            String responseMsg = "PostHTTPController.java - Response Code: " + responseCode;
             Log.d(TAG, responseMsg);
 
 

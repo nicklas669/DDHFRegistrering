@@ -1,12 +1,9 @@
 package hyltofthansen.ddhfregistrering.dao;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.BaseAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -17,7 +14,7 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
-import hyltofthansen.ddhfregistrering.fragments.ItemDetailsFragment;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailsFragment;
 
 /**
  * Class responsible for GET HTTP functionality to API

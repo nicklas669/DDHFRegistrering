@@ -20,22 +20,10 @@ import hyltofthansen.ddhfregistrering.R;
 public class NewItemActivity extends AppCompatActivity {
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.action_create_main) {
-//            Toast.makeText(this,"Genstand blev .... IKKE oprettet", Toast.LENGTH_SHORT).show();
-//        }
-
-        // NewItemInfoFragment's onOptionsItemSelected() bliver kørt
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newitemlayout);
 
-        //        Toolbaren skal init's som noget af det sidste - ellers kommer den ikke frem
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
