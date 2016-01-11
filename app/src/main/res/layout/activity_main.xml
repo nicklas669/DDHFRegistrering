@@ -17,6 +17,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/activitymain-fragmentcontainer" />
 
 </RelativeLayout>

@@ -45,13 +45,13 @@ public class SearchItemFragment extends Fragment {
         items = new ArrayList<ItemDTO>();
 
         getActivity().setTitle("DDHF Registering");
-        View root = inflater.inflate(R.layout.searchitem, container, false);
+        View root = inflater.inflate(R.layout.searchitemfragmentlayout, container, false);
 
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og søges i
-        listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist, R.id.search_tvheadline, items);
+        listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
 
         //Henter items ned fra DB
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);

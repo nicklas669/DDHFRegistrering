@@ -66,7 +66,7 @@ public class NewItemInfoFragment extends Fragment {
         //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
-        View root = inflater.inflate(R.layout.newitemdetailslayout, container, false);
+        View root = inflater.inflate(R.layout.newitemdetailsinfolayout, container, false);
         titelTxt = (EditText) root.findViewById(R.id.titelTextEdit);
         beskrivelseTxt = (EditText) root.findViewById(R.id.beskrivelseTextEdit);
         refDonatorTxt = (EditText) root.findViewById(R.id.refDonatorTextEdit);

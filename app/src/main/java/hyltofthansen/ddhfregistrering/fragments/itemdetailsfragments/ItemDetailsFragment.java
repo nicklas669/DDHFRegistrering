@@ -22,7 +22,7 @@ public class ItemDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.itemdetails, container, false);
+        root = inflater.inflate(R.layout.itemdetailsinfolayout, container, false);
         getActivity().setTitle(item.getItemheadline().toString()); //FRÆKT AT SÆTTE GENSTANDSNAVN HER
         items = new ArrayList<ItemDTO>();
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);

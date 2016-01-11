@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import hyltofthansen.ddhfregistrering.adapters.PagerAdapter;
 import hyltofthansen.ddhfregistrering.R;
@@ -22,7 +20,7 @@ public class NewItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.newitemlayout);
+        setContentView(R.layout.newitemswipeviewlayout);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
