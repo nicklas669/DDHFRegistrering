@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailPictureFragment;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailSoundFragment;
 import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemInfoFragment;
 import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemPicturesFragment;
 import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemSoundFragment;
@@ -21,13 +24,13 @@ public class ItemDetailsPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                NewItemInfoFragment tab1 = new NewItemInfoFragment();
+                ItemDetailInfoFragment tab1 = new ItemDetailInfoFragment();
                 return tab1;
             case 1:
-                NewItemPicturesFragment tab2 = new NewItemPicturesFragment();
+                ItemDetailPictureFragment tab2 = new ItemDetailPictureFragment();
                 return tab2;
             case 2:
-                NewItemSoundFragment tab3 = new NewItemSoundFragment();
+                ItemDetailSoundFragment tab3 = new ItemDetailSoundFragment();
                 return tab3;
             default:
                 return null;
