@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,7 @@ public class NewItemPicturesFragment extends Fragment {
 
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
 
-        View root = inflater.inflate(R.layout.imagebrowse, container, false); // sæt layout op
+        View root = inflater.inflate(R.layout.newitempictures, container, false); // sæt layout op
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
@@ -141,9 +139,10 @@ public class NewItemPicturesFragment extends Fragment {
                 galleryAddPic();
 //                Bundle extras = intent.getExtras();
 //                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                //Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
-                iv_gallery.setImageBitmap(setPic());
+                //iv_gallery.setImageBitmap(setPic());
+                iv_gallery.setImageBitmap(imageBitmap);
 
                 SharedPreferences.Editor prefedit = prefs.edit();
 //                Log.d(TAG, "Gemmer chosenImage: " + photoFile.getAbsolutePath());
@@ -162,6 +161,7 @@ public class NewItemPicturesFragment extends Fragment {
     /**
      * http://developer.android.com/training/camera/photobasics.html
      */
+    // TODO: Slet hvis den ikke skal bruges længere...
     private Bitmap setPic() {
         // Get the dimensions of the View
         int targetW = iv_gallery.getWidth();
