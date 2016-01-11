@@ -12,16 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import java.util.ArrayList;
-
 import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
-import hyltofthansen.ddhfregistrering.activities.NewItemActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
 
 public class SearchItemFragment extends Fragment {
 

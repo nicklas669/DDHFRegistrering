@@ -3,15 +3,12 @@ package hyltofthansen.ddhfregistrering.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsPagerAdapter;
-import hyltofthansen.ddhfregistrering.adapters.NewItemPagerAdapter;
 
 /**
  * Created by hylle on 11-01-2016.

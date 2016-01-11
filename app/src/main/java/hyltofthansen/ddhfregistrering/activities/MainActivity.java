@@ -1,7 +1,6 @@
 package hyltofthansen.ddhfregistrering.activities;
 
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.activities.NewItemActivity;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 public class MainActivity extends AppCompatActivity {

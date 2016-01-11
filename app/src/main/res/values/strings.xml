@@ -7,4 +7,6 @@
     <string name="API_URL_MATHIAS">http://msondrup.dk/api/v1/items/</string>
     <string name="intetKameraDialogTekst">Enheden har ikke kamerafunktionalitet"</string>
     <string name="intetKameraDialogTitel">Intet kamera</string>
+    <string name="ingenTitelDialogTekst">Der mangler en titel for genstanden</string>
+    <string name="ingenTitelDialogTitel">Mangler titel</string>
 </resources>

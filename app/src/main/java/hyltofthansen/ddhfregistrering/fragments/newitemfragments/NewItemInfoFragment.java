@@ -1,10 +1,13 @@
 package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,31 +36,37 @@ public class NewItemInfoFragment extends Fragment {
     private static final String TAG = "NewItemInfoFragment";
     private android.support.v4.app.FragmentManager fm;
 
-    //Inflate ActionBar for Opret Genstand fragment
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_createitem, menu);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_create_main: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
-                try {
-                    JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
-                            .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer",  refProducentTxt.getText().toString())
-                            .put("postnummer", postNrTxt.getText().toString());
-                    PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
-                    postHTTPController.execute();
+                if(titelTxt.getText().toString().trim().equals("")) {
+                    manglerTitelDialog();
+                    titelTxt.setText("");
+                } else {
+                    try {
+                        JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
+                                .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer", refProducentTxt.getText().toString())
+                                .put("postnummer", postNrTxt.getText().toString());
+                        PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
+                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); //ExecuteOnExecutor gør at Tasken bliver eksekveret med det samme
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }
         return true;
+    }
+
+    private void manglerTitelDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.ingenTitelDialogTekst).setTitle(R.string.ingenTitelDialogTitel);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
