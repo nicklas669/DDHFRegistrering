@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +18,7 @@ import hyltofthansen.ddhfregistrering.adapters.ItemDetailsPagerAdapter;
  * Created by hylle on 11-01-2016.
  */
 public class ItemDetailsActivity extends AppCompatActivity {
+    private static final String TAG = "ItemDetailsActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +70,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.action_delete_item:   //Hvis man klikker på skraldespanden
-                // slet genstand her
             default:
                 return super.onOptionsItemSelected(item);
         }

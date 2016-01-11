@@ -63,12 +63,13 @@ public class NewItemInfoFragment extends Fragment {
         return true;
     }
 
-    private void manglerTitelDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.ingenTitelDialogTekst).setTitle(R.string.ingenTitelDialogTitel);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+    // TODO: SLET HVIS VI IKKE BRUGER DET
+//    private void manglerTitelDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setMessage(R.string.ingenTitelDialogTekst).setTitle(R.string.ingenTitelDialogTitel);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,14 +96,15 @@ public class NewItemInfoFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) { // fanger billede resultat fra camera intent
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
-        }
-    }
+    // TODO: Hvad laver det i det her fragment? Slettes?
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) { // fanger billede resultat fra camera intent
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            imageView.setImageBitmap(imageBitmap);
+//        }
+//    }
 
     private void setEditTextDatePicker(final EditText editText) {
         editText.setOnClickListener(new View.OnClickListener() {
