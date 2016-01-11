@@ -3,8 +3,11 @@ package hyltofthansen.ddhfregistrering.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -79,7 +82,7 @@ public class NewItemPicturesFragment extends Fragment {
         b_newImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "takePictureIntent startes");
+                //Log.d(TAG, "takePictureIntent startes");
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -87,16 +90,16 @@ public class NewItemPicturesFragment extends Fragment {
 
                     try {
                         photoFile = createImageFile();
-                        Log.d(TAG, "photoFile er instantieret...");
+                        //Log.d(TAG, "photoFile er instantieret...");
                     } catch (IOException ex) {
                         Log.d(TAG, ex.toString());
                     }
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
-                        Log.d(TAG, "putExtra på takePictureIntent");
+                        //Log.d(TAG, "putExtra på takePictureIntent");
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                                 Uri.fromFile(photoFile));
-                        Log.d(TAG, "takePictureIntent startActivityForResult");
+                        //Log.d(TAG, "takePictureIntent startActivityForResult");
                         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                     }
 
@@ -119,7 +122,29 @@ public class NewItemPicturesFragment extends Fragment {
             if (requestCode == PICK_IMAGE) {
                 Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
-                setPic(iv_gallery, imageUri.toString());
+
+                String wholeID = DocumentsContract.getDocumentId(imageUri);
+
+                // Split at colon, use second item in the array
+                String id = wholeID.split(":")[1];
+
+                String[] column = { MediaStore.Images.Media.DATA };
+
+                // where id is equal to
+                String sel = MediaStore.Images.Media._ID + "=?";
+
+                Cursor cursor = getContext().getContentResolver().
+                        query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                column, sel, new String[]{ id }, null);
+
+                String filePath = "";
+                int columnIndex = cursor.getColumnIndex(column[0]);
+                if (cursor.moveToFirst()) {
+                    filePath = cursor.getString(columnIndex);
+                }
+                cursor.close();
+
+                setPic(iv_gallery, filePath);
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
@@ -221,21 +246,6 @@ public class NewItemPicturesFragment extends Fragment {
         return image;
     }
 
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_confirmImage: //Der blev trykket på "OK" knappen i browseImage fragment
-//                // Gem URI til valgt billede
-//                SharedPreferences.Editor prefedit = prefs.edit();
-////                prefedit.putString("chosenImage", imageUri.toString());
-////                prefedit.commit();
-//                // Hop tilbage til Opret genstand fragment
-//                getFragmentManager().popBackStack();
-//                break;
-//        }
-//        return true;
-//    }
 
     /**
      * Gets the corresponding path to a file from the given content:// URI
@@ -245,21 +255,20 @@ public class NewItemPicturesFragment extends Fragment {
      */
     private String getFilePathFromContentUri(Uri selectedImageUri,
                                              ContentResolver contentResolver) {
-        Log.d(TAG, "selectedImageUri: "+selectedImageUri.toString());
-        Log.d(TAG, "conrentResolver: "+contentResolver);
-        String filePath;
-        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
-
-        Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
-        Log.d(TAG, "cursor: "+cursor.toString());
-        cursor.moveToFirst();
-        Log.d(TAG, "cursor efter moveToFirst(): " + cursor.toString());
-
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        Log.d(TAG, "columnIndex: " + columnIndex);
-        filePath = cursor.getString(columnIndex);
-        cursor.close();
-        Log.d(TAG, "filePath returneres: " + filePath);
-        return filePath;
+        //Log.d(TAG, "selectedImageUri: "+selectedImageUri.toString());
+        //        String filePath;
+//        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+//        Log.d(TAG, filePathColumn[0]);
+//
+//        Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
+//        cursor.moveToFirst();
+//        Log.d(TAG, "cursor.getString(0): " + cursor.getString(0));
+//
+//        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//        Log.d(TAG, "columnIndex: " + columnIndex);
+//        filePath = cursor.getString(columnIndex);
+//        cursor.close();
+//        Log.d(TAG, "filePath returneres: " + filePath);
+        return "";
     }
 }
