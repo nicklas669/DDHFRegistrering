@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,13 +29,13 @@ public class ItemDetailInfoFragment extends Fragment {
         getActivity().setTitle(item.getItemheadline().toString()); //FRÆKT AT SÆTTE GENSTANDSNAVN HER
         items = new ArrayList<ItemDTO>();
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
-        getHTTPDetails.fetchItems();
+        getHTTPDetails.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return root;
     }
 
     public void updateTextViews() {
         TextView tv_headline = (TextView) root.findViewById(R.id.tv_itemheadline);
-        tv_headline.setText(items.get(0).getItemheadline().toString());
+        tv_headline.setText(item.getItemheadline().toString());
 
         TextView tv_descript = (TextView) root.findViewById(R.id.tv_itemdescr);
         tv_descript.setText(items.get(0).getItemdescription().toString());

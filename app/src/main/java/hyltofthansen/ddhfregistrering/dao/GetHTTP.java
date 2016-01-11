@@ -71,7 +71,6 @@ public class GetHTTP extends AsyncTask {
             //Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
-//            for (int x = 0; x < 30; x++) {
                 JSONObject item = itemsfromDB.getJSONObject(x);
                 //Log.d(TAG, item.getString("itemid")+" defaultimage: "+item.getString("defaultimage"));
                 //items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));

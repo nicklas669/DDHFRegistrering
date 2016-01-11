@@ -89,9 +89,4 @@ public class GetHTTPDetails extends AsyncTask {
         detailsFragment.updateTextViews();
         super.onPostExecute(o);
     }
-
-    public void fetchItems() {
-        this.execute();
-    }
-
 }
