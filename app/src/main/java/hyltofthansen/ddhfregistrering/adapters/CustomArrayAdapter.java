@@ -55,7 +55,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView pos: " + position + ", genstandid: " + mDisplayedValues.get(position).getItemid());
+        //Log.d(TAG, "getView pos: " + position + ", genstandid: " + mDisplayedValues.get(position).getItemid());
         View view = super.getView(position, convertView, parent);
         TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());

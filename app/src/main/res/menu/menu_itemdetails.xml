@@ -10,4 +10,9 @@
         app:showAsAction="ifRoom"
         android:title=""/>
         <!--android:orderInCategory="1"--> <!--Får plus-tegnet til altid at være til højre -->
+    <item
+        android:id="@+id/action_edit_item"
+        android:icon="@drawable/ic_mode_edit_white"
+        app:showAsAction="ifRoom"
+        android:title=""/>
 </menu>

@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.BaseAdapter;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,12 +35,10 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        // URL til Claus' API
-        //String url = context.getString(R.string.API_URL) + "/items/" ;
-
         // URL til Mathias' API
         String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
         String USER_AGENT = "Mozilla/5.0";
+        Log.d(TAG, "doInBackground køres!");
 
         StringBuffer response = new StringBuffer();
         try {

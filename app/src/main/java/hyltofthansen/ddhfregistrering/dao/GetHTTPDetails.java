@@ -57,7 +57,7 @@ public class GetHTTPDetails extends AsyncTask {
             con.setRequestProperty("User-Agent", USER_AGENT);
             int responseCode = con.getResponseCode();
             //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-            Log.d(TAG, "Response Code : " + responseCode);
+            //Log.d(TAG, "Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));

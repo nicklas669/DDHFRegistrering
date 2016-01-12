@@ -84,9 +84,9 @@ public class ItemDetailInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_item:   //Hvis man klikker på skraldespanden
-                Log.d(TAG, "Skraldespand kaldt fra " + TAG);
+                //Log.d(TAG, "Skraldespand kaldt fra " + TAG);
                 Bundle extras = getActivity().getIntent().getExtras();
-                Log.d(TAG, "itemid: "+extras.getInt("itemid"));
+                //Log.d(TAG, "itemid: "+extras.getInt("itemid"));
                 // TODO: Spørg her om man er sikker på at man vil slette!!
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                 dialogBuilder.setMessage("Er du sikker på at du vil slette genstanden?").setTitle("Verifikation");
