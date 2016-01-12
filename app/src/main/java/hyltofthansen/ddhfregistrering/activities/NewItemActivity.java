@@ -26,9 +26,12 @@ public class NewItemActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Info"));
-        tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
-        tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Info"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_info_black));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_image_black));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_mic_black));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

@@ -110,7 +110,6 @@ public class SearchItemFragment extends Fragment {
      * Henter items ned fra DB og gemmer dem i items listen
      * @param items
      */
-
     public void fetchItemsFromAPI(ArrayList<ItemDTO> items) {
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);
         getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
