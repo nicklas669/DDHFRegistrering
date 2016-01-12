@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
 
@@ -22,12 +24,12 @@ import hyltofthansen.ddhfregistrering.R;
 public class GetHTTP extends AsyncTask {
 
     private Context context;
-    private BaseAdapter listAdapter;
+    private CustomArrayAdapter listAdapter;
     private ArrayList<ItemDTO> items;
     private static final String TAG = "GetHTTP";
 
 
-    public GetHTTP(Context context, ArrayList<ItemDTO> items, BaseAdapter listAdapter) {
+    public GetHTTP(Context context, ArrayList<ItemDTO> items, CustomArrayAdapter listAdapter) {
         this.context = context;
         this.items = items;
         this.listAdapter = listAdapter;
@@ -83,9 +85,8 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        listAdapter.notifyDataSetChanged();
-        //Log.d(TAG, String.valueOf(items.size() + " Item size"));
-        super.onPostExecute(o);
+        //super.onPostExecute(o); <- nødvendig?
+        listAdapter.updateItemsList(items);
     }
 
     public void fetchItems() {

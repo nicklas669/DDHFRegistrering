@@ -67,10 +67,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         if (mDisplayedValues.get(position).getImageArraySize() > 0) {
             itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
         } else {
-            //drawable/ic_menu_report_image
             itemImage.setImageResource(R.drawable.noimage);
-            //itemImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_report_image, null));
-            //itemImage.setImageResource();
         }
 
         return view;
@@ -124,5 +121,13 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
             }
         };
         return filter;
+    }
+
+    public void updateItemsList(ArrayList<ItemDTO> items) {
+        Log.d(TAG, "itemlist bliver opdateret!");
+        this.mDisplayedValues = items;
+        this.mOriginalValues = items;
+        //notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 }

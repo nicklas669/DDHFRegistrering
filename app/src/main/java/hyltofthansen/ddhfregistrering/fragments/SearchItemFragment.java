@@ -34,34 +34,36 @@ public class SearchItemFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume()!!");
         //Et midlertidigt fix for blankt søgeresultat efter back button
         //TODO: Gør så søgeresultat stadig gemmes
         if (inputSearch != null) {
             inputSearch.setText("");
         }
+        // Opdatér liste
+        items = new ArrayList<ItemDTO>();
+        fetchItemsFromAPI(items);
         super.onResume();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView køres!");
-        items = new ArrayList<ItemDTO>();
-
         getActivity().setTitle("DDHF Registering");
+
         View root = inflater.inflate(R.layout.searchitemfragmentlayout, container, false);
 
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
-        // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og søges i
+        items = new ArrayList<ItemDTO>();
+
+        // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
 
-        //Henter items ned fra DB
-        getHTTP = new GetHTTP(getActivity(), items, listAdapter);
-        getHTTP.fetchItems();
+        //fetchItemsFromAPI(items);
 
         lv.setAdapter(listAdapter);
-
 
         // ** Når der klikkes på en række i listen, åbnes et fragment der viser genstandens detaljer **
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -112,5 +114,15 @@ public class SearchItemFragment extends Fragment {
 //        seeItemDetails.putExtra("donator", item.getDonator());
 //        seeItemDetails.putExtra("producer", item.getProducer());
 //        seeItemDetails.putExtra("postnummer", item.getpostnummer());
+    }
+
+    /**
+     * Henter items ned fra DB og gemmer dem i items listen
+     * @param items
+     */
+
+    public void fetchItemsFromAPI(ArrayList<ItemDTO> items) {
+        getHTTP = new GetHTTP(getActivity(), items, listAdapter);
+        getHTTP.fetchItems();
     }
 }

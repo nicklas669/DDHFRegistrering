@@ -90,6 +90,7 @@ public class ItemDTO {
     public ItemDTO(int itemid, String itemheadline, String imgurl, BaseAdapter listAdapter) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
+        // Hvis der er et billede tilknytte genstanden
         if (imgurl != "null") {
             //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
             new DownloadImageTask(images, listAdapter).execute(imgurl);
