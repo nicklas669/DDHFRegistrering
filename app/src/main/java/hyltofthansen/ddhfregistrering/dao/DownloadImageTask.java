@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.BaseAdapter;
 
 import java.io.IOException;
@@ -16,12 +17,10 @@ import java.util.ArrayList;
  * http://stackoverflow.com/a/10868126
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private static final String TAG = "DownloadImageTask";
     ArrayList<Bitmap> imageList;
     BaseAdapter listAdapter;
-
-    public DownloadImageTask(ArrayList<Bitmap> imageList) {
-        this.imageList = imageList;
-    }
+    String urldisplay;
 
     public DownloadImageTask(ArrayList<Bitmap> imageList, BaseAdapter listAdapter) {
         this.imageList = imageList;
@@ -35,7 +34,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        String urldisplay = urls[0];
+//        urldisplay = urls[0];
         //Log.d("DownloadImageTask", urldisplay);
         InputStream in = null;
         try {
@@ -59,6 +58,14 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             e.printStackTrace();
         }
         return image;
+    }
+
+    public void fetchImagesParallel(String url) {
+        urldisplay = url;
+        Log.d(TAG, "Henter billed " + System.currentTimeMillis());
+        Log.d(TAG, url);
+//        this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        this.execute();
     }
 
     protected void onPostExecute(Bitmap result) {

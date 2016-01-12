@@ -3,7 +3,6 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.BaseAdapter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -37,7 +36,6 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        // URL til Mathias' API
         String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
         String USER_AGENT = "Mozilla/5.0";
         Log.d(TAG, "doInBackground køres!");
@@ -50,31 +48,29 @@ public class GetHTTP extends AsyncTask {
             con.setRequestMethod("GET");
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
-            int responseCode = con.getResponseCode();
-            //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-            //Log.d(TAG, "Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                //Log.d(TAG, String.valueOf(in.readLine()));
                 response.append(inputLine);
-                //Log.d(TAG, String.valueOf(response));
             }
             in.close();
             con.disconnect();
 
             JSONArray itemsfromDB = new JSONArray(response.toString());
-            //Log.d(TAG, String.valueOf(itemsfromDB.length() + " Itemfromdb size"));
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
+                Log.d(TAG, "Kører loop " + x);
+                if(isCancelled()) {
+                    Log.d(TAG, "Task cancelled");
+                    break;
+                }
                 JSONObject item = itemsfromDB.getJSONObject(x);
-                //Log.d(TAG, item.getString("itemid")+" defaultimage: "+item.getString("defaultimage"));
-                //items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage")));
                 items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage"), listAdapter));
             }
+            Log.d(TAG, "Færdig med task");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,15 +81,6 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        //super.onPostExecute(o); <- nødvendig?
         listAdapter.updateItemsList(items);
-    }
-
-    public void fetchItems() {
-        this.execute();
-    }
-
-    public BaseAdapter getlistAdapter() {
-        return listAdapter;
     }
 }

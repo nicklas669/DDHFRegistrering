@@ -1,7 +1,7 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
-
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -47,6 +47,16 @@ public class SearchItemFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        if(getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
+            getHTTP.cancel(true);
+            Log.d(TAG,"getHTTP køres fra SearchFragment");
+        }
+        Log.d(TAG, "Fragment er paused");
+        super.onPause();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView køres!");
         getActivity().setTitle("DDHF Registering");
@@ -65,22 +75,15 @@ public class SearchItemFragment extends Fragment {
 
         lv.setAdapter(listAdapter);
 
-        // ** Når der klikkes på en række i listen, åbnes et fragment der viser genstandens detaljer **
+        // ** Når der klikkes på en række i listen, åbnes en aktivitet der viser genstandens detaljer **
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 seeItemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
                 item = listAdapter.getItem(position);
-                putInExtra();
+                seeItemDetails.putExtra("itemid", item.getItemid());
+                seeItemDetails.putExtra("itemheadline", item.getItemheadline());
                 startActivity(seeItemDetails);
-//                ItemDetailInfoFragment itemfragment = new ItemDetailInfoFragment();
-//                itemfragment.setItem(listAdapter.getItem(position));
-//
-//                android.support.v4.app.FragmentManager fm = getFragmentManager();
-//                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-//                ft.addToBackStack(null);
-//                ft.replace(R.id.fragmentContainer, itemfragment);
-//                ft.commit();
             }
         });
 
@@ -104,18 +107,6 @@ public class SearchItemFragment extends Fragment {
         return root;
     }
 
-    private void putInExtra() {
-        seeItemDetails.putExtra("itemid", item.getItemid());
-        seeItemDetails.putExtra("itemheadline", item.getItemheadline());
-//        seeItemDetails.putExtra("itemdescription", item.getItemdescription());
-//        seeItemDetails.putExtra("itemreceived", item.getItemreceived());
-//        seeItemDetails.putExtra("itemdatingfrom", item.getItemdatingfrom());
-//        seeItemDetails.putExtra("itemdatingto", item.getItemdatingfrom());
-//        seeItemDetails.putExtra("donator", item.getDonator());
-//        seeItemDetails.putExtra("producer", item.getProducer());
-//        seeItemDetails.putExtra("postnummer", item.getpostnummer());
-    }
-
     /**
      * Henter items ned fra DB og gemmer dem i items listen
      * @param items
@@ -123,6 +114,6 @@ public class SearchItemFragment extends Fragment {
 
     public void fetchItemsFromAPI(ArrayList<ItemDTO> items) {
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);
-        getHTTP.fetchItems();
+        getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
