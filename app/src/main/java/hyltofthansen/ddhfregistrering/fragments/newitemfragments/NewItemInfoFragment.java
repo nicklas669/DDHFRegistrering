@@ -39,13 +39,12 @@ public class NewItemInfoFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_create_main: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
+            case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
                 //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
                 if(titelTxt.getText().toString().trim().equals("")) {
-                    //manglerTitelDialog();
                     titelTxt.setError("Indtast en titel!");
-                    //titelTxt.setText("");
+                    titelTxt.requestFocus();
                 } else {
                     try {
                         JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
@@ -62,14 +61,6 @@ public class NewItemInfoFragment extends Fragment {
         }
         return true;
     }
-
-    // TODO: SLET HVIS VI IKKE BRUGER DET
-//    private void manglerTitelDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setMessage(R.string.ingenTitelDialogTekst).setTitle(R.string.ingenTitelDialogTitel);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,16 +86,6 @@ public class NewItemInfoFragment extends Fragment {
 
         return root;
     }
-
-    // TODO: Hvad laver det i det her fragment? Slettes?
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) { // fanger billede resultat fra camera intent
-//        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            imageView.setImageBitmap(imageBitmap);
-//        }
-//    }
 
     private void setEditTextDatePicker(final EditText editText) {
         editText.setOnClickListener(new View.OnClickListener() {

@@ -7,7 +7,14 @@
         android:icon="@drawable/ic_plussign"
         app:showAsAction="ifRoom"
         android:title=""
-        android:orderInCategory="1"/> <!--Får plus-tegnet til altid at være til højre -->
+        android:orderInCategory="2"/> <!--Får plus-tegnet til at være længst til højre -->
+
+    <item
+        android:id="@+id/action_refresh_items"
+        android:icon="@drawable/ic_autorenew_white"
+        app:showAsAction="ifRoom"
+        android:title=""
+        android:orderInCategory="1"/>
 </menu>
 
 

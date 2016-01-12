@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,15 +35,12 @@ public class SearchItemFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume()!!");
+        //Log.d(TAG, "onResume()!!");
         //Et midlertidigt fix for blankt søgeresultat efter back button
         //TODO: Gør så søgeresultat stadig gemmes
         if (inputSearch != null) {
             inputSearch.setText("");
         }
-        // Opdatér liste
-        items = new ArrayList<ItemDTO>();
-        fetchItemsFromAPI(items);
         super.onResume();
     }
 
@@ -50,7 +48,7 @@ public class SearchItemFragment extends Fragment {
     public void onPause() {
         if(getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
             getHTTP.cancel(true);
-            Log.d(TAG,"getHTTP køres fra SearchFragment");
+            Log.d(TAG, "getHTTP køres fra SearchFragment");
         }
         Log.d(TAG, "Fragment er paused");
         super.onPause();
@@ -58,6 +56,7 @@ public class SearchItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         Log.d(TAG, "onCreateView køres!");
         getActivity().setTitle("DDHF Registering");
 
@@ -71,7 +70,7 @@ public class SearchItemFragment extends Fragment {
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
 
-        //fetchItemsFromAPI(items);
+        fetchItemsFromAPI(items);
 
         lv.setAdapter(listAdapter);
 
@@ -115,5 +114,17 @@ public class SearchItemFragment extends Fragment {
     public void fetchItemsFromAPI(ArrayList<ItemDTO> items) {
         getHTTP = new GetHTTP(getActivity(), items, listAdapter);
         getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
+                //Log.d(TAG, "Trykket på refresh!");
+                items = new ArrayList<ItemDTO>();
+                fetchItemsFromAPI(items);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
