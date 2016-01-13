@@ -227,10 +227,10 @@ public class NewItemPicturesFragment extends Fragment {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        Log.d(TAG, "storageDir fil oprettes!");
+        //Log.d(TAG, "storageDir fil oprettes!");
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM);
-        Log.d(TAG, "image fil oprettes!");
+        //Log.d(TAG, "image fil oprettes!");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */

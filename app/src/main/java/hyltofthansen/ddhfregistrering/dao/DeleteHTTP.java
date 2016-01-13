@@ -22,7 +22,7 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
  * Class responsible for GET HTTP functionality to API
- * Reads JSON objects from the /items/ URL, which shows an overview of all the items in the database
+ * Deletes a JSON object from the /items/ URL
  */
 
 public class DeleteHTTP extends AsyncTask {

@@ -48,7 +48,7 @@ public class GetHTTP extends AsyncTask {
     protected Object doInBackground(Object[] params) {
         String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
         String USER_AGENT = "Mozilla/5.0";
-        Log.d(TAG, "doInBackground køres!");
+        //Log.d(TAG, "doInBackground køres!");
 
         StringBuffer response = new StringBuffer();
         try {

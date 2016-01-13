@@ -124,7 +124,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     }
 
     public void updateItemsList(ArrayList<ItemDTO> items) {
-        Log.d(TAG, "itemlist bliver opdateret!");
+        //Log.d(TAG, "itemlist bliver opdateret!");
         this.mDisplayedValues = items;
         this.mOriginalValues = items;
         //notifyDataSetChanged();
