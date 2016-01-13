@@ -41,7 +41,7 @@ public class NewItemPicturesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle("Vedhæft billede");
+        //getActivity().setTitle("Vedhæft billede");
 
         View root = inflater.inflate(R.layout.newitempicturesfragment, container, false); // sæt layout op
 

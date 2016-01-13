@@ -154,9 +154,8 @@ public class SearchItemFragment extends Fragment {
     }
     public void stopRefreshingAnimation()
     {
-        // Get our refresh item from the menu
         MenuItem m = mymenu.findItem(R.id.action_refresh_items);
-        if(m.getActionView()!=null)
+        if(m.getActionView()!= null)
         {
             // Remove the animation.
             m.getActionView().clearAnimation();
