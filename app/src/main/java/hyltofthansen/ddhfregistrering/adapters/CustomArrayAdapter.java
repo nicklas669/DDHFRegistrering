@@ -128,6 +128,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         this.mDisplayedValues = items;
         this.mOriginalValues = items;
         //notifyDataSetChanged();
-        this.notifyDataSetChanged();
+        this. notifyDataSetChanged();
     }
 }

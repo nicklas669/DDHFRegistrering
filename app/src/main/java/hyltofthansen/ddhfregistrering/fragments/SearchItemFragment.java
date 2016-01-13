@@ -66,7 +66,6 @@ public class SearchItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         Log.d(TAG, "onCreateView køres!");
-        getActivity().setTitle("DDHF Registering");
 
         View root = inflater.inflate(R.layout.searchitemfragmentlayout, container, false);
 
