@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 
 /**
  * Class responsible for GET HTTP functionality to API
@@ -25,6 +27,7 @@ public class GetHTTP extends AsyncTask {
     private Context context;
     private CustomArrayAdapter listAdapter;
     private ArrayList<ItemDTO> items;
+    private SearchItemFragment searchItemFragment;
     private static final String TAG = "GetHTTP";
 
 
@@ -32,6 +35,13 @@ public class GetHTTP extends AsyncTask {
         this.context = context;
         this.items = items;
         this.listAdapter = listAdapter;
+    }
+
+    public GetHTTP(Context context, ArrayList<ItemDTO> items, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
+        this.context = context;
+        this.items = items;
+        this.listAdapter = listAdapter;
+        this.searchItemFragment = searchItemFragment;
     }
 
     @Override
@@ -82,5 +92,6 @@ public class GetHTTP extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         listAdapter.updateItemsList(items);
+        if (searchItemFragment != null) searchItemFragment.stopRefreshingAnimation();
     }
 }

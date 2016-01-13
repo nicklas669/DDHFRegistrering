@@ -8,12 +8,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
@@ -31,6 +38,7 @@ public class SearchItemFragment extends Fragment {
     private static final String TAG = "SearchItemFragment";
     private ItemDTO item;
     private Intent seeItemDetails;
+    private Menu mymenu;
 
 
     @Override
@@ -70,7 +78,7 @@ public class SearchItemFragment extends Fragment {
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
 
-        fetchItemsFromAPI(items);
+        fetchItemsFromAPI(items, this);
 
         lv.setAdapter(listAdapter);
 
@@ -109,10 +117,16 @@ public class SearchItemFragment extends Fragment {
     /**
      * Henter items ned fra DB og gemmer dem i items listen
      * @param items
+     * @param searchItemFragment
      */
-    public void fetchItemsFromAPI(ArrayList<ItemDTO> items) {
-        getHTTP = new GetHTTP(getActivity(), items, listAdapter);
+    public void fetchItemsFromAPI(ArrayList<ItemDTO> items, SearchItemFragment searchItemFragment) {
+        getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
         getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        mymenu = menu;
     }
 
     @Override
@@ -121,9 +135,32 @@ public class SearchItemFragment extends Fragment {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
                 items = new ArrayList<ItemDTO>();
-                fetchItemsFromAPI(items);
+                fetchItemsFromAPI(items, this);
+
+                // Do animation start
+                LayoutInflater inflater = (LayoutInflater) getLayoutInflater(getArguments());
+                //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ImageView iv = (ImageView)inflater.inflate(R.layout.searchlist_iv_refresh, null);
+                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.searchlist_refresh_rotate);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                item.setActionView(iv);
+
+                Toast.makeText(getContext(), "Opdaterer listen..",
+                        Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void stopRefreshingAnimation()
+    {
+        // Get our refresh item from the menu
+        MenuItem m = mymenu.findItem(R.id.action_refresh_items);
+        if(m.getActionView()!=null)
+        {
+            // Remove the animation.
+            m.getActionView().clearAnimation();
+            m.setActionView(null);
+        }
     }
 }
