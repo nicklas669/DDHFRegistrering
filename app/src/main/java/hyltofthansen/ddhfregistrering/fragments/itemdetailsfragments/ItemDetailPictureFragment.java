@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
  */
 public class ItemDetailPictureFragment extends Fragment {
 
+    private static final String TAG ="ItemDetailsPicture" ;
     ItemDTO item;
     View root;
     ArrayList<ItemDTO> items;
@@ -31,6 +33,7 @@ public class ItemDetailPictureFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         GridView gridview = (GridView) root.findViewById(R.id.gridview);
+        Log.d(TAG, "ItemDetails createView");
         gridview.setAdapter(new ImageAdapter(getActivity()));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

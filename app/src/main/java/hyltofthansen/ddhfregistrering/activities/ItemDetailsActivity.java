@@ -30,9 +30,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-//        tabLayout.addTab(tabLayout.newTab().setText("Info"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Billeder"));
-//        tabLayout.addTab(tabLayout.newTab().setText("Lyd"));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_info_black));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_image_black));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_mic_black));

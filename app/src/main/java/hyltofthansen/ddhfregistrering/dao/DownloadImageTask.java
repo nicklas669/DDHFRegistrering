@@ -22,6 +22,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     BaseAdapter listAdapter;
     String urldisplay;
 
+
     public DownloadImageTask(ArrayList<Bitmap> imageList, BaseAdapter listAdapter) {
         this.imageList = imageList;
         this.listAdapter = listAdapter;
@@ -63,7 +64,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     public void fetchImagesParallel(String url) {
         urldisplay = url;
         //Log.d(TAG, "Henter billed " + System.currentTimeMillis());
-        Log.d(TAG, url);
+//        Log.d(TAG, url);
 //        this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         this.execute();
     }

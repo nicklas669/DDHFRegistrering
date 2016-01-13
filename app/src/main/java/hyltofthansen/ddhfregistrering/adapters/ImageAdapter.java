@@ -1,8 +1,12 @@
 package hyltofthansen.ddhfregistrering.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +15,24 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
+
 /**
  * Created by hylle on 13-01-2016.
  */
 public class ImageAdapter extends BaseAdapter {
+    private static final String TAG = "ImageAdapter";
     private Context mContext;
     private int imgWidth;
+    private Intent seeItemDetails;
+    private int itemIdFromExtra;
+    private int itemId;
+
 
     public ImageAdapter(Context c) {
+        //Get itemid from extra data which was set when user clicked in SearchItemFragment
+//        itemId = getItemIdFromExtra();
+//        Log.d(TAG, "item id er " + itemId);
         mContext = c;
     }
 
@@ -36,6 +50,7 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d(TAG, "getView");
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -49,7 +64,8 @@ public class ImageAdapter extends BaseAdapter {
         loadImages();
 
         imageView.setImageResource(mThumbIds[position]);
-        //Hent scaleret array af billeder ud fra item id
+
+        //Get scaled picture array from itemid
         return imageView;
     }
 
@@ -104,5 +120,13 @@ public class ImageAdapter extends BaseAdapter {
         display.getSize(size);
         imgWidth = size.x / 2;
         return imgWidth;
+    }
+
+    public int getItemIdFromExtra() {
+        Intent intent = ((Activity) mContext).getIntent();
+        int itemid;
+        Bundle extras = intent.getExtras();
+        itemid= extras.getInt("itemid");
+        return itemid;
     }
 }

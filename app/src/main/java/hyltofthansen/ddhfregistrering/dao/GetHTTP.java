@@ -72,7 +72,7 @@ public class GetHTTP extends AsyncTask {
             JSONArray itemsfromDB = new JSONArray(response.toString());
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
-                Log.d(TAG, "Kører loop " + x);
+//                Log.d(TAG, "Kører loop " + x);
                 if(isCancelled()) {
                     Log.d(TAG, "Task cancelled");
                     break;
@@ -80,7 +80,7 @@ public class GetHTTP extends AsyncTask {
                 JSONObject item = itemsfromDB.getJSONObject(x);
                 items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage"), listAdapter));
             }
-            Log.d(TAG, "Færdig med task");
+//            Log.d(TAG, "Færdig med task");
 
         } catch (Exception e) {
             e.printStackTrace();
