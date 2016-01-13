@@ -2,9 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,13 +10,10 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.ImageView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,22 +29,18 @@ import hyltofthansen.ddhfregistrering.R;
 /**
  * Class responsible for POST HTTP functionality to API 0.1 on CreateItem
  */
-public class PostHTTPPicture extends AsyncTask {
+public class PostHTTPSound extends AsyncTask {
 
-    private static final String TAG = "PostHTTPPicture";
-    private JSONObject JSONitem;
+    private static final String TAG = "PostHTTPSound";
     private int responseCode;
     URL url;
-    StringBuffer response;
     Activity context;
-    private JSONObject itemMedBilled;
     private SharedPreferences prefs;
     private int itemid;
     private android.support.v4.app.FragmentManager fm;
 
 
-    public PostHTTPPicture(Activity context, android.support.v4.app.FragmentManager fm, int itemid) {
-//        this.JSONitem = JSONitem;
+    public PostHTTPSound(Activity context, android.support.v4.app.FragmentManager fm, int itemid) {
         this.context = context;
         this.fm = fm;
         this.itemid = itemid;
@@ -64,7 +55,7 @@ public class PostHTTPPicture extends AsyncTask {
                 String urlAPI = null;
                 urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemid + "?userID=56837dedd2d76438906140";
                 url = new URL(urlAPI);
-                System.out.println("URL til at uploade bilede: " + url);
+                System.out.println("URL til at uploade lyd: " + url);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -72,25 +63,16 @@ public class PostHTTPPicture extends AsyncTask {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "image/jpg"); // content type til Mathias' API
+            conn.setRequestProperty("Content-Type", "audio/3gp"); // content type til Mathias' API
 
-//            Log.d(TAG, String.valueOf(prefs.getString("chosenImage", null)));
+            Log.d(TAG, String.valueOf(prefs.getString("recording", "null")));
 //            String filePath = String.valueOf(prefs.getString("chosenImage", null));
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            String imgPath = prefs.getString("chosenImage", null);
-            Log.d(TAG, "imgPath: "+imgPath);
-            // Lav file path om
-            if (imgPath.contains("file:")) {
-                imgPath = imgPath.split(":/")[1];
-            } else {
-                imgPath = getFilePathFromContentUri(Uri.parse(imgPath), context.getContentResolver());
-                //Log.d(TAG, "ny imgPath: "+imgPath);
-            }
-            Log.d(TAG, "ny imgPath: "+imgPath);
+            String recordingPath = prefs.getString("recording", null);
+            Log.d(TAG, "recordingPath: "+recordingPath);
 
             OutputStream os = conn.getOutputStream();
-//            File imgFile = new File(imgPath);
-            FileInputStream inputStream = new FileInputStream(imgPath);
+            FileInputStream inputStream = new FileInputStream(recordingPath);
 
             byte[] data = new byte[1024];
             int read;
@@ -142,20 +124,20 @@ public class PostHTTPPicture extends AsyncTask {
         responseCode = Integer.valueOf(o.toString());
         if (responseCode == 200) {
             // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("Genstand oprettet og billede uploadet. Responskode: " + responseCode)
+            builder.setMessage("Genstand oprettet og lydfil uploadet. Responskode: " + responseCode)
                     .setTitle("Success");
             //Gå tilbage til hovedmenu her
             //fm.popBackStack();
         } else {
-            builder.setMessage("Genstand oprettet men fejl ved upload af billede. Responskode: " + responseCode)
+            builder.setMessage("Genstand oprettet men fejl ved upload af lydfil. Responskode: " + responseCode)
                     .setTitle("Fejl");
         }
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Ryd gemt billede fra app's data
-        prefs.edit().remove("chosenImage").commit();
+        // Ryd gemt lydfil fra app's data
+        prefs.edit().remove("recording").commit();
     }
 
     /**

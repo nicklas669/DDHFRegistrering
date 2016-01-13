@@ -23,12 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Ryd gemt billede fra app's data
-        //SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        // Ryd gemt billede og lyd fra app's data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Log.d(TAG, "App startes op, chosenImage: "+prefs.getString("chosenImage", "null"));
+        Log.d(TAG, "App startes op, recording: "+prefs.getString("recording", "null"));
         prefs.edit().remove("chosenImage").commit();
+        prefs.edit().remove("recording").commit();
         Log.d(TAG, "chosenImages remove kørt, chosenImage: " + prefs.getString("chosenImage", "null"));
+        Log.d(TAG, "recording remove kørt, recording: " + prefs.getString("recording", "null"));
 
         searchFragment = new SearchItemFragment();
 
