@@ -23,7 +23,11 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private Context ctx;
 
 
-    public GetItemPicturesForGridViewTask(Context ctx, int itemid, ArrayList<Bitmap> imageList, BaseAdapter listAdapter) {
+    public GetItemPicturesForGridViewTask
+            (Context ctx,
+             int itemid,
+             ArrayList<Bitmap> imageList,
+             BaseAdapter listAdapter) {
         this.ctx = ctx;
         this.itemID = itemid;
         this.imageList = imageList;
@@ -31,7 +35,8 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     }
 
     protected Bitmap doInBackground(String... urls) {
-        String url = ctx.getString(R.string.API_URL_MATHIAS)+itemID+"?userID=56837dedd2d76438906140";
+        String url = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
+                "?userID=56837dedd2d76438906140";
 
         //Get item image url's
         String USER_AGENT = "Mozilla/5.0";

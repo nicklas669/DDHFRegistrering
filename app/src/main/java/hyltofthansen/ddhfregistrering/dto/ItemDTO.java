@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO {
@@ -86,13 +88,15 @@ public class ItemDTO {
 //        this.postnummer = postnummer;
 //    }
 
-    public ItemDTO(int itemid, String itemheadline, String imgurl, BaseAdapter listAdapter) {
+    public ItemDTO(int itemid, String itemheadline, String defaultImageUrl, JSONArray allPics,
+                   BaseAdapter listAdapter) {
+        this.imageURLLists = allPics;
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         // Hvis der er et billede tilknytte genstanden
-        if (imgurl != "null") {
+        if (defaultImageUrl != "null") {
             //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
-            new DownloadImageTask(images, listAdapter).fetchImagesParallel(imgurl);
+            new DownloadImageTask(images, listAdapter).fetchImagesParallel(defaultImageUrl);
         }
     }
 

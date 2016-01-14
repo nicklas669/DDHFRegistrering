@@ -1,7 +1,9 @@
 package hyltofthansen.ddhfregistrering.dao;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONObject;

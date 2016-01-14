@@ -45,7 +45,8 @@ public class ItemDetailPictureFragment extends Fragment {
 
         //Fetch pictures for itemid
         GetItemPicturesForGridViewTask getItemPictures =
-                new GetItemPicturesForGridViewTask(getContext(),itemid,pictures, imageAdapter);
+                new GetItemPicturesForGridViewTask(getContext(),
+                        itemid,pictures, imageAdapter);
         getItemPictures.execute();
 
         //Set adapter

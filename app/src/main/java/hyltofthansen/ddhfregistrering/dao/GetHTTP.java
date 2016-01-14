@@ -78,7 +78,11 @@ public class GetHTTP extends AsyncTask {
                     break;
                 }
                 JSONObject item = itemsfromDB.getJSONObject(x);
-                items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.getString("defaultimage"), listAdapter));
+                items.add(new ItemDTO(item.getInt("itemid"),
+                        item.getString("itemheadline"),
+                        item.getString("defaultimage"),
+                        item.optJSONArray("images"),
+                        listAdapter));
             }
 //            Log.d(TAG, "Færdig med task");
 
