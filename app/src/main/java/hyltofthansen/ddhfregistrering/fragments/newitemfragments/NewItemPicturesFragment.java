@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,38 @@ public class NewItemPicturesFragment extends Fragment {
     private static final String TAG = "NewItemPicturesFragment";
     private String mCurrentPhotoPath;
     private File photoFile;
+    private String filePathFromState;
+    private File f;
+    private int width, height;
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null) {
+            filePathFromState = savedInstanceState.getString("filePath");
+            photoFile = new File(filePathFromState);
+            width = savedInstanceState.getInt("width");
+            height = savedInstanceState.getInt("height");
+           // photoFile = savedInstanceState.getSerializable("photoFile");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(photoFile != null) {
+            outState.putString("filePath", photoFile.getAbsolutePath());
+            outState.putInt("width", width);
+            outState.putInt("height", height);
+            outState.putSerializable("photoFile", photoFile);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "inde i onStart width" + iv_gallery.getMeasuredWidth() + " height " + iv_gallery.getMeasuredHeight());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +81,9 @@ public class NewItemPicturesFragment extends Fragment {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
-
+        width = iv_gallery.getWidth();
+        height = iv_gallery.getHeight();
+        Log.d(TAG, width + " width i createView og height " + height);
         //Læs om der er valgt et billede i forvejen
         String imgURI = prefs.getString("chosenImage", null);
         if (imgURI != null) {
@@ -184,6 +220,15 @@ public class NewItemPicturesFragment extends Fragment {
         // Get the dimensions of the View
         int targetW = gallery.getWidth();
         int targetH = gallery.getHeight();
+        Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+        //targetW = width/3;
+        //targetH = height/3;
         Log.d(TAG, "imageView bredde: "+targetW+", højde: "+targetH);
 
         // Get the dimensions of the bitmap
@@ -197,7 +242,7 @@ public class NewItemPicturesFragment extends Fragment {
         Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW/2, photoH/2); //Divide by zero fejl
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -212,9 +257,16 @@ public class NewItemPicturesFragment extends Fragment {
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(photoFile.getAbsolutePath());
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
+        try {
+            f = new File(photoFile.getAbsolutePath());
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+
+        } catch (NullPointerException e) {
+            f = new File(filePathFromState);
+            Uri contentUri = Uri.fromFile(f);
+            Log.d(TAG, e.toString());
+        }
         getActivity().sendBroadcast(mediaScanIntent);
     }
 
