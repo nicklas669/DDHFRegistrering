@@ -92,6 +92,9 @@ public class SearchItemFragment extends Fragment {
                 seeItemDetails.putExtra("itemheadline", item.getItemheadline());
                 seeItemDetails.putExtra("images", item.getImageURLLists());
                 seeItemDetails.putStringArrayListExtra("images",item.getImageURLLists());
+                Log.d(TAG, item.getImageURLLists().toString());
+                Log.d(TAG, item.getItemheadline().toString());
+                Log.d(TAG, "Sætter data i extra");
                 startActivity(seeItemDetails);
             }
         });
