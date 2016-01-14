@@ -177,6 +177,7 @@ public class PostHTTPPicture extends AsyncTask {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         filePath = cursor.getString(columnIndex);
         cursor.close();
+        //Log.d(TAG, "returnerer filePath: "+filePath);
         return filePath;
     }
 }

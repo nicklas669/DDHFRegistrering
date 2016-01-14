@@ -65,7 +65,7 @@ public class PostHTTPSound extends AsyncTask {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "audio/3gp"); // content type til Mathias' API
 
-            Log.d(TAG, String.valueOf(prefs.getString("recording", "null")));
+
 //            String filePath = String.valueOf(prefs.getString("chosenImage", null));
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String recordingPath = prefs.getString("recording", null);

@@ -32,7 +32,7 @@ public class PostHTTPController extends AsyncTask {
     URL url;
     StringBuffer response;
     Activity context;
-    private JSONObject itemMedBilled;
+    private JSONObject item;
     private SharedPreferences prefs;
     private android.support.v4.app.FragmentManager fm;
 
@@ -101,6 +101,7 @@ public class PostHTTPController extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
+        boolean mediaAttached = false;
         // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -113,22 +114,41 @@ public class PostHTTPController extends AsyncTask {
                 Log.d(TAG, "Der hører et billede til genstanden!!");
                 //Der er et billed, så det skal uploades efter genstanden er oprettet
                 try {
+                    mediaAttached = true;
                     // Et item er oprettet og det gemmes som JSONObject ud fra response
                     Log.d(TAG, "response 2: " + response.toString());
-                    itemMedBilled = new JSONObject(response.toString());
-                    PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, itemMedBilled.getInt("itemid"));
+                    item = new JSONObject(response.toString());
+                    PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, item.getInt("itemid"));
                     postHTTPPicture.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
-                Log.d(TAG, "Der hører IKKE et billede til genstanden!!");
+            }
+
+            if (prefs.contains("recording")) {
+                Log.d(TAG, "Der hører en lydfil til genstanden!!");
+                try {
+                    mediaAttached = true;
+                    // Et item er oprettet og det gemmes som JSONObject ud fra response
+                    Log.d(TAG, "response 2: " + response.toString());
+                    item = new JSONObject(response.toString());
+                    PostHTTPSound postHTTPSound = new PostHTTPSound(context, fm, item.getInt("itemid"));
+                    postHTTPSound.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (mediaAttached == false) {
+                Log.d(TAG, "Der hører IKKE et billede eller lyd? til genstanden!!");
                 builder.setMessage("Genstand oprettet. Responskode: " + responseCode)
                         .setTitle("Success");
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+
+//            }
             //Gå tilbage til hovedmenu her
             //fm.popBackStack();
         } else {
