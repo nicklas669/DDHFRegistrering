@@ -28,7 +28,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     private ArrayList<ItemDTO> mOriginalValues;
     private ArrayList<ItemDTO> mDisplayedValues;
     private static final String TAG = "CustomArrayAdapter";
-    private LayoutInflater inflater;
     private Context context;
 
 

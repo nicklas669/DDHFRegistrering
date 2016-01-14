@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
 
 /**
@@ -24,15 +28,13 @@ public class ImageAdapter extends BaseAdapter {
     private static final String TAG = "ImageAdapter";
     private Context mContext;
     private int imgWidth;
-    private Intent seeItemDetails;
-    private int itemIdFromExtra;
-    private int itemId;
+    private ArrayList<Bitmap> pictures;
 
-
-    public ImageAdapter(Context c) {
+    public ImageAdapter(Context c, ArrayList<Bitmap> pictures) {
         //Get itemid from extra data which was set when user clicked in SearchItemFragment
 //        itemId = getItemIdFromExtra();
 //        Log.d(TAG, "item id er " + itemId);
+        this.pictures = pictures;
         mContext = c;
     }
 
@@ -61,9 +63,15 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        loadImages();
 
-        imageView.setImageResource(mThumbIds[position]);
+//        imageView.setImageResource(mThumbIds[position]);
+
+        //Check if picture actually contains data before displaying it
+        if((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
+            imageView.setImageBitmap(pictures.get(position));
+        } else {
+            imageView.setImageResource(R.drawable.noimage);
+        }
 
         //Get scaled picture array from itemid
         return imageView;
@@ -90,15 +98,6 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         return inSampleSize;
-    }
-
-    private void loadImages() {
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.sample_0, options);
-//        int imageHeight = options.outHeight;
-//        int imageWidth = options.outWidth;
-//        String imageType = options.outMimeType;
     }
 
     // references to our images

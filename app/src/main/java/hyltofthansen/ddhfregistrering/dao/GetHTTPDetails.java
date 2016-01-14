@@ -30,7 +30,8 @@ public class GetHTTPDetails extends AsyncTask {
     private ItemDetailInfoFragment detailsFragment;
 
 
-    public GetHTTPDetails(Context context, int itemID, ArrayList<ItemDTO> items, ItemDetailInfoFragment detailsFragment) {
+    public GetHTTPDetails(Context context, int itemID, ArrayList<ItemDTO> items,
+                          ItemDetailInfoFragment detailsFragment) {
         this.context = context;
         this.itemID = itemID;
         this.items = items;
@@ -39,11 +40,9 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        // URL til Claus' API
-        //String url = context.getString(R.string.API_URL) + "/items/" + itemID;
-
         // URL til Mathias' API
-        String url = context.getString(R.string.API_URL_MATHIAS)+itemID+"?userID=56837dedd2d76438906140";
+        String url = context.getString(R.string.API_URL_MATHIAS)+itemID+
+                "?userID=56837dedd2d76438906140";
 
         String USER_AGENT = "Mozilla/5.0";
 
@@ -72,8 +71,16 @@ public class GetHTTPDetails extends AsyncTask {
 
             JSONObject item = new JSONObject(response.toString());
 
-            items.add(new ItemDTO(item.getInt("itemid"), item.getString("itemheadline"), item.optString("itemdescription"), item.optString("itemreceived"), item.optString("itemdatingfrom"),
-                    item.optString("itemdatingto"), item.optString("donator"), item.optString("producer"), item.optInt("postnummer")));
+            items.add(new ItemDTO(item.getInt("itemid"),
+                    item.getString("itemheadline"),
+                    item.optString("itemdescription"),
+                    item.optString("itemreceived"),
+                    item.optString("itemdatingfrom"),
+                    item.optString("itemdatingto"),
+                    item.optString("donator"),
+                    item.optString("producer"),
+                    item.optInt("postnummer"),
+                    item.optJSONArray("images")));
 
 
         } catch (Exception e) {

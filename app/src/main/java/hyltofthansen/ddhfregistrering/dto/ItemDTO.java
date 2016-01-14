@@ -3,6 +3,9 @@ package hyltofthansen.ddhfregistrering.dto;
 
 import android.graphics.Bitmap;
 import android.widget.BaseAdapter;
+
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
@@ -11,6 +14,12 @@ public class ItemDTO {
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+
+    public JSONArray getImageURLLists() {
+        return imageURLLists;
+    }
+
+    private JSONArray imageURLLists = new JSONArray();
 
 
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
@@ -43,36 +52,39 @@ public class ItemDTO {
         this.images = images;
     }
 
-    // Constructor uden Item ID men med billeder
-    public ItemDTO(String itemheadline, String itemdescription,
-                   String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
-        this.itemid = -1;
-        this.itemheadline = itemheadline;
-        this.itemdescription = itemdescription;
-        this.itemreceived = itemreceived;
-        this.itemdatingfrom = itemdatingfrom;
-        this.itemdatingto = itemdatingto;
-        this.donator = donator;
-        this.producer = producer;
-        this.postnummer = postnummer;
-        this.images = images;
-    }
 
-    // Constructor uden item ID og billede
-    public ItemDTO(String itemheadline, String itemdescription,
-                   String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer) {
-        this.itemid = -1;
-        this.itemheadline = itemheadline;
-        this.itemdescription = itemdescription;
-        this.itemreceived = itemreceived;
-        this.itemdatingfrom = itemdatingfrom;
-        this.itemdatingto = itemdatingto;
-        this.donator = donator;
-        this.producer = producer;
-        this.postnummer = postnummer;
-    }
+
+    //TODO Fjern alle de constructorer vi ikke bruger herunder
+//    // Constructor uden Item ID men med billeder
+//    public ItemDTO(String itemheadline, String itemdescription,
+//                   String itemreceived, String itemdatingfrom, String itemdatingto,
+//                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
+//        this.itemid = -1;
+//        this.itemheadline = itemheadline;
+//        this.itemdescription = itemdescription;
+//        this.itemreceived = itemreceived;
+//        this.itemdatingfrom = itemdatingfrom;
+//        this.itemdatingto = itemdatingto;
+//        this.donator = donator;
+//        this.producer = producer;
+//        this.postnummer = postnummer;
+//        this.images = images;
+//    }
+//
+//    // Constructor uden item ID og billede
+//    public ItemDTO(String itemheadline, String itemdescription,
+//                   String itemreceived, String itemdatingfrom, String itemdatingto,
+//                   String donator, String producer, int postnummer) {
+//        this.itemid = -1;
+//        this.itemheadline = itemheadline;
+//        this.itemdescription = itemdescription;
+//        this.itemreceived = itemreceived;
+//        this.itemdatingfrom = itemdatingfrom;
+//        this.itemdatingto = itemdatingto;
+//        this.donator = donator;
+//        this.producer = producer;
+//        this.postnummer = postnummer;
+//    }
 
     public ItemDTO(int itemid, String itemheadline, String imgurl, BaseAdapter listAdapter) {
         this.itemid = itemid;
@@ -82,6 +94,28 @@ public class ItemDTO {
             //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
             new DownloadImageTask(images, listAdapter).fetchImagesParallel(imgurl);
         }
+    }
+
+    public ItemDTO(int itemid,
+                   String itemheadline,
+                   String itemdescription,
+                   String itemreceived,
+                   String itemdatingfrom,
+                   String itemdatingto,
+                   String donator,
+                   String producer,
+                   int postnummer,
+                   JSONArray imageURLLists) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+        this.itemdescription = itemdescription;
+        this.itemreceived = itemreceived;
+        this.itemdatingfrom = itemdatingfrom;
+        this.itemdatingto = itemdatingto;
+        this.donator = donator;
+        this.producer = producer;
+        this.postnummer = postnummer;
+        this.imageURLLists = imageURLLists;
     }
 
     public int getItemid() {

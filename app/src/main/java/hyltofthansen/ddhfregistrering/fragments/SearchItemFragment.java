@@ -118,7 +118,8 @@ public class SearchItemFragment extends Fragment {
      * @param items
      * @param searchItemFragment
      */
-    public void fetchItemsFromAPI(ArrayList<ItemDTO> items, SearchItemFragment searchItemFragment) {
+    public void fetchItemsFromAPI(ArrayList<ItemDTO> items,
+                                  SearchItemFragment searchItemFragment) {
         getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
         getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

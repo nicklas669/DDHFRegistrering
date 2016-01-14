@@ -1,6 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,27 +14,42 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.adapters.ImageAdapter;
+import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
- * ItemDetailInfoFragment is showing detailed informaiton about a specific item which the user has clicked on
+ * ItemDetailPictureFragment shows gridview of an item's pictures
  */
 public class ItemDetailPictureFragment extends Fragment {
 
     private static final String TAG ="ItemDetailsPicture" ;
-    ItemDTO item;
-    View root;
-    ArrayList<ItemDTO> items;
+    private ArrayList<Bitmap> pictures;
+    private View root;
+    private ArrayList<ItemDTO> items;
+    private int itemIdFromExtra;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.itemdetailspicturelayout, container, false);
 
         super.onCreate(savedInstanceState);
 
         GridView gridview = (GridView) root.findViewById(R.id.gridview);
-        Log.d(TAG, "ItemDetails createView");
-        gridview.setAdapter(new ImageAdapter(getActivity()));
+        Log.d(TAG, "createView");
+        pictures = new ArrayList<Bitmap>();
+
+        ImageAdapter imageAdapter = new ImageAdapter(getActivity(),pictures);
+
+        int itemid = getItemIdFromExtra();
+
+        //Fetch pictures for itemid
+        GetItemPicturesForGridViewTask getItemPictures =
+                new GetItemPicturesForGridViewTask(getContext(),itemid,pictures, imageAdapter);
+        getItemPictures.execute();
+
+        //Set adapter
+        gridview.setAdapter(imageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -46,5 +61,10 @@ public class ItemDetailPictureFragment extends Fragment {
         return root;
 
 
+    }
+
+    public int getItemIdFromExtra() {
+        Bundle bundle = getActivity().getIntent().getExtras();
+        return bundle.getInt("itemid");
     }
 }
