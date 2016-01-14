@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_main);
 
         // Ryd gemt billede og lyd fra app's data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

@@ -1,13 +1,8 @@
 package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,7 +63,7 @@ public class NewItemInfoFragment extends Fragment {
         //Aktiver ActionBar menu med Opret knap
         setHasOptionsMenu(true);
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true); // aktivér "tilbage"-pil i venstre top
-        View root = inflater.inflate(R.layout.newitemdetailsinfolayout, container, false);
+        View root = inflater.inflate(R.layout.newitem_info, container, false);
         titelTxt = (EditText) root.findViewById(R.id.titelTextEdit);
         beskrivelseTxt = (EditText) root.findViewById(R.id.beskrivelseTextEdit);
         refDonatorTxt = (EditText) root.findViewById(R.id.refDonatorTextEdit);

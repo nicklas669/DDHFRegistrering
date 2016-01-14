@@ -31,7 +31,7 @@ public class ItemDetailPictureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.itemdetailspicturelayout, container, false);
+        root = inflater.inflate(R.layout.itemdetails_picture, container, false);
 
         super.onCreate(savedInstanceState);
 

@@ -67,7 +67,7 @@ public class SearchItemFragment extends Fragment {
         setHasOptionsMenu(true);
         Log.d(TAG, "onCreateView køres!");
 
-        View root = inflater.inflate(R.layout.searchitemfragmentlayout, container, false);
+        View root = inflater.inflate(R.layout.search_layout, container, false);
 
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
@@ -76,7 +76,7 @@ public class SearchItemFragment extends Fragment {
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new CustomArrayAdapter(getActivity(),
-                R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
+                R.layout.search_row, R.id.search_tvheadline, items);
 
         fetchItemsFromAPI(items, this);
 
@@ -146,7 +146,7 @@ public class SearchItemFragment extends Fragment {
                 // Do animation start
                 LayoutInflater inflater = (LayoutInflater) getLayoutInflater(getArguments());
                 //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                ImageView iv = (ImageView)inflater.inflate(R.layout.searchlist_iv_refresh, null);
+                ImageView iv = (ImageView)inflater.inflate(R.layout.act_main_renewitemsbutton, null);
                 Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.searchlist_refresh_rotate);
                 rotation.setRepeatCount(Animation.INFINITE);
                 iv.startAnimation(rotation);

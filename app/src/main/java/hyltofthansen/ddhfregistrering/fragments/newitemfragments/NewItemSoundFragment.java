@@ -1,11 +1,8 @@
 package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -17,10 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -62,7 +56,7 @@ public class NewItemSoundFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.newitem_sound_fragment, container, false); // sæt layout op
+        View root = inflater.inflate(R.layout.newitem_sound, container, false); // sæt layout op
 
         tv_filename = (TextView) root.findViewById(R.id.newitem_voicefile);
 

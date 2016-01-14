@@ -31,7 +31,7 @@ public class ItemDetailInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        root = inflater.inflate(R.layout.itemdetailsinfolayout, container, false);
+        root = inflater.inflate(R.layout.itemdetails_info, container, false);
         item = getItemFromExtra();
         getActivity().setTitle(item.getItemheadline().toString());
         items = new ArrayList<ItemDTO>();
@@ -94,6 +94,9 @@ public class ItemDetailInfoFragment extends Fragment {
                 dialogBuilder.setNegativeButton("Nej", dialogClickListener);
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
+                return true;
+            case R.id.action_edit_item:
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

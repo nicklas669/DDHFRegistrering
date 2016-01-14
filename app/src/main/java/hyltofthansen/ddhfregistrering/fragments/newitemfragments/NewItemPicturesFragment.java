@@ -2,9 +2,7 @@ package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.database.Cursor;
-import android.graphics.Point;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
@@ -17,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +22,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -87,7 +82,7 @@ public class NewItemPicturesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //getActivity().setTitle("Vedhæft billede");
 
-        View root = inflater.inflate(R.layout.newitempicturesfragment, container, false); // sæt layout op
+        View root = inflater.inflate(R.layout.newitem_pictures, container, false); // sæt layout op
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
