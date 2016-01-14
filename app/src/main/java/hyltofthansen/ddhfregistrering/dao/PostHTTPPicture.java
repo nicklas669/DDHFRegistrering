@@ -128,6 +128,8 @@ public class PostHTTPPicture extends AsyncTask {
             Log.d(TAG, e.toString());
         } catch (IOException e) {
             Log.d(TAG, e.toString());
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
         }
         return responseCode;
     }

@@ -44,6 +44,7 @@ public class NewItemPicturesFragment extends Fragment {
     private String filePathFromState;
     private File f;
     private int width, height;
+    private Bitmap scaledBitmap;
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -53,7 +54,18 @@ public class NewItemPicturesFragment extends Fragment {
             photoFile = new File(filePathFromState);
             width = savedInstanceState.getInt("width");
             height = savedInstanceState.getInt("height");
-           // photoFile = savedInstanceState.getSerializable("photoFile");
+            scaledBitmap = savedInstanceState.getParcelable("scaledBitmap");
+            if(scaledBitmap != null) {
+                iv_gallery.setImageBitmap(scaledBitmap);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(scaledBitmap != null) {
+            iv_gallery.setImageBitmap(scaledBitmap);
         }
     }
 
@@ -66,13 +78,10 @@ public class NewItemPicturesFragment extends Fragment {
             outState.putInt("height", height);
             outState.putSerializable("photoFile", photoFile);
         }
+        if (scaledBitmap != null) {
+            outState.putParcelable("scaledBitmap", scaledBitmap);
+        }
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        Log.d(TAG, "inde i onStart width" + iv_gallery.getMeasuredWidth() + " height " + iv_gallery.getMeasuredHeight());
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,30 +100,11 @@ public class NewItemPicturesFragment extends Fragment {
                 Log.d(TAG, "onGlobalLayout(): "+width + " width og height " + height);
             }
         });
-        //width = iv_gallery.getWidth();
-        //height = iv_gallery.getHeight();
-        //Log.d(TAG, width + " width i createView og height " + height);
-        //Læs om der er valgt et billede i forvejen
-        String imgURI = prefs.getString("chosenImage", null);
-        if (imgURI != null) {
-            Log.d(TAG, "Læser chosenImage: "+imgURI);
-            // Hvis der er et valgt billede så vis det i imageViewet
-            imageUri = Uri.parse(imgURI);
-            InputStream imageStream = null;
-            try {
-                imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-            iv_gallery.setImageBitmap(imageBitmap);
-        }
 
         Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent gallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 Intent gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*");
                 startActivityForResult(gallery, PICK_IMAGE);
             }
@@ -147,14 +137,18 @@ public class NewItemPicturesFragment extends Fragment {
 
                 } else { // device har ikke kamera features
                     //Viser AlertDialog med teksten "Enheden har ikke kamerafunktionalitet"
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(R.string.intetKameraDialogTekst).setTitle(R.string.intetKameraDialogTitel);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showNoCameraPopup();
                 }
             }
         });
         return root;
+    }
+
+    private void showNoCameraPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.intetKameraDialogTekst).setTitle(R.string.intetKameraDialogTitel);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -190,7 +184,7 @@ public class NewItemPicturesFragment extends Fragment {
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
-                Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString());
+                Log.d(TAG, "Gemmer chosenImage: "+imageUri.toString()); //Gemmer chosenImage: file:/storage/emulated/0/DCIM/JPEG_20160114_181146_490526767.jpg
                 prefedit.putString("chosenImage", imageUri.toString());
                 prefedit.commit();
             }
@@ -214,32 +208,11 @@ public class NewItemPicturesFragment extends Fragment {
 
     private void setPic(ImageView gallery, String path) {
         Log.d(TAG, "path: "+path);
-//        InputStream imageStream = null;
-//        try {
-//            imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
-
-        if (path.contains("content:")) {
-            path = getFilePathFromContentUri(Uri.parse(path), getContext().getContentResolver());
-            Log.d(TAG, "path er content, ny path er: "+path);
-        }
 
         // Get the dimensions of the View
         int targetW = width;
         int targetH = height;
         Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
-//        Display display = getActivity().getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        int width = size.x;
-//        int height = size.y;
-
-        //targetW = width/3;
-        //targetH = height/3;
-        //Log.d(TAG, "imageView bredde: "+targetW+", højde: "+targetH);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -262,9 +235,9 @@ public class NewItemPicturesFragment extends Fragment {
         bmOptions.inSampleSize = scaleFactor;
         //bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
-        Log.d(TAG, "Ny billede bredde: "+bitmap.getWidth()+", højde: "+bitmap.getHeight());
-        gallery.setImageBitmap(bitmap);
+        scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
+        Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
+        gallery.setImageBitmap(scaledBitmap);
         //return bitmap;
     }
 
@@ -305,31 +278,5 @@ public class NewItemPicturesFragment extends Fragment {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
-    }
-
-
-    /**
-     * Gets the corresponding path to a file from the given content:// URI
-     * @param selectedImageUri The content:// URI to find the file path from
-     * @param contentResolver The content resolver to use to perform the query.
-     * @return the file path as a string
-     */
-    private String getFilePathFromContentUri(Uri selectedImageUri,
-                                             ContentResolver contentResolver) {
-        //Log.d(TAG, "selectedImageUri: "+selectedImageUri.toString());
-        //        String filePath;
-//        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
-//        Log.d(TAG, filePathColumn[0]);
-//
-//        Cursor cursor = contentResolver.query(selectedImageUri, filePathColumn, null, null, null);
-//        cursor.moveToFirst();
-//        Log.d(TAG, "cursor.getString(0): " + cursor.getString(0));
-//
-//        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//        Log.d(TAG, "columnIndex: " + columnIndex);
-//        filePath = cursor.getString(columnIndex);
-//        cursor.close();
-//        Log.d(TAG, "filePath returneres: " + filePath);
-        return "";
     }
 }
