@@ -75,7 +75,8 @@ public class SearchItemFragment extends Fragment {
         items = new ArrayList<ItemDTO>();
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
-        listAdapter = new CustomArrayAdapter(getActivity(), R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
+        listAdapter = new CustomArrayAdapter(getActivity(),
+                R.layout.searchlist_rowlayout, R.id.search_tvheadline, items);
 
         fetchItemsFromAPI(items, this);
 
@@ -89,6 +90,8 @@ public class SearchItemFragment extends Fragment {
                 item = listAdapter.getItem(position);
                 seeItemDetails.putExtra("itemid", item.getItemid());
                 seeItemDetails.putExtra("itemheadline", item.getItemheadline());
+                seeItemDetails.putExtra("images", item.getImageURLLists());
+                seeItemDetails.putStringArrayListExtra("images",item.getImageURLLists());
                 startActivity(seeItemDetails);
             }
         });

@@ -3,25 +3,25 @@ package hyltofthansen.ddhfregistrering.dto;
 
 import android.graphics.Bitmap;
 import android.widget.BaseAdapter;
-
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-
-import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
-public class ItemDTO {
+public class ItemDTO implements Serializable {
     private int itemid, postnummer;
     private String itemheadline, itemdescription, itemreceived,
             itemdatingfrom, itemdatingto, donator, producer;
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
 
-    public JSONArray getImageURLLists() {
+    public ArrayList<String> getImageURLLists() {
         return imageURLLists;
     }
 
-    private JSONArray imageURLLists = new JSONArray();
+    private ArrayList<String> imageURLLists = new ArrayList<>();
 
 
     public ItemDTO(int itemid, String itemheadline, String itemdescription,
@@ -90,7 +90,17 @@ public class ItemDTO {
 
     public ItemDTO(int itemid, String itemheadline, String defaultImageUrl, JSONArray allPics,
                    BaseAdapter listAdapter) {
-        this.imageURLLists = allPics;
+        //Converting jsonarray to ArrayList for putExtra's pleasure
+        if (allPics != null) {
+            imageURLLists = new ArrayList(allPics.length());
+            for (int i = 0; i < allPics.length(); i++) {
+                try {
+                    imageURLLists.add(allPics.getJSONObject(i).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         // Hvis der er et billede tilknytte genstanden
@@ -119,7 +129,7 @@ public class ItemDTO {
         this.donator = donator;
         this.producer = producer;
         this.postnummer = postnummer;
-        this.imageURLLists = imageURLLists;
+//        this.imageURLLists = imageURLLists;
     }
 
     public int getItemid() {
