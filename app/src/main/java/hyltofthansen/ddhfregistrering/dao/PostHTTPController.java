@@ -117,7 +117,7 @@ public class PostHTTPController extends AsyncTask {
                     Log.d(TAG, "response 2: " + response.toString());
                     itemMedBilled = new JSONObject(response.toString());
                     PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, itemMedBilled.getInt("itemid"));
-                    postHTTPPicture.execute();
+                    postHTTPPicture.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
