@@ -21,6 +21,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import java.io.File;
@@ -67,11 +68,11 @@ public class NewItemPicturesFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "inde i onStart width" + iv_gallery.getMeasuredWidth() + " height " + iv_gallery.getMeasuredHeight());
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        Log.d(TAG, "inde i onStart width" + iv_gallery.getMeasuredWidth() + " height " + iv_gallery.getMeasuredHeight());
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,9 +82,18 @@ public class NewItemPicturesFragment extends Fragment {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
-        width = iv_gallery.getWidth();
-        height = iv_gallery.getHeight();
-        Log.d(TAG, width + " width i createView og height " + height);
+
+        iv_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                width = iv_gallery.getWidth()/2; // width is ready
+                height = iv_gallery.getHeight()/2; // height is ready
+                Log.d(TAG, "onGlobalLayout(): "+width + " width og height " + height);
+            }
+        });
+        //width = iv_gallery.getWidth();
+        //height = iv_gallery.getHeight();
+        //Log.d(TAG, width + " width i createView og height " + height);
         //Læs om der er valgt et billede i forvejen
         String imgURI = prefs.getString("chosenImage", null);
         if (imgURI != null) {
@@ -218,18 +228,18 @@ public class NewItemPicturesFragment extends Fragment {
         }
 
         // Get the dimensions of the View
-        int targetW = gallery.getWidth();
-        int targetH = gallery.getHeight();
+        int targetW = width;
+        int targetH = height;
         Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
+//        Display display = getActivity().getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        int width = size.x;
+//        int height = size.y;
 
         //targetW = width/3;
         //targetH = height/3;
-        Log.d(TAG, "imageView bredde: "+targetW+", højde: "+targetH);
+        //Log.d(TAG, "imageView bredde: "+targetW+", højde: "+targetH);
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -242,12 +252,15 @@ public class NewItemPicturesFragment extends Fragment {
         Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/2, photoH/2); //Divide by zero fejl
+        Log.d(TAG, "photoW/targetW: "+photoW/targetW);
+        Log.d(TAG, "photoH/targetH: "+photoH/targetH);
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        Log.d(TAG, "scaleFactor: "+scaleFactor);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
+        //bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
         Log.d(TAG, "Ny billede bredde: "+bitmap.getWidth()+", højde: "+bitmap.getHeight());
