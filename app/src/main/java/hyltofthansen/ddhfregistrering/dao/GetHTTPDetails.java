@@ -1,9 +1,7 @@
 package hyltofthansen.ddhfregistrering.dao;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -102,7 +100,7 @@ public class GetHTTPDetails extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         //Log.d(TAG, String.valueOf(items.size() + " Item size"));
-        detailsFragment.updateTextViews();
+        detailsFragment.updateEditViews();
         super.onPostExecute(o);
     }
 }

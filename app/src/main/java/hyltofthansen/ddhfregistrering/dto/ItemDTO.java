@@ -13,8 +13,8 @@ import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO implements Serializable {
     private int itemid, postnummer;
-    private String itemheadline, itemdescription, itemreceived,
-            itemdatingfrom, itemdatingto, donator, producer;
+    private String itemheadline = "", itemdescription = "", itemreceived = "",
+            itemdatingfrom = "", itemdatingto = "", donator = "", producer = "";
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
 
     public ArrayList<String> getImageURLLists() {
@@ -141,7 +141,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getDonator() {
-        return donator;
+        if (donator != null) return donator;
+        return "";
     }
 
     public void setDonator(String donator) {
@@ -149,7 +150,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getItemdatingfrom() {
-        return itemdatingfrom;
+        if (itemdatingfrom != null) return itemdatingfrom;
+        return "";
     }
 
     public void setItemdatingfrom(String itemdatingfrom) {
@@ -157,7 +159,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getItemdatingto() {
-        return itemdatingto;
+        if (itemdatingto != null) return itemdatingto;
+        return "";
     }
 
     public void setItemdatingto(String itemdatingto) {
@@ -165,7 +168,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getItemdescription() {
-        return itemdescription;
+        if (itemdescription != null) return itemdescription;
+        return "";
     }
 
     public void setItemdescription(String itemdescription) {
@@ -173,7 +177,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getItemheadline() {
-        return itemheadline;
+        if (itemheadline != null) return itemheadline;
+        return "";
     }
 
     public void setItemheadline(String itemheadline) {
@@ -181,7 +186,8 @@ public class ItemDTO implements Serializable {
     }
 
     public String getItemreceived() {
-        return itemreceived;
+        if (itemreceived != null) return itemreceived;
+        return "";
     }
 
     public void setItemreceived(String itemreceived) {
@@ -189,15 +195,18 @@ public class ItemDTO implements Serializable {
     }
 
     public String getProducer() {
-        return producer;
+        if (producer != null) return producer;
+        return "";
     }
 
     public void setProducer(String producer) {
         this.producer = producer;
     }
 
-    public int getpostnummer() {
-        return postnummer;
+    public String getpostnummer() {
+        String temp = String.valueOf(postnummer);
+        if (temp != null) return temp;
+        return "";
     }
 
     public void setpostnummer(int postnummer) {
@@ -220,4 +229,5 @@ public class ItemDTO implements Serializable {
         return "itemid: "+itemid+", itemheadline: "+itemheadline+", itemdescription: "+itemdescription+", itemreceived: "+itemreceived+", itemdatingfrom: "+itemdatingfrom
                 +", itemdatingto: "+itemdatingto+", donator: "+donator+", producer: "+producer+", postnummer: "+postnummer;
     }
+
 }

@@ -10,7 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
@@ -27,6 +28,8 @@ public class ItemDetailInfoFragment extends Fragment {
     View root;
     ArrayList<ItemDTO> items;
     private ItemDTO itemFromExtra;
+    private EditText et_headline, et_descript, et_receiveDate, et_datingFrom, et_datingTo,
+            et_donator, et_producer, et_zip;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,35 +40,43 @@ public class ItemDetailInfoFragment extends Fragment {
         items = new ArrayList<ItemDTO>();
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
         getHTTPDetails.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
+        et_descript = (EditText) root.findViewById(R.id.itemdetails_DescripEdit);
+        et_receiveDate = (EditText) root.findViewById(R.id.itemdetails_ReceiveEdit);
+        et_datingFrom = (EditText) root.findViewById(R.id.itemdetails_DatingFromEdit);
+        et_datingTo = (EditText) root.findViewById(R.id.itemdetails_DatingToEdit);
+        et_donator = (EditText) root.findViewById(R.id.itemdetails_DonatorEdit);
+        et_producer = (EditText) root.findViewById(R.id.itemdetails_ProdEdit);
+        et_zip = (EditText) root.findViewById(R.id.itemdetails_ZipEdit);
+
         return root;
     }
 
-    public void updateTextViews() {
-        TextView tv_headline = (TextView) root.findViewById(R.id.tv_itemheadline);
-        tv_headline.setText(item.getItemheadline().toString());
+    public void updateEditViews() {
+        et_headline.setEnabled(false);
+        et_headline.setText(item.getItemheadline().toString());
 
-        TextView tv_descript = (TextView) root.findViewById(R.id.tv_itemdescr);
-        tv_descript.setText(items.get(0).getItemdescription().toString());
+        et_descript.setEnabled(false);
+        et_descript.setText(item.getItemdescription().toString());
 
-        TextView tv_received = (TextView) root.findViewById(R.id.tv_receivedDate);
-        tv_received.setText(items.get(0).getItemreceived().toString());
+        et_receiveDate.setEnabled(false);
+        et_receiveDate.setText(item.getItemreceived().toString());
 
-        TextView tv_datingFrom = (TextView) root.findViewById(R.id.tv_datingFrom);
-        tv_datingFrom.setText(items.get(0).getItemdatingfrom().toString());
+        et_datingFrom.setEnabled(false);
+        et_datingFrom.setText(item.getItemdatingfrom().toString());
 
-        TextView tv_datingTo = (TextView) root.findViewById(R.id.tv_datingTo);
-        tv_datingTo.setText(items.get(0).getItemdatingfrom().toString());
+        et_datingTo.setEnabled(false);
+        et_datingTo.setText(item.getItemdatingto().toString());
 
-        TextView tv_donator = (TextView) root.findViewById(R.id.tv_donator);
-        tv_donator.setText(items.get(0).getDonator().toString());
+        et_donator.setEnabled(false);
+        et_donator.setText(item.getDonator().toString());
 
-        TextView tv_producer = (TextView) root.findViewById(R.id.tv_producer);
-        tv_producer.setText(items.get(0).getProducer().toString());
+        et_producer.setEnabled(false);
+        et_producer.setText(item.getProducer().toString());
 
-        TextView tv_postnr = (TextView) root.findViewById(R.id.tv_postnr);
-        tv_postnr.setText(String.valueOf(items.get(0).getpostnummer()));
-
-
+        et_zip.setEnabled(false);
+        et_zip.setText(item.getpostnummer());
     }
 
     public void setItem(ItemDTO item) {
@@ -96,11 +107,26 @@ public class ItemDetailInfoFragment extends Fragment {
                 dialog.show();
                 return true;
             case R.id.action_edit_item:
-
+                // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar
+                enableEditTexts();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Enables all the edittexts, making them editable.
+     */
+    private void enableEditTexts() {
+        et_headline.setEnabled(true);
+        et_descript.setEnabled(true);
+        et_receiveDate.setEnabled(true);
+        et_datingFrom.setEnabled(true);
+        et_datingTo.setEnabled(true);
+        et_donator.setEnabled(true);
+        et_producer.setEnabled(true);
+        et_zip.setEnabled(true);
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
