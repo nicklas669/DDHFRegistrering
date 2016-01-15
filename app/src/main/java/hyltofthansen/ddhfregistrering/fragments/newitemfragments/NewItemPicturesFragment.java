@@ -2,7 +2,9 @@ package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.database.Cursor;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import java.io.File;
@@ -90,9 +94,9 @@ public class NewItemPicturesFragment extends Fragment {
         iv_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                width = iv_gallery.getWidth()/2; // width is ready
-                height = iv_gallery.getHeight()/2; // height is ready
-                Log.d(TAG, "onGlobalLayout(): "+width + " width og height " + height);
+                width = iv_gallery.getWidth() / 2; // width is ready
+                height = iv_gallery.getHeight() / 2; // height is ready
+                Log.d(TAG, "onGlobalLayout(): " + width + " width og height " + height);
             }
         });
 
@@ -136,7 +140,13 @@ public class NewItemPicturesFragment extends Fragment {
                 }
             }
         });
+
         return root;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void showNoCameraPopup() {
