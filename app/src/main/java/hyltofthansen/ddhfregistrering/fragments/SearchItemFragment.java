@@ -54,7 +54,7 @@ public class SearchItemFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if(getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
+        if (getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
             getHTTP.cancel(true);
             Log.d(TAG, "getHTTP køres fra SearchFragment");
         }
@@ -91,7 +91,7 @@ public class SearchItemFragment extends Fragment {
                 seeItemDetails.putExtra("itemid", item.getItemid());
                 seeItemDetails.putExtra("itemheadline", item.getItemheadline());
                 seeItemDetails.putExtra("images", item.getImageURLLists());
-                seeItemDetails.putStringArrayListExtra("images",item.getImageURLLists());
+                seeItemDetails.putStringArrayListExtra("images", item.getImageURLLists());
                 Log.d(TAG, item.getImageURLLists().toString());
                 Log.d(TAG, item.getItemheadline().toString());
                 Log.d(TAG, "Sætter data i extra");
@@ -121,6 +121,7 @@ public class SearchItemFragment extends Fragment {
 
     /**
      * Henter items ned fra DB og gemmer dem i items listen
+     *
      * @param items
      * @param searchItemFragment
      */
@@ -152,7 +153,7 @@ public class SearchItemFragment extends Fragment {
 
                 // Do animation start
                 LayoutInflater inflater = getLayoutInflater(getArguments());
-                ImageView iv = (ImageView)inflater.inflate(R.layout.act_main_renewitemsbutton, null);
+                ImageView iv = (ImageView) inflater.inflate(R.layout.act_main_renewitemsbutton, null);
                 Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.searchlist_refresh_rotate);
                 rotation.setRepeatCount(Animation.INFINITE);
                 iv.startAnimation(rotation);
@@ -164,14 +165,18 @@ public class SearchItemFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void stopRefreshingAnimation()
-    {
-        MenuItem m = mymenu.findItem(R.id.action_refresh_items);
-        if(m.getActionView()!= null)
-        {
-            // Remove the animation.
-            m.getActionView().clearAnimation();
-            m.setActionView(null);
+
+    public void stopRefreshingAnimation() {
+        try {
+            MenuItem m = mymenu.findItem(R.id.action_refresh_items);
+            if (m.getActionView() != null) {
+                // Remove the animation.
+                m.getActionView().clearAnimation();
+                m.setActionView(null);
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, e.toString());
         }
+
     }
 }
