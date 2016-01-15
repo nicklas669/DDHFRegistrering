@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -123,11 +124,16 @@ public class PostHTTPSound extends AsyncTask {
 
         responseCode = Integer.valueOf(o.toString());
         if (responseCode == 200) {
-            // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("Genstand oprettet og lydfil uploadet. Responskode: " + responseCode)
-                    .setTitle("Success");
-            //Gå tilbage til hovedmenu her
-            //fm.popBackStack();
+                builder.setMessage("Genstand oprettet. Responskode: " + responseCode).setTitle("Success")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Tilbage til hovedmenu
+                                context.onBackPressed();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
         } else {
             builder.setMessage("Genstand oprettet men fejl ved upload af lydfil. Responskode: " + responseCode)
                     .setTitle("Fejl");

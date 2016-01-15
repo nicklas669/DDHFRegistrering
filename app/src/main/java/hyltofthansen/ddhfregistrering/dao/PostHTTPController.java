@@ -109,7 +109,6 @@ public class PostHTTPController extends AsyncTask {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         responseCode = Integer.valueOf(o.toString());
-        //int responseCode = 201;
         if (responseCode == 201) {
             //Check om der er valgt et billede
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
