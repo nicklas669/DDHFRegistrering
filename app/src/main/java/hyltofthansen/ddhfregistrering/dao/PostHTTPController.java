@@ -145,6 +145,7 @@ public class PostHTTPController extends AsyncTask {
                         .setTitle("Success");
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
 
@@ -156,6 +157,7 @@ public class PostHTTPController extends AsyncTask {
                     .setTitle("Fejl");
             // 3. Get the AlertDialog from create()
             AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(true);
             dialog.show();
         }
     }
