@@ -41,6 +41,8 @@ public class ItemDetailInfoFragment extends Fragment {
         GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
         getHTTPDetails.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+
+
         et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
         et_descript = (EditText) root.findViewById(R.id.itemdetails_DescripEdit);
         et_receiveDate = (EditText) root.findViewById(R.id.itemdetails_ReceiveEdit);
@@ -54,29 +56,39 @@ public class ItemDetailInfoFragment extends Fragment {
     }
 
     public void updateEditViews() {
+        item = items.get(0);
         et_headline.setEnabled(false);
         et_headline.setText(item.getItemheadline().toString());
 
         et_descript.setEnabled(false);
         et_descript.setText(item.getItemdescription().toString());
+        Log.d(TAG, item.getItemdescription().toString());
 
         et_receiveDate.setEnabled(false);
-        et_receiveDate.setText(item.getItemreceived().toString());
+        if(!item.getItemreceived().equals("null"))
+            et_receiveDate.setText(item.getItemreceived().toString());
+
 
         et_datingFrom.setEnabled(false);
-        et_datingFrom.setText(item.getItemdatingfrom().toString());
+        if(!item.getItemdatingfrom().equals("null") ||item.getItemdatingfrom().equals("0000-00-00") )
+            et_datingFrom.setText(item.getItemdatingfrom().toString());
+
 
         et_datingTo.setEnabled(false);
-        et_datingTo.setText(item.getItemdatingto().toString());
+        if(!item.getItemdatingto().equals("null") ||item.getItemdatingto().equals("0000-00-00"))
+            et_datingTo.setText(item.getItemdatingto().toString());
 
         et_donator.setEnabled(false);
-        et_donator.setText(item.getDonator().toString());
+        if(!item.getDonator().equals("null"))
+            et_donator.setText(item.getDonator().toString());
 
         et_producer.setEnabled(false);
-        et_producer.setText(item.getProducer().toString());
+        if(!item.getProducer().equals("null"))
+            et_producer.setText(item.getProducer().toString());
 
         et_zip.setEnabled(false);
-        et_zip.setText(item.getpostnummer());
+        if(!item.getpostnummer().equals("0"))
+            et_zip.setText(item.getpostnummer());
     }
 
     public void setItem(ItemDTO item) {

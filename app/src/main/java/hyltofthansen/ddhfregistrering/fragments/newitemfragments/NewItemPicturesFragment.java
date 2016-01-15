@@ -50,7 +50,9 @@ public class NewItemPicturesFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState != null) {
             filePathFromState = savedInstanceState.getString("filePath");
-            photoFile = new File(filePathFromState);
+            if (filePathFromState != null) {
+                photoFile = new File(filePathFromState);
+            }
             width = savedInstanceState.getInt("width");
             height = savedInstanceState.getInt("height");
             scaledBitmap = savedInstanceState.getParcelable("scaledBitmap");
