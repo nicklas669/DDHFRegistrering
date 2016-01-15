@@ -23,6 +23,11 @@ public class NewItemActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_newitem_swipeview);

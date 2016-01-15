@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsPagerAdapter;
@@ -20,7 +21,6 @@ import hyltofthansen.ddhfregistrering.adapters.ItemDetailsPagerAdapter;
 public class ItemDetailsActivity extends AppCompatActivity {
     private static final String TAG = "ItemDetailsActivity";
     private ViewPager viewPager;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

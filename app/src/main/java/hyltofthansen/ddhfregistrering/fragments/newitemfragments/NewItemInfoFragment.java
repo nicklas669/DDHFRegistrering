@@ -46,8 +46,7 @@ public class NewItemInfoFragment extends Fragment {
                                 .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer", refProducentTxt.getText().toString())
                                 .put("postnummer", postNrTxt.getText().toString());
                         PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
-                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); //ExecuteOnExecutor gør at Tasken bliver eksekveret med det samme
-
+                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

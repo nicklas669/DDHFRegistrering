@@ -82,11 +82,8 @@ public class DeleteHTTP extends AsyncTask {
         }
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         //super.onPostExecute(o);
-    }
-
-    public void fetchItems() {
-        this.execute();
     }
 }

@@ -54,40 +54,6 @@ public class ItemDTO implements Serializable {
         this.images = images;
     }
 
-
-
-    //TODO Fjern alle de constructorer vi ikke bruger herunder
-//    // Constructor uden Item ID men med billeder
-//    public ItemDTO(String itemheadline, String itemdescription,
-//                   String itemreceived, String itemdatingfrom, String itemdatingto,
-//                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
-//        this.itemid = -1;
-//        this.itemheadline = itemheadline;
-//        this.itemdescription = itemdescription;
-//        this.itemreceived = itemreceived;
-//        this.itemdatingfrom = itemdatingfrom;
-//        this.itemdatingto = itemdatingto;
-//        this.donator = donator;
-//        this.producer = producer;
-//        this.postnummer = postnummer;
-//        this.images = images;
-//    }
-//
-//    // Constructor uden item ID og billede
-//    public ItemDTO(String itemheadline, String itemdescription,
-//                   String itemreceived, String itemdatingfrom, String itemdatingto,
-//                   String donator, String producer, int postnummer) {
-//        this.itemid = -1;
-//        this.itemheadline = itemheadline;
-//        this.itemdescription = itemdescription;
-//        this.itemreceived = itemreceived;
-//        this.itemdatingfrom = itemdatingfrom;
-//        this.itemdatingto = itemdatingto;
-//        this.donator = donator;
-//        this.producer = producer;
-//        this.postnummer = postnummer;
-//    }
-
     public ItemDTO(int itemid, String itemheadline, String defaultImageUrl, JSONArray allPics,
                    BaseAdapter listAdapter) {
         //Converting jsonarray to ArrayList for putExtra's pleasure

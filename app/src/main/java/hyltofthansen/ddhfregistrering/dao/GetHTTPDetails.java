@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -69,6 +70,7 @@ public class GetHTTPDetails extends AsyncTask {
             }
             in.close();
 
+
             JSONObject item = new JSONObject(response.toString());
 
             items.add(new ItemDTO(item.getInt("itemid"),
@@ -90,7 +92,10 @@ public class GetHTTPDetails extends AsyncTask {
             }
 
 
-        } catch (Exception e) {
+        } catch (JSONException e) {
+            Log.d(TAG, e.toString());
+        }
+        catch (Exception e) {
             e.printStackTrace();
             response.append("Der opstod en fejl! "+e.toString());
         }

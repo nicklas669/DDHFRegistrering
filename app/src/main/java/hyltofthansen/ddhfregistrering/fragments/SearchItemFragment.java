@@ -126,8 +126,15 @@ public class SearchItemFragment extends Fragment {
      */
     public void fetchItemsFromAPI(ArrayList<ItemDTO> items,
                                   SearchItemFragment searchItemFragment) {
-        getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
-        getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (getHTTP == null) {
+            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
+            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        if (getHTTP.getStatus() == AsyncTask.Status.FINISHED) {
+            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
+            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        Log.d(TAG, getHTTP.getStatus().toString() + " onStatus()");
     }
 
     @Override
@@ -144,8 +151,7 @@ public class SearchItemFragment extends Fragment {
                 fetchItemsFromAPI(items, this);
 
                 // Do animation start
-                LayoutInflater inflater = (LayoutInflater) getLayoutInflater(getArguments());
-                //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = getLayoutInflater(getArguments());
                 ImageView iv = (ImageView)inflater.inflate(R.layout.act_main_renewitemsbutton, null);
                 Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.searchlist_refresh_rotate);
                 rotation.setRepeatCount(Animation.INFINITE);

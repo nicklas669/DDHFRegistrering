@@ -2,7 +2,9 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,12 +37,14 @@ public class PostHTTPController extends AsyncTask {
     private JSONObject item;
     private SharedPreferences prefs;
     private android.support.v4.app.FragmentManager fm;
+    private Fragment fragment;
 
 
     public PostHTTPController(JSONObject JSONitem, Activity context, FragmentManager fm) {
         this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;
+        this.fragment = fragment;
     }
 
 
@@ -140,18 +144,19 @@ public class PostHTTPController extends AsyncTask {
             }
 
             if (mediaAttached == false) {
-                Log.d(TAG, "Der hører IKKE et billede eller lyd? til genstanden!!");
-                builder.setMessage("Genstand oprettet. Responskode: " + responseCode)
-                        .setTitle("Success");
-                // 3. Get the AlertDialog from create()
-                AlertDialog dialog = builder.create();
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
+                builder.setMessage("Genstand oprettet. Responskode: " + responseCode).setTitle("Success")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Tilbage til hovedmenu
+                                context.onBackPressed();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
 
-//            }
-            //Gå tilbage til hovedmenu her
-            //fm.popBackStack();
+
+            }
         } else {
             builder.setMessage("Fejl v. oprettelse af genstand. Responskode: " + responseCode)
                     .setTitle("Fejl");
