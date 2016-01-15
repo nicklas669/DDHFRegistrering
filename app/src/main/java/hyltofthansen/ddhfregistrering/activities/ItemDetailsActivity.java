@@ -21,7 +21,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.itemdetails_swipeview);
+        setContentView(R.layout.act_itemdetails_swipeview);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);

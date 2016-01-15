@@ -34,7 +34,7 @@ public class ItemDetailInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        root = inflater.inflate(R.layout.itemdetails_info, container, false);
+        root = inflater.inflate(R.layout.fr_itemdetails_info, container, false);
         item = getItemFromExtra();
         getActivity().setTitle(item.getItemheadline().toString());
         items = new ArrayList<ItemDTO>();

@@ -82,7 +82,7 @@ public class NewItemPicturesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //getActivity().setTitle("Vedhæft billede");
 
-        View root = inflater.inflate(R.layout.newitem_pictures, container, false); // sæt layout op
+        View root = inflater.inflate(R.layout.fr_newitem_pictures, container, false); // sæt layout op
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
