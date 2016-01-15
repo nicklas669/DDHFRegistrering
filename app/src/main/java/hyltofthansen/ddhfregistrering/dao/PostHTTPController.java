@@ -44,7 +44,6 @@ public class PostHTTPController extends AsyncTask {
         this.JSONitem = JSONitem;
         this.context = context;
         this.fm = fm;
-        this.fragment = fragment;
     }
 
 

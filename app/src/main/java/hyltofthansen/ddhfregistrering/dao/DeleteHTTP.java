@@ -1,7 +1,9 @@
 package hyltofthansen.ddhfregistrering.dao;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
@@ -70,19 +72,36 @@ public class DeleteHTTP extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        int response = (int) o;
+        int responseCode = (int) o;
         //Log.d(TAG, String.valueOf(items.size() + " Item size"));
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (response == 200) {
-            builder.setMessage("Genstand slettet. Responskode: " + response)
-                    .setTitle("Success");
+        if (responseCode == 200) {
+//            builder.setMessage("Genstand slettet. Responskode: " + responseCode)
+//                    .setTitle("Success");
+            builder.setMessage("Genstand slettet. Responskode: " + responseCode).setTitle("Success")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //Tilbage til hovedmenu
+                            Activity activity = (Activity) context;
+                            activity.onBackPressed();
+                        }
+                    });
         } else {
-            builder.setMessage("Der skete en fejl. Responskode: " + response)
-                    .setTitle("Fejl");
+//            builder.setMessage("Der skete en fejl. Responskode: " + responseCode)
+//                    .setTitle("Fejl");
+            builder.setMessage("Fejl ved sletning. Responskode: " + responseCode).setTitle("Fejl")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //Tilbage til hovedmenu
+//                            Activity activity = (Activity) context;
+//                            activity.onBackPressed();
+                        }
+                    });
         }
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         //super.onPostExecute(o);
     }
