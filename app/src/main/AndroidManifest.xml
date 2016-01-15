@@ -28,7 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.NewItemActivity"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme">
+
         </activity>
         <activity android:name=".activities.ItemDetailsActivity"
             android:windowSoftInputMode="stateHidden"
