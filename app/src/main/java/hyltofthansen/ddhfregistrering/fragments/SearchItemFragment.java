@@ -37,7 +37,7 @@ public class SearchItemFragment extends Fragment {
     private EditText inputSearch;
     private static final String TAG = "SearchItemFragment";
     private ItemDTO item;
-    private Intent seeItemDetails;
+    private Intent itemDetails;
     private Menu mymenu;
 
 
@@ -86,16 +86,16 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                seeItemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
+                itemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
                 item = listAdapter.getItem(position);
-                seeItemDetails.putExtra("itemid", item.getItemid());
-                seeItemDetails.putExtra("itemheadline", item.getItemheadline());
-                seeItemDetails.putExtra("images", item.getImageURLLists());
-                seeItemDetails.putStringArrayListExtra("images", item.getImageURLLists());
+                itemDetails.putExtra("itemid", item.getItemid());
+                itemDetails.putExtra("itemheadline", item.getItemheadline());
+                itemDetails.putExtra("images", item.getImageURLLists());
+                itemDetails.putStringArrayListExtra("images", item.getImageURLLists());
                 Log.d(TAG, item.getImageURLLists().toString());
                 Log.d(TAG, item.getItemheadline().toString());
                 Log.d(TAG, "Sætter data i extra");
-                startActivity(seeItemDetails);
+                startActivity(itemDetails);
             }
         });
 
@@ -135,7 +135,7 @@ public class SearchItemFragment extends Fragment {
             getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
             getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-        Log.d(TAG, getHTTP.getStatus().toString() + " onStatus()");
+        Log.d(TAG, getHTTP.getStatus().toString() + " getHTTP onStatus()");
     }
 
     @Override

@@ -76,7 +76,6 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
             //Get all image URL's from an item
             for (int x = 0; x < MAX_PICS; x++) {
                 String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
-                if (!imageURL.equals("")) {
                     // First decode with inJustDecodeBounds=true to check dimensions
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
@@ -106,7 +105,6 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                     }
                     Log.d(TAG, "Færdig med at hente gridview pic");
                     publishProgress();
-                }
             }
             Log.d(TAG, item.getJSONObject("images").getJSONObject("image_0").get("href").toString());
 
