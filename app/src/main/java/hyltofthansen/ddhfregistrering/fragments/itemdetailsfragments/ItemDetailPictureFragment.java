@@ -1,6 +1,7 @@
 package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,9 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.adapters.ImageAdapter;
+import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
  * ItemDetailPictureFragment shows gridview of an item's pictures
@@ -25,8 +25,6 @@ public class ItemDetailPictureFragment extends Fragment {
     private static final String TAG ="ItemDetailsPicture" ;
     private ArrayList<Bitmap> pictures;
     private View root;
-    private ArrayList<ItemDTO> items;
-    private int itemIdFromExtra;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,18 +37,19 @@ public class ItemDetailPictureFragment extends Fragment {
         Log.d(TAG, "createView");
         pictures = new ArrayList<Bitmap>();
 
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity(),pictures);
+        ItemDetailsImageAdapter itemDetailsImageAdapter = new ItemDetailsImageAdapter(getActivity(),pictures);
 
         int itemid = getItemIdFromExtra();
+        Log.d(TAG, String.valueOf(itemid) );
 
         //Fetch pictures for itemid
         GetItemPicturesForGridViewTask getItemPictures =
                 new GetItemPicturesForGridViewTask(getContext(),
-                        itemid,pictures, imageAdapter);
-        getItemPictures.execute();
+                        itemid,pictures, itemDetailsImageAdapter);
+        getItemPictures.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);  //Burde have mere styr på trådene
 
         //Set adapter
-        gridview.setAdapter(imageAdapter);
+        gridview.setAdapter(itemDetailsImageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

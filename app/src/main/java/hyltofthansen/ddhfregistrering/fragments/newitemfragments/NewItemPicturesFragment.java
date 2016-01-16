@@ -166,6 +166,7 @@ public class NewItemPicturesFragment extends Fragment {
                 Log.d(TAG, "intent.getData(): "+intent.getData());
                 imageUri = intent.getData();
 
+                //TODO Current min er 15
                 String wholeID = DocumentsContract.getDocumentId(imageUri);
 
                 // Split at colon, use second item in the array

@@ -4,23 +4,32 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.BaseAdapter;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 
 /**
- * Created by hylle on 14-01-2016.
+ * Class getting images for gridview for a specific item
  */
 public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitmap> {
-    private static final String TAG = "DownloadImageTask";
-    ArrayList<Bitmap> imageList;
-    BaseAdapter listAdapter;
-    String urldisplay;
+    private static final String TAG = "GridViewImageTask";
+    private ArrayList<Bitmap> imageList;
+    private BaseAdapter listAdapter;
+    private String itemIDURL;
     private int itemID;
     private Context ctx;
+    private Bitmap currentImage;
 
 
     public GetItemPicturesForGridViewTask
@@ -35,23 +44,51 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     }
 
     protected Bitmap doInBackground(String... urls) {
-        String url = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
+        Log.d(TAG, "Henter gridview pics");
+        itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
                 "?userID=56837dedd2d76438906140";
 
         //Get item image url's
         String USER_AGENT = "Mozilla/5.0";
+        StringBuffer response = new StringBuffer();
 
-        Bitmap image = null;
+        try {
+            URL obj = new URL(itemIDURL);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            // optional, default is GET
+            con.setRequestMethod("GET");
+            //add request header
+            con.setRequestProperty("User-Agent", USER_AGENT);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                //Log.d(TAG, String.valueOf(in.readLine()));
+                response.append(inputLine);
+                //Log.d(TAG, String.valueOf(response));
+            }
+            in.close();
+
+            JSONObject item = new JSONObject(response.toString());
+
+            Log.d(TAG, item.getJSONObject("images").toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // First decode with inJustDecodeBounds=true to check dimensions
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        urldisplay = "http://msondrup.dk/api/uploads/32_568c0bd3769f2.jpg"; //Wuhehe
-        //Log.d("DownloadImageTask", urldisplay);
         InputStream in;
+
+        //Henter billede(r)
         try {
-            in = new java.net.URL(urldisplay).openStream();
+            in = new URL(itemIDURL).openStream();
             BitmapFactory.decodeStream(in, null, options);
             in.close();
         } catch (IOException e) {
@@ -59,23 +96,27 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         }
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 50, 50);
+        options.inSampleSize = calculateInSampleSize(options, 300, 300);
 
         // Decode bitmap with inSampleSize set
         try {
-            in = new java.net.URL(urldisplay).openStream();
+            in = new URL(itemIDURL).openStream();
             options.inJustDecodeBounds = false;
-            image = BitmapFactory.decodeStream(in, null, options);
+            currentImage = BitmapFactory.decodeStream(in, null, options);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return image;
+        Log.d(TAG, "Færdig med at hente gridview pics");
+        publishProgress();
+        return currentImage;
     }
 
-    protected void onPostExecute(Bitmap result) {
-        imageList.add(result);
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        imageList.add(currentImage);
         listAdapter.notifyDataSetChanged();
+        super.onProgressUpdate(values);
     }
 
     /**

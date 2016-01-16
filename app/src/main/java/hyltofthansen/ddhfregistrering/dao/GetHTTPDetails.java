@@ -83,14 +83,14 @@ public class GetHTTPDetails extends AsyncTask {
                     item.optString("producer"),
                     item.optInt("postnummer"),
                     item.optJSONArray("images")));
-            if(item.getInt("itemid") == 309) {
-//                    Log.d(TAG, item.getString("images"));
-//                    Log.d(TAG, item.get("image_0").toString());
-                Log.d(TAG, item.names().toString());
-                Log.d(TAG, items.get(0).getItemdescription().toString());
-//                Log.d(TAG, item.has("images")
-                    Log.d(TAG, item.getJSONObject("images").toString());
-            }
+//            if(item.getInt("itemid") == 309) {
+////                    Log.d(TAG, item.getString("images"));
+////                    Log.d(TAG, item.get("image_0").toString());
+//                Log.d(TAG, item.names().toString());
+//                Log.d(TAG, items.get(0).getItemdescription().toString());
+////                Log.d(TAG, item.has("images")
+//                    Log.d(TAG, item.getJSONObject("images").toString());
+//            }
 
 
         } catch (JSONException e) {

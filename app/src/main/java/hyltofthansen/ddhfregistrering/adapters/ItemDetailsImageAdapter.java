@@ -24,13 +24,13 @@ import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
 /**
  * Created by hylle on 13-01-2016.
  */
-public class ImageAdapter extends BaseAdapter {
-    private static final String TAG = "ImageAdapter";
+public class ItemDetailsImageAdapter extends BaseAdapter {
+    private static final String TAG = "ItemDetailsImageAdapter";
     private Context mContext;
     private int imgWidth;
     private ArrayList<Bitmap> pictures;
 
-    public ImageAdapter(Context c, ArrayList<Bitmap> pictures) {
+    public ItemDetailsImageAdapter(Context c, ArrayList<Bitmap> pictures) {
         //Get itemid from extra data which was set when user clicked in SearchItemFragment
 //        itemId = getItemIdFromExtra();
 //        Log.d(TAG, "item id er " + itemId);
@@ -39,7 +39,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return pictures.size();
     }
 
     public Object getItem(int position) {
@@ -64,49 +64,25 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-//        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageBitmap(pictures.get(position));
 
         //Check if picture actually contains data before displaying it
-        if((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
-            imageView.setImageBitmap(pictures.get(position));
-        } else {
-            imageView.setImageResource(R.drawable.noimage);
+        if (pictures != null && (pictures.size() > 0)) {
+            Log.d(TAG, String.valueOf(pictures.size() + " pictures size"));
+            try {
+                if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
+                    imageView.setImageBitmap(pictures.get(position));
+                } else {
+                    imageView.setImageResource(R.drawable.noimage);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
 
         //Get scaled picture array from itemid
         return imageView;
     }
-
-    public int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    // references to our images
-    private Integer[] mThumbIds = {
-//            R.drawable.sample_0, R.drawable.sample_1,
-//            R.drawable.sample_2, R.drawable.sample_3,
-//            R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7,
-    };
 
     /**
      * Sets the imgwidth to half of screensize - so two pictures for each row on gridview.
@@ -121,11 +97,4 @@ public class ImageAdapter extends BaseAdapter {
         return imgWidth;
     }
 
-    public int getItemIdFromExtra() {
-        Intent intent = ((Activity) mContext).getIntent();
-        int itemid;
-        Bundle extras = intent.getExtras();
-        itemid= extras.getInt("itemid");
-        return itemid;
-    }
 }
