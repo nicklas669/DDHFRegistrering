@@ -30,6 +30,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private int itemID;
     private Context ctx;
     private Bitmap currentImage;
+    private final int MAX_PICS = 25;
 
 
     public GetItemPicturesForGridViewTask
@@ -73,7 +74,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
 
             JSONObject item = new JSONObject(response.toString());
             //Get all image URL's from an item
-            for (int x = 0; x < 1; x++) {
+            for (int x = 0; x < MAX_PICS; x++) {
                 String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
                 if (!imageURL.equals("")) {
                     // First decode with inJustDecodeBounds=true to check dimensions
