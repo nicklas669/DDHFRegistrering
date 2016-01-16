@@ -60,55 +60,58 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
 
-            BufferedReader in = new BufferedReader(
+            BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
 
             String inputLine;
-            while ((inputLine = in.readLine()) != null) {
+            while ((inputLine = bufferedReader.readLine()) != null) {
                 //Log.d(TAG, String.valueOf(in.readLine()));
                 response.append(inputLine);
                 //Log.d(TAG, String.valueOf(response));
             }
-            in.close();
+            bufferedReader.close();
 
             JSONObject item = new JSONObject(response.toString());
+            //Get all image URL's from an item
+            for (int x = 0; x < 1; x++) {
+                String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
+                if (!imageURL.equals("")) {
+                    // First decode with inJustDecodeBounds=true to check dimensions
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
 
-            Log.d(TAG, item.getJSONObject("images").toString());
+                    //Get pictures
+                    InputStream in;
+                    try {
+                        in = new URL(imageURL).openStream();
+                        BitmapFactory.decodeStream(in, null, options);
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
+                    // Calculate inSampleSize
+                    options.inSampleSize = calculateInSampleSize(options, 300, 300);
+
+                    // Decode bitmap with inSampleSize set
+                    try {
+                        in = new URL(imageURL).openStream();
+                        options.inJustDecodeBounds = false;
+                        currentImage = BitmapFactory.decodeStream(in, null, options);
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        break;
+                    }
+                    Log.d(TAG, "Færdig med at hente gridview pic");
+                    publishProgress();
+                }
+            }
+            Log.d(TAG, item.getJSONObject("images").getJSONObject("image_0").get("href").toString());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        InputStream in;
-
-        //Henter billede(r)
-        try {
-            in = new URL(itemIDURL).openStream();
-            BitmapFactory.decodeStream(in, null, options);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 300, 300);
-
-        // Decode bitmap with inSampleSize set
-        try {
-            in = new URL(itemIDURL).openStream();
-            options.inJustDecodeBounds = false;
-            currentImage = BitmapFactory.decodeStream(in, null, options);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "Færdig med at hente gridview pics");
-        publishProgress();
         return currentImage;
     }
 
