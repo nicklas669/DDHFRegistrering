@@ -31,13 +31,6 @@ public class GetHTTP extends AsyncTask {
     private SearchItemFragment searchItemFragment;
     private static final String TAG = "GetHTTP";
 
-
-    public GetHTTP(Context context, ArrayList<ItemDTO> items, CustomArrayAdapter listAdapter) {
-        this.context = context;
-        this.items = items;
-        this.listAdapter = listAdapter;
-    }
-
     public GetHTTP(Context context, ArrayList<ItemDTO> items, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
         this.context = context;
         this.items = items;

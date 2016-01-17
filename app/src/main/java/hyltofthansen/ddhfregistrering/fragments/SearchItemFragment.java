@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
@@ -39,6 +41,7 @@ public class SearchItemFragment extends Fragment {
     private ItemDTO item;
     private Intent itemDetails;
     private Menu mymenu;
+    private Singleton singleton;
 
 
     @Override
@@ -51,34 +54,40 @@ public class SearchItemFragment extends Fragment {
         }
         super.onResume();
     }
-
-    @Override
-    public void onPause() {
-        if (getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
-            getHTTP.cancel(true);
-            Log.d(TAG, "getHTTP køres fra SearchFragment");
-        }
-        Log.d(TAG, "Fragment er paused");
-        super.onPause();
-    }
+//
+//    @Override
+//    public void onPause() {
+//        if (getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
+//            getHTTP.cancel(true);
+//            Log.d(TAG, "getHTTP køres fra SearchFragment");
+//        }
+//        Log.d(TAG, "Fragment er paused");
+//        super.onPause();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         Log.d(TAG, "onCreateView køres!");
+        singleton = Singleton.getInstance();
 
         View root = inflater.inflate(R.layout.search_layout, container, false);
 
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
-        items = new ArrayList<ItemDTO>();
+//        items = new ArrayList<ItemDTO>();
+        items = singleton.getInstance().getItems();
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new CustomArrayAdapter(getActivity(),
                 R.layout.search_row, R.id.search_tvheadline, items);
 
-        fetchItemsFromAPI(items, this);
+        singleton = Singleton.getInstance();
+
+        singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
+
+//        fetchItemsFromAPI(items, this);
 
         lv.setAdapter(listAdapter);
 
@@ -119,24 +128,24 @@ public class SearchItemFragment extends Fragment {
         return root;
     }
 
-    /**
-     * Henter items ned fra DB og gemmer dem i items listen
-     *
-     * @param items
-     * @param searchItemFragment
-     */
-    public void fetchItemsFromAPI(ArrayList<ItemDTO> items,
-                                  SearchItemFragment searchItemFragment) {
-        if (getHTTP == null) {
-            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
-            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-        if (getHTTP.getStatus() == AsyncTask.Status.FINISHED) {
-            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
-            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-        Log.d(TAG, getHTTP.getStatus().toString() + " getHTTP onStatus()");
-    }
+//    /**
+//     * Henter items ned fra DB og gemmer dem i items listen
+//     *
+//     * @param items
+//     * @param searchItemFragment
+//     */
+//    public void fetchItemsFromAPI(ArrayList<ItemDTO> items,
+//                                  SearchItemFragment searchItemFragment) {
+//        if (getHTTP == null) {
+//            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
+//            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        }
+//        if (getHTTP.getStatus() == AsyncTask.Status.FINISHED) {
+//            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
+//            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        }
+//        Log.d(TAG, getHTTP.getStatus().toString() + " getHTTP onStatus()");
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -149,7 +158,8 @@ public class SearchItemFragment extends Fragment {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
                 items = new ArrayList<ItemDTO>();
-                fetchItemsFromAPI(items, this);
+//                fetchItemsFromAPI(items, this);
+                singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
 
                 // Do animation start
                 LayoutInflater inflater = getLayoutInflater(getArguments());
