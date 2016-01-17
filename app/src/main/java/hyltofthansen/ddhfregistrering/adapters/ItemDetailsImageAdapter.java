@@ -55,7 +55,6 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView");
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -75,9 +74,9 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
         imageView.startAnimation(rotation);
         //Check if picture actually contains data before displaying it
         if (pictures != null && (pictures.size() > 0)) {
-            Log.d(TAG, String.valueOf(pictures.size() + " pictures size"));
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
+//                    Log.d(TAG, "picture indeholder noget");
                     imageView.setImageBitmap(pictures.get(position));
                     rotation.cancel(); rotation.reset();
                 } else {

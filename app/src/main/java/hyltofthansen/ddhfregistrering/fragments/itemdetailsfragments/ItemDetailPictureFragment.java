@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
 import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
 
@@ -42,14 +44,14 @@ public class ItemDetailPictureFragment extends Fragment {
 
         ItemDetailsImageAdapter itemDetailsImageAdapter = new ItemDetailsImageAdapter(getActivity(),pictures);
 
-        int itemid = getItemIdFromExtra();
+        final int itemid = getItemIdFromExtra();
         Log.d(TAG, String.valueOf(itemid) );
 
         //Fetch pictures for itemid
         GetItemPicturesForGridViewTask getItemPictures =
                 new GetItemPicturesForGridViewTask(getContext(),
                         itemid,pictures, itemDetailsImageAdapter, pb);
-        getItemPictures.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);  //Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
+        getItemPictures.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);  //TODO Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);
@@ -57,7 +59,12 @@ public class ItemDetailPictureFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "Position " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Position " + position, Toast.LENGTH_SHORT).show();
+                Intent showImageAct  = new Intent(getActivity(), ShowImageActivity.class);
+                Log.d(TAG, String.valueOf(itemid) + " img" + String.valueOf(position));
+                showImageAct.putExtra("clickedimage", position);
+                showImageAct.putExtra("itemid", itemid);
+                startActivity(showImageAct);
             }
         });
 
