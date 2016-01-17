@@ -40,24 +40,26 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         InputStream in;
         try {
             in = new java.net.URL(urldisplay).openStream();
-            BitmapFactory.decodeStream(in, null, options);
+//            BitmapFactory.decodeStream(in, null, options);
+            image = BitmapFactory.decodeStream(in);
+            image = Bitmap.createScaledBitmap(image, 50, 50, false);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 50, 50);
+//        options.inSampleSize = calculateInSampleSize(options, 50, 50);
 
-        // Decode bitmap with inSampleSize set
-        try {
-            in = new java.net.URL(urldisplay).openStream();
-            options.inJustDecodeBounds = false;
-            image = BitmapFactory.decodeStream(in, null, options);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        // Decode bitmap with inSampleSize set
+//        try {
+//            in = new java.net.URL(urldisplay).openStream();
+//            options.inJustDecodeBounds = false;
+//            image = BitmapFactory.decodeStream(in, null, options);
+//            in.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return image;
     }
 
@@ -71,32 +73,32 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         listAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
+//    /**
+//     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
+//     * @param options
+//     * @param reqWidth
+//     * @param reqHeight
+//     * @return
+//     */
+//    public static int calculateInSampleSize(
+//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        // Raw height and width of image
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight / inSampleSize) > reqHeight
+//                    && (halfWidth / inSampleSize) > reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+//        return inSampleSize;
+//    }
 }

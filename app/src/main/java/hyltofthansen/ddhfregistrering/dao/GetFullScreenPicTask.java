@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.opengl.GLES10;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -79,23 +80,20 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
 
             JSONObject item = new JSONObject(response.toString());
             //Get all image URL's from an item
-                String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
-                    // First decode with inJustDecodeBounds=true to check dimensions
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
+            String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
 
-                    //Get pictures
-                    InputStream in;
-                    try {
-                        in = new URL(imageURL).openStream();
-                        currentImage = BitmapFactory.decodeStream(in);
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.d(TAG, "Færdig med at hente fullscreen pic");
-                    publishProgress();
+            //Get pictures
+            InputStream in;
+            try {
+                in = new URL(imageURL).openStream();
+                currentImage = BitmapFactory.decodeStream(in);
+                in.close();
+                currentImage = Bitmap.createScaledBitmap(currentImage, 2048, 2048, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "Færdig med at hente fullscreen pic");
+            publishProgress();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,33 +113,4 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
         Log.d(TAG, "Sat imageView bitmap");
         super.onPostExecute(bitmap);
     }
-
-//    /**
-//     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
-//     * @param options
-//     * @param reqWidth
-//     * @param reqHeight
-//     * @return
-//     */
-//    public static int calculateInSampleSize(
-//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        // Raw height and width of image
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) > reqHeight
-//                    && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//        return inSampleSize;
-//    }
 }
