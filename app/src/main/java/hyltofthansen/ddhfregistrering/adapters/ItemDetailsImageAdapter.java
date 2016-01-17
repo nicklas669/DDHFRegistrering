@@ -5,16 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -31,9 +37,6 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
     private ArrayList<Bitmap> pictures;
 
     public ItemDetailsImageAdapter(Context c, ArrayList<Bitmap> pictures) {
-        //Get itemid from extra data which was set when user clicked in SearchItemFragment
-//        itemId = getItemIdFromExtra();
-//        Log.d(TAG, "item id er " + itemId);
         this.pictures = pictures;
         mContext = c;
     }
@@ -60,18 +63,23 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
             int imgWidth = getImgWidthFromDisplaySize();
             imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageResource(R.drawable.ic_autorenew_black);
         } else {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageBitmap(pictures.get(position));
-
+        // Do animation start (skulle være en spinner for hvert billed men fik det aldrig helt til at virke)
+        imageView.setImageResource(R.drawable.ic_autorenew_black);
+        Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.searchlist_refresh_rotate);
+        rotation.setRepeatCount(Animation.INFINITE);
+        imageView.startAnimation(rotation);
         //Check if picture actually contains data before displaying it
         if (pictures != null && (pictures.size() > 0)) {
             Log.d(TAG, String.valueOf(pictures.size() + " pictures size"));
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
                     imageView.setImageBitmap(pictures.get(position));
+                    rotation.cancel(); rotation.reset();
                 } else {
                     imageView.setImageResource(R.drawable.noimage);
                 }

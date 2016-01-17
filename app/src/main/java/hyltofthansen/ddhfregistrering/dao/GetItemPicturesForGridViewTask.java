@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
@@ -31,17 +33,25 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private Context ctx;
     private Bitmap currentImage;
     private final int MAX_PICS = 25;
+    private ProgressBar pb;
 
 
     public GetItemPicturesForGridViewTask
             (Context ctx,
              int itemid,
              ArrayList<Bitmap> imageList,
-             BaseAdapter listAdapter) {
+             BaseAdapter listAdapter, ProgressBar pb) {
         this.ctx = ctx;
         this.itemID = itemid;
         this.imageList = imageList;
         this.listAdapter = listAdapter;
+        this.pb = pb;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        pb.setVisibility(View.VISIBLE);
+        super.onPreExecute();
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -119,6 +129,12 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         imageList.add(currentImage);
         listAdapter.notifyDataSetChanged();
         super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        pb.setVisibility(View.INVISIBLE);
+        super.onPostExecute(bitmap);
     }
 
     /**

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,12 +26,14 @@ public class ItemDetailPictureFragment extends Fragment {
     private static final String TAG ="ItemDetailsPicture" ;
     private ArrayList<Bitmap> pictures;
     private View root;
+    private ProgressBar pb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fr_itemdetails_picture, container, false);
-
+        pb = (ProgressBar) root.findViewById(R.id.progressBar);
+        pb.setVisibility(View.INVISIBLE);
         super.onCreate(savedInstanceState);
 
         GridView gridview = (GridView) root.findViewById(R.id.gridview);
@@ -45,8 +48,8 @@ public class ItemDetailPictureFragment extends Fragment {
         //Fetch pictures for itemid
         GetItemPicturesForGridViewTask getItemPictures =
                 new GetItemPicturesForGridViewTask(getContext(),
-                        itemid,pictures, itemDetailsImageAdapter);
-        getItemPictures.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);  //Burde have mere styr på trådene
+                        itemid,pictures, itemDetailsImageAdapter, pb);
+        getItemPictures.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);  //Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);
