@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,6 @@ public class NewItemSoundFragment extends Fragment {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         recordingPath = prefs.getString("recording", "null");
         if (recordingPath != "null") {
-//        if (recordingPath != null) {
             Log.d(TAG, "Læser recording: "+recordingPath);
             // Hvis der er en optagelse så vis filnavn i textview og initialiser afspilning med korrekt path
             tv_filename.setText("Valgt lydfil: "+recordingPath);
@@ -134,9 +132,8 @@ public class NewItemSoundFragment extends Fragment {
         mRecorder.release();
         mRecorder = null;
         recordingPath = newFilePath;
-        tv_filename.setText(recordingPath);
-        tv_filename.setVisibility(View.VISIBLE);
-        b_record.setImageResource(R.drawable.ic_mic_black);
+        tv_filename.setText("Valgt fil: "+recordingPath);
+                b_record.setImageResource(R.drawable.ic_mic_black);
         recording = false;
         // Gem path til optagelse
         SharedPreferences.Editor prefedit = prefs.edit();
@@ -145,6 +142,10 @@ public class NewItemSoundFragment extends Fragment {
         prefedit.commit();
     }
 
+    /**
+     * Creates a string path for the new voice file
+     * @return a string path for the new voice file.
+     */
     private static String createVoicePath() {
         // Create an file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
