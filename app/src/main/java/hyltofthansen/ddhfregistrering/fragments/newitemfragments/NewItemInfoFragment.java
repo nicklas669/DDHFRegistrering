@@ -33,31 +33,6 @@ public class NewItemInfoFragment extends Fragment {
     private static final String TAG = "NewItemInfoFragment";
     private android.support.v4.app.FragmentManager fm;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
-                //TODO dialog her der spørger om man er sikker på at man vil oprette
-                //TODO om man evt. har oprettet flere gange i træk?
-                if(titelTxt.getText().toString().trim().equals("")) {
-                    titelTxt.setError("Indtast en titel!");
-                    titelTxt.requestFocus();
-                } else {
-                    try {
-                        JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
-                                .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer", refProducentTxt.getText().toString())
-                                .put("postnummer", postNrTxt.getText().toString());
-                        Singleton.getInstance().callPostHTTPController(JSONitem, getActivity());
-//                        PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
-//                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-        }
-        return true;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

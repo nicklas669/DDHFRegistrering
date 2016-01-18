@@ -8,10 +8,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import org.json.JSONObject;
+
+import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.adapters.NewItemPagerAdapter;
 import hyltofthansen.ddhfregistrering.R;
 
@@ -20,6 +27,7 @@ import hyltofthansen.ddhfregistrering.R;
  */
 public class NewItemActivity extends AppCompatActivity {
 
+    private static final String TAG = "NewItemActivity";
     private ViewPager viewPager;
 
     @Override
@@ -65,6 +73,28 @@ public class NewItemActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
+                //TODO dialog her der spørger om man er sikker på at man vil oprette
+                //TODO om man evt. har oprettet flere gange i træk?
+                Log.d(TAG, "Der blev trykket på opret");
+
+                EditText titelTxt = FragmentDataSingleton.getInstance().getTitelTxt();
+
+                if (titelTxt.getText().toString().trim().equals("")) {
+                    titelTxt.setError("Indtast en titel!");
+                    titelTxt.requestFocus();
+                } else {
+                    JSONObject JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
+                    Singleton.getInstance().callPostHTTPController(JSONitem, this);
+                    break;
+                }
+        }
+        return true;
     }
 
     //From http://stackoverflow.com/questions/11818916/programmatically-hide-soft-keyboard-in-viewpager-onpagechangelistener-onpagesele/12422905#12422905
