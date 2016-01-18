@@ -73,8 +73,7 @@ public class ItemDTO implements Serializable {
         this.itemheadline = itemheadline;
         // Hvis der er et billede tilknytte genstanden
         if (defaultImageUrl != "null") {
-            //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
-            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
+//            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
 //            new DownloadImageTask(images, listAdapter).fetchImages(defaultImageUrl);
         }
     }

@@ -88,7 +88,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
                 in = new URL(imageURL).openStream();
                 currentImage = BitmapFactory.decodeStream(in);
                 in.close();
-                currentImage = Bitmap.createScaledBitmap(currentImage, 2048, 2048, false);
+              currentImage = Bitmap.createScaledBitmap(currentImage, 2048, 2048, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
