@@ -60,11 +60,11 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         itemID.setText(String.valueOf(mDisplayedValues.get(position).getItemid()));
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
-//        if (mDisplayedValues.get(position).getImageArraySize() == 0) {
 
         ItemDTO itemShown = mDisplayedValues.get(position);
 
         if(!(itemShown.getDefaultImageURL().equals("null") && itemShown.gettingPicture() == false)) {
+            itemImage.setImageResource(R.drawable.default_image_wait);
             if(itemShown.getDefaultImage() == null && itemShown.gettingPicture() == false) {
                 itemShown.setGettingPicture(true);
                 Log.d(TAG, itemShown.getDefaultImageURL());
