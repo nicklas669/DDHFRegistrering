@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
+import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
@@ -131,5 +132,11 @@ public class Singleton extends Application {
         PostHTTPController postHTTPController = new PostHTTPController(jsoNitem, activity);
         cancelAllTask();
         postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void deleteHTTP(FragmentActivity activity) {
+        DeleteHTTP delHTTP = new DeleteHTTP(activity, clickedItem.getItemid());
+        cancelAllTask();
+        delHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
