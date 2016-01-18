@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.lang.Override;import java.lang.String;
 
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
@@ -36,7 +37,7 @@ public class NewItemInfoFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
-                //TODO Tjek at i det mindste Betegnelse er indskrevet, og om man evt. har oprettet flere gange i træk?
+                //TODO om man evt. har oprettet flere gange i træk?
                 if(titelTxt.getText().toString().trim().equals("")) {
                     titelTxt.setError("Indtast en titel!");
                     titelTxt.requestFocus();
@@ -45,8 +46,9 @@ public class NewItemInfoFragment extends Fragment {
                         JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription", beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
                                 .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto", dateringTilTxt.getText().toString()).put("donator", refDonatorTxt.getText().toString()).put("producer", refProducentTxt.getText().toString())
                                 .put("postnummer", postNrTxt.getText().toString());
-                        PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
-                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        Singleton.getInstance().callPostHTTPController(JSONitem, getActivity());
+//                        PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
+//                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

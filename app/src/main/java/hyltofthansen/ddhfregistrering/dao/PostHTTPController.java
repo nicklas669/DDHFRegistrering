@@ -36,14 +36,19 @@ public class PostHTTPController extends AsyncTask {
     Activity context;
     private JSONObject item;
     private SharedPreferences prefs;
-    private android.support.v4.app.FragmentManager fm;
+//    private android.support.v4.app.FragmentManager fm;
     private Fragment fragment;
 
 
-    public PostHTTPController(JSONObject JSONitem, Activity context, FragmentManager fm) {
+//    public PostHTTPController(JSONObject JSONitem, Activity context, FragmentManager fm) {
+//        this.JSONitem = JSONitem;
+//        this.context = context;
+//        this.fm = fm;
+//    }
+
+    public PostHTTPController(JSONObject JSONitem, Activity context) {
         this.JSONitem = JSONitem;
         this.context = context;
-        this.fm = fm;
     }
 
 
@@ -120,7 +125,7 @@ public class PostHTTPController extends AsyncTask {
                     // Et item er oprettet og det gemmes som JSONObject ud fra response
                     Log.d(TAG, "response 2: " + response.toString());
                     item = new JSONObject(response.toString());
-                    PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, fm, item.getInt("itemid"));
+                    PostHTTPPicture postHTTPPicture = new PostHTTPPicture(context, item.getInt("itemid"));
                     postHTTPPicture.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -134,7 +139,7 @@ public class PostHTTPController extends AsyncTask {
                     // Et item er oprettet og det gemmes som JSONObject ud fra response
                     Log.d(TAG, "response 2: " + response.toString());
                     item = new JSONObject(response.toString());
-                    PostHTTPSound postHTTPSound = new PostHTTPSound(context, fm, item.getInt("itemid"));
+                    PostHTTPSound postHTTPSound = new PostHTTPSound(context, item.getInt("itemid"));
                     postHTTPSound.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } catch (JSONException e) {
                     e.printStackTrace();

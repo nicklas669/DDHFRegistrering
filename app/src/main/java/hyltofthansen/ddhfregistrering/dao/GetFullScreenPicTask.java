@@ -125,8 +125,8 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         pb.setVisibility(View.INVISIBLE);
         imageView.setImageBitmap(currentImage);
-        Log.d(TAG, "Sat imageView bitmap");
-        super.onPostExecute(bitmap);
+        Log.d(TAG, "Sat imageView bitmap height:" + currentImage.getHeight());
+//        super.onPostExecute(bitmap);
     }
 
     /**

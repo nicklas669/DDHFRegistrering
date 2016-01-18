@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
@@ -20,6 +22,7 @@ import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
+import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
@@ -122,5 +125,11 @@ public class Singleton extends Application {
         allTasks.add(dloadImageTask);
         dloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 //        dloadImageTask.execute();
+    }
+
+    public void callPostHTTPController(JSONObject jsoNitem, FragmentActivity activity) {
+        PostHTTPController postHTTPController = new PostHTTPController(jsoNitem, activity);
+        cancelAllTask();
+        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
