@@ -62,8 +62,10 @@ public class Singleton extends Application {
 
     private void cancelAllTask() {
         for ( AsyncTask task : allTasks) {
-            if((task != null) && (task.getStatus() == AsyncTask.Status.RUNNING)) {
-                task.cancel(true);
+            if(!(task instanceof GetHTTPDetails)) {
+                if ((task != null) && (task.getStatus() == AsyncTask.Status.RUNNING)) {
+                    task.cancel(true);
+                }
             }
         }
     }
@@ -81,7 +83,7 @@ public class Singleton extends Application {
         cancelAllTask();
         getHTTPDetailsTask = new GetHTTPDetails(activity, itemid, items, itemDetailInfoFragment);
         allTasks.add(getHTTPDetailsTask);
-        getHTTPDetailsTask.execute();
+        getHTTPDetailsTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void setClickedItem(ItemDTO clickedItem) {

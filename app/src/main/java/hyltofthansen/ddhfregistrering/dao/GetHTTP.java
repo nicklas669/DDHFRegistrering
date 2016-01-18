@@ -92,6 +92,7 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
+        Log.d(TAG, "onPostExecute");
         listAdapter.updateItemsList(items);
         if (searchItemFragment != null) searchItemFragment.stopRefreshingAnimation();
     }

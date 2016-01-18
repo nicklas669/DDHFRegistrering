@@ -54,16 +54,6 @@ public class SearchItemFragment extends Fragment {
         }
         super.onResume();
     }
-//
-//    @Override
-//    public void onPause() {
-//        if (getHTTP.getStatus().equals(AsyncTask.Status.RUNNING)) {
-//            getHTTP.cancel(true);
-//            Log.d(TAG, "getHTTP køres fra SearchFragment");
-//        }
-//        Log.d(TAG, "Fragment er paused");
-//        super.onPause();
-//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,8 +77,6 @@ public class SearchItemFragment extends Fragment {
 
         singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
 
-//        fetchItemsFromAPI(items, this);
-
         lv.setAdapter(listAdapter);
 
         // ** Når der klikkes på en række i listen, åbnes en aktivitet der viser genstandens detaljer **
@@ -98,11 +86,7 @@ public class SearchItemFragment extends Fragment {
                 itemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
                 item = listAdapter.getItem(position);
                 Singleton.getInstance().setClickedItem(item);
-
-//                itemDetails.putExtra("itemid", item.getItemid());
-//                itemDetails.putExtra("itemheadline", item.getItemheadline());
-//                itemDetails.putExtra("images", item.getImageURLLists());
-//                itemDetails.putStringArrayListExtra("images", item.getImageURLLists());
+                Log.d(TAG, "onClick " + item.toString());
                 startActivity(itemDetails);
             }
         });

@@ -53,6 +53,7 @@ public class ItemDetailInfoFragment extends Fragment {
 
     public void updateEditViews() {
         item = Singleton.getInstance().getClickedItem();
+        Log.d(TAG, "updateEditView");
         et_headline.setEnabled(false);
         et_headline.setText(item.getItemheadline().toString());
 
@@ -89,14 +90,6 @@ public class ItemDetailInfoFragment extends Fragment {
 
     public void setItem(ItemDTO item) {
         this.item = item;
-    }
-
-    public ItemDTO getItemFromExtra() {
-        Bundle extras = getActivity().getIntent().getExtras();
-                item = new ItemDTO(extras.getInt("itemid"),extras.getString("itemheadline"),extras.getString("itemdescription"),extras.getString("itemreceived")
-                ,extras.getString("itemdatingfrom"),extras.getString("itemdatingto"),extras.getString("donator")
-                ,extras.getString("producer"), extras.getInt("postnummer"));
-        return item;
     }
 
     @Override

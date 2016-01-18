@@ -40,6 +40,17 @@ public class GetHTTPDetails extends AsyncTask {
         this.detailsFragment = detailsFragment;
     }
 
+    public GetHTTPDetails() {
+    }
+
+    public void setDetails(Context context, int itemID, ArrayList<ItemDTO> items,
+                           ItemDetailInfoFragment detailsFragment) {
+        this.context = context;
+        this.itemID = itemID;
+        this.items = items;
+        this.detailsFragment = detailsFragment;
+    }
+
     @Override
     protected Object doInBackground(Object[] params) {
         Log.d(TAG, "Kører GetHTTPDetails");
@@ -73,16 +84,6 @@ public class GetHTTPDetails extends AsyncTask {
 
             JSONObject item = new JSONObject(response.toString());
 
-//            items.add(new ItemDTO(item.getInt("itemid"),
-//                    item.getString("itemheadline"),
-//                    item.optString("itemdescription"),
-//                    item.optString("itemreceived"),
-//                    item.optString("itemdatingfrom"),
-//                    item.optString("itemdatingto"),
-//                    item.optString("donator"),
-//                    item.optString("producer"),
-//                    item.optInt("postnummer"),
-//                    item.optJSONArray("images")));
             Singleton.getInstance().setClickedItem(new ItemDTO(item.getInt("itemid"),
                     item.getString("itemheadline"),
                     item.optString("itemdescription"),
@@ -93,8 +94,10 @@ public class GetHTTPDetails extends AsyncTask {
                     item.optString("producer"),
                     item.optInt("postnummer"),
                     item.optJSONArray("images")));
-            Log.d(TAG, item.getString("itemheadline"));
-            Log.d(TAG, item.getString("itemdescription"));
+//            Log.d(TAG, item.getString("itemheadline"));
+//            Log.d(TAG, item.getString("itemdescription"));
+
+            Log.d(TAG, Singleton.getInstance().getClickedItem().toString());
 
         } catch (JSONException e) {
             Log.d(TAG, e.toString());
@@ -108,8 +111,8 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
+        Log.d(TAG, "onPostExecute");
         detailsFragment.updateEditViews();
         Log.d(TAG, "Updated editviews()");
-        super.onPostExecute(o);
     }
 }
