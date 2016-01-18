@@ -38,7 +38,6 @@ public class Singleton extends Application {
     private ItemDTO clickedItem;
     private ArrayList<AsyncTask> allTasks;
 
-
     private Singleton() {
         items = new ArrayList<ItemDTO>();
         allTasks = new ArrayList<>();
