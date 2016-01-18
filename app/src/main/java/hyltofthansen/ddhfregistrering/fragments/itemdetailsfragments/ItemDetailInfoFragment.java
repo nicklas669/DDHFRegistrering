@@ -135,7 +135,7 @@ public class ItemDetailInfoFragment extends Fragment {
             switch (id){
                 case DialogInterface.BUTTON_POSITIVE:
                     Bundle extras = getActivity().getIntent().getExtras();
-                    DeleteHTTP deleteHTTP = new DeleteHTTP(getActivity(), extras.getInt("itemid"));
+                    DeleteHTTP deleteHTTP = new DeleteHTTP(getActivity(), Singleton.getInstance().getClickedItem().getItemid());
                     deleteHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     break;
 
