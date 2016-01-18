@@ -62,7 +62,7 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
             int imgWidth = getImgWidthFromDisplaySize();
             imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageResource(R.drawable.ic_autorenew_black);
+//            imageView.setImageResource(R.drawable.ic_autorenew_black);
         } else {
             imageView = (ImageView) convertView;
         }

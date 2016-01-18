@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
 
 /**
- * Created by hylle on 17-01-2016.
+ * Activity showing fullscreen image of a clicked gridview image
  */
 public class ShowImageActivity extends Activity {
 
@@ -26,9 +27,10 @@ public class ShowImageActivity extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.fullimageView);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarFullScreen);
         progressBar.setVisibility(View.INVISIBLE);
-        Log.d(TAG,String.valueOf(itemid) + " img " + String.valueOf(clickedImage));
-        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(this, itemid, clickedImage, imageView, progressBar);
-        dwTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);   //TODO Igen, sluk alle tråde i stedet for dette
+        Log.d(TAG, String.valueOf(itemid) + " img " + String.valueOf(clickedImage));
+//        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(this, itemid, clickedImage, imageView, progressBar);
+        //        dwTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        Singleton.getInstance().getFullScreenPic(this,itemid, clickedImage, imageView, progressBar);
 
         super.onCreate(savedInstanceState);
     }

@@ -156,7 +156,7 @@ public class SearchItemFragment extends Fragment {
         switch (menuItem.getItemId()) {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
-                items = singleton.getInstance().getItems();
+//                items = singleton.getInstance().getItems();
 //                fetchItemsFromAPI(items, this);
                 singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
 

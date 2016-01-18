@@ -7,12 +7,16 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
 import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
+import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
@@ -49,6 +53,7 @@ public class Singleton extends Application {
 
     public void fetchItemsFromAPI(Context ctx, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
         cancelAllTask();
+        items = new ArrayList<ItemDTO>();
         getHTTP = new GetHTTP(ctx, items, listAdapter, searchItemFragment);
         allTasks.add(getHTTP);
         getHTTP.execute();
@@ -79,10 +84,6 @@ public class Singleton extends Application {
         getHTTPDetailsTask.execute();
     }
 
-    public ItemDTO getDetailedItem() {
-        return items.get(itemdetailsID);
-    }
-
     public void setClickedItem(ItemDTO clickedItem) {
         this.clickedItem = clickedItem;
     }
@@ -105,5 +106,12 @@ public class Singleton extends Application {
         cancelAllTask();
         allTasks.add(getItemGridPics);
         getItemGridPics.execute();
+    }
+
+    public void getFullScreenPic(ShowImageActivity showImageActivity, int itemid, int clickedImage, ImageView imageView, ProgressBar progressBar) {
+        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(showImageActivity, itemid, clickedImage, imageView, progressBar);
+        cancelAllTask();
+        allTasks.add(dwTask);
+        dwTask.execute();
     }
 }
