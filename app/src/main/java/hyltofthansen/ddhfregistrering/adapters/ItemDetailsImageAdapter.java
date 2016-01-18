@@ -80,7 +80,7 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
                     imageView.setImageBitmap(pictures.get(position));
 //                    rotation.cancel(); rotation.reset();
                 } else {
-                    imageView.setImageResource(R.drawable.noimage);
+//                    imageView.setImageResource(R.drawable.noimage);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();

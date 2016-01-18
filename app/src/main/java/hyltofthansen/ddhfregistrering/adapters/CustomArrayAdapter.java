@@ -77,7 +77,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
                 itemImage.setImageBitmap(itemShown.getDefaultImage());
             }
         } else {
-            itemImage.setImageResource(R.drawable.noimage);
+            itemImage.setImageDrawable(null);
         }
         return view;
     }
