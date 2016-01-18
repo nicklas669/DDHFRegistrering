@@ -52,6 +52,7 @@ public class SearchItemFragment extends Fragment {
         if (inputSearch != null) {
             inputSearch.setText("");
         }
+        Singleton.getInstance().fetchItemsFromAPI();
         super.onResume();
     }
 
@@ -73,11 +74,14 @@ public class SearchItemFragment extends Fragment {
         listAdapter = new CustomArrayAdapter(getActivity(),
                 R.layout.search_row, R.id.search_tvheadline, items);
 
-        singleton = Singleton.getInstance();
-
-        singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
-
         lv.setAdapter(listAdapter);
+
+//        singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
+        Singleton.getInstance().setSearchFragment(this);
+        Singleton.getInstance().setSearchListAdapter(listAdapter);
+        Singleton.getInstance().fetchItemsFromAPI();
+
+
 
         // ** Når der klikkes på en række i listen, åbnes en aktivitet der viser genstandens detaljer **
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -111,25 +115,6 @@ public class SearchItemFragment extends Fragment {
         return root;
     }
 
-//    /**
-//     * Henter items ned fra DB og gemmer dem i items listen
-//     *
-//     * @param items
-//     * @param searchItemFragment
-//     */
-//    public void fetchItemsFromAPI(ArrayList<ItemDTO> items,
-//                                  SearchItemFragment searchItemFragment) {
-//        if (getHTTP == null) {
-//            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
-//            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        }
-//        if (getHTTP.getStatus() == AsyncTask.Status.FINISHED) {
-//            getHTTP = new GetHTTP(getActivity(), items, listAdapter, searchItemFragment);
-//            getHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        }
-//        Log.d(TAG, getHTTP.getStatus().toString() + " getHTTP onStatus()");
-//    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         mymenu = menu;
@@ -140,9 +125,8 @@ public class SearchItemFragment extends Fragment {
         switch (menuItem.getItemId()) {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
-//                items = singleton.getInstance().getItems();
-//                fetchItemsFromAPI(items, this);
-                singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
+//                singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
+                singleton.fetchItemsFromAPI();
 
                 // Do animation start
                 LayoutInflater inflater = getLayoutInflater(getArguments());

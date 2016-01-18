@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
@@ -85,6 +86,7 @@ public class DeleteHTTP extends AsyncTask {
                             //Tilbage til hovedmenu
                             Activity activity = (Activity) context;
                             activity.onBackPressed();
+//                            Singleton.getInstance().fetchItemsFromAPI();
                         }
                     });
         } else {

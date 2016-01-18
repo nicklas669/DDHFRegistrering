@@ -42,6 +42,17 @@ public class Singleton extends Application {
     private ItemDTO clickedItem;
     private ArrayList<AsyncTask> allTasks;
 
+    public CustomArrayAdapter getSearchListAdapter() {
+        return searchListAdapter;
+    }
+
+    public SearchItemFragment getSearchFragment() {
+        return searchFragment;
+    }
+
+    private SearchItemFragment searchFragment;
+    private CustomArrayAdapter searchListAdapter;
+
     private Singleton() {
         items = new ArrayList<ItemDTO>();
         allTasks = new ArrayList<>();
@@ -54,10 +65,18 @@ public class Singleton extends Application {
         return firstInstance;
     }
 
-    public void fetchItemsFromAPI(Context ctx, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
+//    public void fetchItemsFromAPI(Context ctx, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
+//        cancelAllTask();
+//        items = new ArrayList<ItemDTO>();
+//        getHTTP = new GetHTTP(ctx, items, listAdapter, searchItemFragment);
+//        allTasks.add(getHTTP);
+//        getHTTP.execute();
+//    }
+
+    public void fetchItemsFromAPI() {
         cancelAllTask();
         items = new ArrayList<ItemDTO>();
-        getHTTP = new GetHTTP(ctx, items, listAdapter, searchItemFragment);
+        getHTTP = new GetHTTP(searchFragment.getContext(), items, searchListAdapter, searchFragment);
         allTasks.add(getHTTP);
         getHTTP.execute();
     }
@@ -132,5 +151,13 @@ public class Singleton extends Application {
         DeleteHTTP delHTTP = new DeleteHTTP(activity, clickedItem.getItemid());
         cancelAllTask();
         delHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void setSearchFragment(SearchItemFragment searchFragment) {
+        this.searchFragment = searchFragment;
+    }
+
+    public void setSearchListAdapter(CustomArrayAdapter searchListAdapter) {
+        this.searchListAdapter = searchListAdapter;
     }
 }
