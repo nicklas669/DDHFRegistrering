@@ -82,16 +82,31 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
             //Get all image URL's from an item
             String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
 
-            //Get pictures
+            // First decode with inJustDecodeBounds=true to check dimensions
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
             InputStream in;
             try {
                 in = new URL(imageURL).openStream();
+                BitmapFactory.decodeStream(in, null, options);
                 currentImage = BitmapFactory.decodeStream(in);
                 in.close();
-              currentImage = Bitmap.createScaledBitmap(currentImage, 2048, 2048, false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            options.inSampleSize = calculateInSampleSize(options, 1280, 720);
+
+            // Decode bitmap with inSampleSize set
+            try {
+                in = new java.net.URL(imageURL).openStream();
+                options.inJustDecodeBounds = false;
+                currentImage = BitmapFactory.decodeStream(in, null, options);
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             Log.d(TAG, "Færdig med at hente fullscreen pic");
             publishProgress();
 
@@ -112,5 +127,34 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
         imageView.setImageBitmap(currentImage);
         Log.d(TAG, "Sat imageView bitmap");
         super.onPostExecute(bitmap);
+    }
+
+    /**
+     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
     }
 }

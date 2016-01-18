@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
+        android:largeHeap="true"
         android:windowSoftInputMode="adjustPan"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,5 +39,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activities.ShowImageActivity"></activity>
+
     </application>
 </manifest>

@@ -40,26 +40,26 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         InputStream in;
         try {
             in = new java.net.URL(urldisplay).openStream();
-//            BitmapFactory.decodeStream(in, null, options);
+            BitmapFactory.decodeStream(in, null, options);
             image = BitmapFactory.decodeStream(in);
-            image = Bitmap.createScaledBitmap(image, 50, 50, false);
+//            image = Bitmap.createScaledBitmap(image, 50, 50, false);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Calculate inSampleSize
-//        options.inSampleSize = calculateInSampleSize(options, 50, 50);
+//         Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, 50, 50);
 
-//        // Decode bitmap with inSampleSize set
-//        try {
-//            in = new java.net.URL(urldisplay).openStream();
-//            options.inJustDecodeBounds = false;
-//            image = BitmapFactory.decodeStream(in, null, options);
-//            in.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        // Decode bitmap with inSampleSize set
+        try {
+            in = new java.net.URL(urldisplay).openStream();
+            options.inJustDecodeBounds = false;
+            image = BitmapFactory.decodeStream(in, null, options);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return image;
     }
 
