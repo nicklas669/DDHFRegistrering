@@ -50,10 +50,12 @@ public class ItemDetailPictureFragment extends Fragment {
         Log.d(TAG, String.valueOf(itemid) );
 
         //Fetch pictures for itemid
-        GetItemPicturesForGridViewTask getItemPictures =
-                new GetItemPicturesForGridViewTask(getContext(),
-                        itemid,pictures, itemDetailsImageAdapter, pb);
-        getItemPictures.execute();  //TODO Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
+        Singleton.getInstance().fetchItemGridPictures(getContext(),
+                itemid,pictures, itemDetailsImageAdapter, pb);
+//        GetItemPicturesForGridViewTask getItemPictures =
+//                new GetItemPicturesForGridViewTask(getContext(),
+//                        itemid,pictures, itemDetailsImageAdapter, pb);
+//        getItemPictures.execute();  //TODO Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);
@@ -75,8 +77,8 @@ public class ItemDetailPictureFragment extends Fragment {
 
     }
 
-    public int getItemIdFromExtra() {
-        Bundle bundle = getActivity().getIntent().getExtras();
-        return bundle.getInt("itemid");
-    }
+//    public int getItemIdFromExtra() {
+//        Bundle bundle = getActivity().getIntent().getExtras();
+//        return bundle.getInt("itemid");
+//    }
 }

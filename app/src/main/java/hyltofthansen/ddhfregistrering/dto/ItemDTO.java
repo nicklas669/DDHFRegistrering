@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dto;
 
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.BaseAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,7 @@ import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO implements Serializable {
+    private static final String TAG = "ItemDTO";
     private int itemid, postnummer;
     private String itemheadline = "", itemdescription = "", itemreceived = "",
             itemdatingfrom = "", itemdatingto = "", donator = "", producer = "";
@@ -73,7 +75,8 @@ public class ItemDTO implements Serializable {
         this.itemheadline = itemheadline;
         // Hvis der er et billede tilknytte genstanden
         if (defaultImageUrl != "null") {
-//            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
+            Log.d(TAG, "Lavet ny tråd");
+            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
 //            new DownloadImageTask(images, listAdapter).fetchImages(defaultImageUrl);
         }
     }

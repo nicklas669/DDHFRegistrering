@@ -32,7 +32,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private int itemID;
     private Context ctx;
     private Bitmap currentImage;
-    private final int MAX_PICS = 25;
+    private final int MAX_PICS = 99;
     private ProgressBar pb;
 
 
@@ -55,7 +55,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     }
 
     protected Bitmap doInBackground(String... urls) {
-        Log.d(TAG, "Henter gridview pics");
+        Log.d(TAG, "Henter gridview pic URLs");
         itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
                 "?userID=56837dedd2d76438906140";
 
@@ -86,6 +86,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
             //Get all image URL's from an item
             for (int x = 0; x < MAX_PICS; x++) {
                 String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
+
                     // First decode with inJustDecodeBounds=true to check dimensions
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;

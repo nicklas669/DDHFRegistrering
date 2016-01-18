@@ -68,17 +68,17 @@ public class ItemDetailsImageAdapter extends BaseAdapter {
         }
 
         // Do animation start (skulle være en spinner for hvert billed men fik det aldrig helt til at virke)
-        imageView.setImageResource(R.drawable.ic_autorenew_black);
-        Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.searchlist_refresh_rotate);
-        rotation.setRepeatCount(Animation.INFINITE);
-        imageView.startAnimation(rotation);
+//        imageView.setImageResource(R.drawable.ic_autorenew_black);
+//        Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.searchlist_refresh_rotate);
+//        rotation.setRepeatCount(Animation.INFINITE);
+//        imageView.startAnimation(rotation);
         //Check if picture actually contains data before displaying it
         if (pictures != null && (pictures.size() > 0)) {
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
 //                    Log.d(TAG, "picture indeholder noget");
                     imageView.setImageBitmap(pictures.get(position));
-                    rotation.cancel(); rotation.reset();
+//                    rotation.cancel(); rotation.reset();
                 } else {
                     imageView.setImageResource(R.drawable.noimage);
                 }

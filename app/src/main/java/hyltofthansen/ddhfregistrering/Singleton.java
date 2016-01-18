@@ -7,12 +7,15 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
+import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
+import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
@@ -94,5 +97,13 @@ public class Singleton extends Application {
         DownloadImageTask dloadImageTask = new DownloadImageTask(images, listAdapter);
         allTasks.add(dloadImageTask);
         dloadImageTask.fetchImages(defaultImageUrl);
+    }
+
+    public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures, ItemDetailsImageAdapter itemDetailsImageAdapter, ProgressBar pb) {
+                GetItemPicturesForGridViewTask getItemGridPics = new GetItemPicturesForGridViewTask(context,
+                        itemid,pictures, itemDetailsImageAdapter, pb);
+        cancelAllTask();
+        allTasks.add(getItemGridPics);
+        getItemGridPics.execute();
     }
 }
