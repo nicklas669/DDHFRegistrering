@@ -6,20 +6,34 @@ import android.util.Log;
 import android.widget.BaseAdapter;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO implements Serializable {
     private static final String TAG = "ItemDTO";
     private int itemid, postnummer;
     private String itemheadline = "", itemdescription = "", itemreceived = "",
-            itemdatingfrom = "", itemdatingto = "", donator = "", producer = "";
+            itemdatingfrom = "", itemdatingto = "", donator = "", producer = "", defaultImageURL ="";
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+    private Bitmap defaultImage;
+
+    public ItemDTO(int itemid, String itemheadline) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+    }
+
+    public ItemDTO(int itemid, String itemheadline, String defaultimage) {
+        this.itemid = itemid;
+        this.itemheadline = itemheadline;
+        this.defaultImageURL = defaultimage;
+    }
+
+    public String getDefaultImageURL() {
+        return defaultImageURL;
+    }
 
     public ArrayList<String> getImageURLLists() {
         return imageURLLists;
@@ -77,7 +91,6 @@ public class ItemDTO implements Serializable {
         if (defaultImageUrl != "null") {
             Log.d(TAG, "Lavet ny tråd");
             Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
-//            new DownloadImageTask(images, listAdapter).fetchImages(defaultImageUrl);
         }
     }
 
@@ -192,13 +205,17 @@ public class ItemDTO implements Serializable {
         return images.size();
     }
 
-
-
-
     @Override
     public String toString() {
         return "itemid: "+itemid+", itemheadline: "+itemheadline+", itemdescription: "+itemdescription+", itemreceived: "+itemreceived+", itemdatingfrom: "+itemdatingfrom
                 +", itemdatingto: "+itemdatingto+", donator: "+donator+", producer: "+producer+", postnummer: "+postnummer;
     }
 
+    public Bitmap getDefaultImage() {
+        return defaultImage;
+    }
+
+    public void setDefaultImage(Bitmap bitmap) {
+        defaultImage = bitmap;
+    }
 }

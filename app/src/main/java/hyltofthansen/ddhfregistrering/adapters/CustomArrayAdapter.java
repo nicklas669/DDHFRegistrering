@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
@@ -63,12 +64,25 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         itemID.setText(String.valueOf(mDisplayedValues.get(position).getItemid()));
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
-        if (mDisplayedValues.get(position).getImageArraySize() > 0) {
-            itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
+//        if (mDisplayedValues.get(position).getImageArraySize() == 0) {
+
+        ItemDTO itemShown = mDisplayedValues.get(position);
+
+        if(!(itemShown.getDefaultImageURL().equals("null"))) {
+            if(itemShown.getDefaultImage() == null) {
+                Log.d(TAG, itemShown.getDefaultImageURL());
+                Log.d(TAG, "Henter billed");
+                Singleton.getInstance().fetchDefaultImage(itemShown, this);
+//            itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
+                itemImage.setImageBitmap(itemShown.getDefaultImage());
+            }
+            if(itemShown.getDefaultImage() != null) {
+                itemImage.setImageBitmap(itemShown.getDefaultImage());
+            }
+
         } else {
             itemImage.setImageResource(R.drawable.noimage);
         }
-
         return view;
     }
     @Override
@@ -127,6 +141,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         this.mDisplayedValues = items;
         this.mOriginalValues = items;
         //notifyDataSetChanged();
-        this. notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 }

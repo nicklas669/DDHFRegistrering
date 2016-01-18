@@ -115,4 +115,12 @@ public class Singleton extends Application {
         allTasks.add(dwTask);
         dwTask.execute();
     }
+
+    public void fetchDefaultImage(ItemDTO itemDTO, CustomArrayAdapter customArrayAdapter) {
+//        cancelAllTask();
+        DownloadImageTask dloadImageTask = new DownloadImageTask(itemDTO, customArrayAdapter);
+        allTasks.add(dloadImageTask);
+        dloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        dloadImageTask.execute();
+    }
 }

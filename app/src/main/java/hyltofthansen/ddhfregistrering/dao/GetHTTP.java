@@ -74,9 +74,9 @@ public class GetHTTP extends AsyncTask {
                 JSONObject item = itemsfromDB.getJSONObject(x);
                 items.add(new ItemDTO(item.getInt("itemid"),
                         item.getString("itemheadline"),
-                        item.getString("defaultimage"),
-                        item.optJSONArray("images"), //Denne skal fjernes eller også skal der itereres detaljer for hver item allerede her!
-                        listAdapter));
+                        item.getString("defaultimage")));
+//                        item.optJSONArray("images"), //Denne skal fjernes eller også skal der itereres detaljer for hver item allerede her!
+//                        listAdapter));
             }
 //            Log.d(TAG, "Færdig med task");
 

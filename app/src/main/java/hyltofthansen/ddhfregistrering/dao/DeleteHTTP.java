@@ -94,9 +94,7 @@ public class DeleteHTTP extends AsyncTask {
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            //Tilbage til hovedmenu
-//                            Activity activity = (Activity) context;
-//                            activity.onBackPressed();
+
                         }
                     });
         }

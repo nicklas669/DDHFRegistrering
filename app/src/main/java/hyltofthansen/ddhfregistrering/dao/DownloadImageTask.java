@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
+import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+
 /**
  * Created by Nicklas on 07-01-2016.
  * Class responsible for starting a background thread that downloads an image from an url
@@ -21,11 +24,18 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ArrayList<Bitmap> imageList;
     BaseAdapter listAdapter;
     String urldisplay;
+    private ItemDTO itemDTO;
 
 
     public DownloadImageTask(ArrayList<Bitmap> imageList, BaseAdapter listAdapter) {
         this.imageList = imageList;
         this.listAdapter = listAdapter;
+    }
+
+    public DownloadImageTask(ItemDTO itemDTO, CustomArrayAdapter customArrayAdapter) {
+        this.itemDTO = itemDTO;
+        this.listAdapter = customArrayAdapter;
+        urldisplay = itemDTO.getDefaultImageURL();
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -42,7 +52,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             in = new java.net.URL(urldisplay).openStream();
             BitmapFactory.decodeStream(in, null, options);
             image = BitmapFactory.decodeStream(in);
-//            image = Bitmap.createScaledBitmap(image, 50, 50, false);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +78,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        imageList.add(result);
+        Log.d(TAG, "PostExecute defaultimage");
+        itemDTO.setDefaultImage(result);
+//        imageList.add(result);
         listAdapter.notifyDataSetChanged();
     }
 
