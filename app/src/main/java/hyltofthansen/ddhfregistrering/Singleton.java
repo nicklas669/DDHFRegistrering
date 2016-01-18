@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailI
  */
 public class Singleton extends Application {
 
+    private static final String TAG = "Singleton";
     private static Singleton firstInstance = null;
     private GetHTTP getHTTP;
     private ArrayList<ItemDTO> items;
@@ -54,7 +56,6 @@ public class Singleton extends Application {
         for ( AsyncTask task : allTasks) {
             if((task != null) && (task.getStatus() == AsyncTask.Status.RUNNING)) {
                 task.cancel(true);
-                allTasks.remove(task);
             }
         }
     }
@@ -84,6 +85,7 @@ public class Singleton extends Application {
     }
 
     public ItemDTO getClickedItem() {
+        Log.d(TAG, clickedItem.toString());
         return clickedItem;
     }
 

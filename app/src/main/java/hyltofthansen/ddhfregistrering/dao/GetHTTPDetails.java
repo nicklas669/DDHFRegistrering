@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
 
@@ -57,7 +58,6 @@ public class GetHTTPDetails extends AsyncTask {
             con.setRequestMethod("GET");
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
-            int responseCode = con.getResponseCode();
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -73,7 +73,17 @@ public class GetHTTPDetails extends AsyncTask {
 
             JSONObject item = new JSONObject(response.toString());
 
-            items.add(new ItemDTO(item.getInt("itemid"),
+//            items.add(new ItemDTO(item.getInt("itemid"),
+//                    item.getString("itemheadline"),
+//                    item.optString("itemdescription"),
+//                    item.optString("itemreceived"),
+//                    item.optString("itemdatingfrom"),
+//                    item.optString("itemdatingto"),
+//                    item.optString("donator"),
+//                    item.optString("producer"),
+//                    item.optInt("postnummer"),
+//                    item.optJSONArray("images")));
+            Singleton.getInstance().setClickedItem(new ItemDTO(item.getInt("itemid"),
                     item.getString("itemheadline"),
                     item.optString("itemdescription"),
                     item.optString("itemreceived"),
@@ -85,8 +95,6 @@ public class GetHTTPDetails extends AsyncTask {
                     item.optJSONArray("images")));
             Log.d(TAG, item.getString("itemheadline"));
             Log.d(TAG, item.getString("itemdescription"));
-            Log.d(TAG, "Nej det går ikke");
-
 
         } catch (JSONException e) {
             Log.d(TAG, e.toString());
@@ -100,7 +108,6 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        //Log.d(TAG, String.valueOf(items.size() + " Item size"));
         detailsFragment.updateEditViews();
         Log.d(TAG, "Updated editviews()");
         super.onPostExecute(o);
