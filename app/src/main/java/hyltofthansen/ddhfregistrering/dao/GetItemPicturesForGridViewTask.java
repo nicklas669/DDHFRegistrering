@@ -94,25 +94,27 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                     InputStream in;
                     try {
                         in = new URL(imageURL).openStream();
-                        BitmapFactory.decodeStream(in, null, options);
+//                        BitmapFactory.decodeStream(in, null, options);
+                        currentImage = BitmapFactory.decodeStream(in);
+                        currentImage = Bitmap.createScaledBitmap(currentImage,300,300,false);
                         in.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    // Calculate inSampleSize
-                    options.inSampleSize = calculateInSampleSize(options, 300, 300);
-
-                    // Decode bitmap with inSampleSize set
-                    try {
-                        in = new URL(imageURL).openStream();
-                        options.inJustDecodeBounds = false;
-                        currentImage = BitmapFactory.decodeStream(in, null, options);
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        break;
-                    }
+//                    // Calculate inSampleSize
+//                    options.inSampleSize = calculateInSampleSize(options, 300, 300);
+//
+//                    // Decode bitmap with inSampleSize set
+//                    try {
+//                        in = new URL(imageURL).openStream();
+//                        options.inJustDecodeBounds = false;
+//                        currentImage = BitmapFactory.decodeStream(in, null, options);
+//                        in.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        break;
+//                    }
                     Log.d(TAG, "Færdig med at hente gridview pic");
                     publishProgress();
             }
@@ -137,32 +139,32 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         super.onPostExecute(bitmap);
     }
 
-    /**
-     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
+//    /**
+//     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
+//     * @param options
+//     * @param reqWidth
+//     * @param reqHeight
+//     * @return
+//     */
+//    public static int calculateInSampleSize(
+//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        // Raw height and width of image
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight / inSampleSize) > reqHeight
+//                    && (halfWidth / inSampleSize) > reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+//        return inSampleSize;
+//    }
 }

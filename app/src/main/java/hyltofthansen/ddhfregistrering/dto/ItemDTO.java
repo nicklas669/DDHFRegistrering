@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 
 public class ItemDTO implements Serializable {
@@ -72,7 +74,8 @@ public class ItemDTO implements Serializable {
         // Hvis der er et billede tilknytte genstanden
         if (defaultImageUrl != "null") {
             //Log.e("ItemDTO", itemid +" har image: "+defaultimage);
-            new DownloadImageTask(images, listAdapter).fetchImagesParallel(defaultImageUrl);
+            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
+//            new DownloadImageTask(images, listAdapter).fetchImages(defaultImageUrl);
         }
     }
 

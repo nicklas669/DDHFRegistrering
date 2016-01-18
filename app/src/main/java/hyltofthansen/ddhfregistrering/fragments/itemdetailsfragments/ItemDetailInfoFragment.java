@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
@@ -26,8 +27,8 @@ public class ItemDetailInfoFragment extends Fragment {
     private static final String TAG = "ItemDetailInfoFragment";
     ItemDTO item;
     View root;
-    ArrayList<ItemDTO> items;
-    private ItemDTO itemFromExtra;
+//    ArrayList<ItemDTO> items;
+//    private ItemDTO itemFromExtra;
     private EditText et_headline, et_descript, et_receiveDate, et_datingFrom, et_datingTo,
             et_donator, et_producer, et_zip;
 
@@ -35,13 +36,14 @@ public class ItemDetailInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         root = inflater.inflate(R.layout.fr_itemdetails_info, container, false);
-        item = getItemFromExtra();
+        item = Singleton.getInstance().getClickedItem();
         getActivity().setTitle(item.getItemheadline().toString());
-        items = new ArrayList<ItemDTO>();
-        GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
-        getHTTPDetails.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        items = new ArrayList<ItemDTO>();
+//        items = Singleton.getInstance().getItems();
 
-
+        Singleton.getInstance().getItemDetails(getActivity(), item.getItemid(), this);
+//        GetHTTPDetails getHTTPDetails = new GetHTTPDetails(getActivity(), item.getItemid(), items, this);
+//        getHTTPDetails.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
         et_descript = (EditText) root.findViewById(R.id.itemdetails_DescripEdit);
@@ -56,7 +58,7 @@ public class ItemDetailInfoFragment extends Fragment {
     }
 
     public void updateEditViews() {
-        item = items.get(0);
+//        item = items.get(0);
         et_headline.setEnabled(false);
         et_headline.setText(item.getItemheadline().toString());
 

@@ -41,6 +41,8 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
+        Log.d(TAG, "Kører GetHTTPDetails");
+        Log.d(TAG, "Item id : " + itemID);
         // URL til Mathias' API
         String url = context.getString(R.string.API_URL_MATHIAS)+itemID+
                 "?userID=56837dedd2d76438906140";
@@ -56,20 +58,18 @@ public class GetHTTPDetails extends AsyncTask {
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
             int responseCode = con.getResponseCode();
-            //Log.d(TAG, "\nSending 'GET' request to URL : " + url);
-            //Log.d(TAG, "Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                //Log.d(TAG, String.valueOf(in.readLine()));
                 response.append(inputLine);
-                //Log.d(TAG, String.valueOf(response));
+                if (isCancelled()) {
+                    break;
+                }
             }
             in.close();
-
 
             JSONObject item = new JSONObject(response.toString());
 
@@ -83,14 +83,9 @@ public class GetHTTPDetails extends AsyncTask {
                     item.optString("producer"),
                     item.optInt("postnummer"),
                     item.optJSONArray("images")));
-//            if(item.getInt("itemid") == 309) {
-////                    Log.d(TAG, item.getString("images"));
-////                    Log.d(TAG, item.get("image_0").toString());
-//                Log.d(TAG, item.names().toString());
-//                Log.d(TAG, items.get(0).getItemdescription().toString());
-////                Log.d(TAG, item.has("images")
-//                    Log.d(TAG, item.getJSONObject("images").toString());
-//            }
+            Log.d(TAG, item.getString("itemheadline"));
+            Log.d(TAG, item.getString("itemdescription"));
+            Log.d(TAG, "Nej det går ikke");
 
 
         } catch (JSONException e) {

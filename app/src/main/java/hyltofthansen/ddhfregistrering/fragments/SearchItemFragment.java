@@ -97,13 +97,12 @@ public class SearchItemFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 itemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
                 item = listAdapter.getItem(position);
-                itemDetails.putExtra("itemid", item.getItemid());
-                itemDetails.putExtra("itemheadline", item.getItemheadline());
-                itemDetails.putExtra("images", item.getImageURLLists());
-                itemDetails.putStringArrayListExtra("images", item.getImageURLLists());
-                Log.d(TAG, item.getImageURLLists().toString());
-                Log.d(TAG, item.getItemheadline().toString());
-                Log.d(TAG, "Sætter data i extra");
+                Singleton.getInstance().setClickedItem(item);
+
+//                itemDetails.putExtra("itemid", item.getItemid());
+//                itemDetails.putExtra("itemheadline", item.getItemheadline());
+//                itemDetails.putExtra("images", item.getImageURLLists());
+//                itemDetails.putStringArrayListExtra("images", item.getImageURLLists());
                 startActivity(itemDetails);
             }
         });
@@ -153,11 +152,11 @@ public class SearchItemFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
-                items = new ArrayList<ItemDTO>();
+                items = singleton.getInstance().getItems();
 //                fetchItemsFromAPI(items, this);
                 singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
 
@@ -167,13 +166,13 @@ public class SearchItemFragment extends Fragment {
                 Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.searchlist_refresh_rotate);
                 rotation.setRepeatCount(Animation.INFINITE);
                 iv.startAnimation(rotation);
-                item.setActionView(iv);
+                menuItem.setActionView(iv);
 
                 Toast.makeText(getContext(), "Opdaterer listen..",
                         Toast.LENGTH_SHORT).show();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
 
     public void stopRefreshingAnimation() {
