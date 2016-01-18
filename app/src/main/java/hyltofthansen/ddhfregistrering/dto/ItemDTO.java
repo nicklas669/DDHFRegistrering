@@ -19,6 +19,8 @@ public class ItemDTO implements Serializable {
             itemdatingfrom = "", itemdatingto = "", donator = "", producer = "", defaultImageURL ="";
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
     private Bitmap defaultImage;
+    private boolean gettingPicture = false;
+    private boolean defaultImageDownloaded = false;
 
     public ItemDTO(int itemid, String itemheadline) {
         this.itemid = itemid;
@@ -90,7 +92,7 @@ public class ItemDTO implements Serializable {
         // Hvis der er et billede tilknytte genstanden
         if (defaultImageUrl != "null") {
             Log.d(TAG, "Lavet ny tråd");
-            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
+//            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
         }
     }
 
@@ -217,5 +219,21 @@ public class ItemDTO implements Serializable {
 
     public void setDefaultImage(Bitmap bitmap) {
         defaultImage = bitmap;
+    }
+
+    public boolean gettingPicture() {
+        return gettingPicture;
+    }
+
+    public void setGettingPicture(boolean gettingPicture) {
+        this.gettingPicture = gettingPicture;
+    }
+
+    public void defaultImageDownloaded(boolean b) {
+        defaultImageDownloaded = b;
+    }
+
+    public boolean isDefaultImageDownloaded() {
+        return defaultImageDownloaded;
     }
 }

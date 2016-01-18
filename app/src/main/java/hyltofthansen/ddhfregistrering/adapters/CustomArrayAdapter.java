@@ -68,15 +68,15 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
         ItemDTO itemShown = mDisplayedValues.get(position);
 
-        if(!(itemShown.getDefaultImageURL().equals("null"))) {
-            if(itemShown.getDefaultImage() == null) {
+        if(!(itemShown.getDefaultImageURL().equals("null") && itemShown.gettingPicture() == false)) {
+            if(itemShown.getDefaultImage() == null && itemShown.gettingPicture() == false) {
+                itemShown.setGettingPicture(true);
                 Log.d(TAG, itemShown.getDefaultImageURL());
                 Log.d(TAG, "Henter billed");
                 Singleton.getInstance().fetchDefaultImage(itemShown, this);
-//            itemImage.setImageBitmap(mDisplayedValues.get(position).getImage(0));
-                itemImage.setImageBitmap(itemShown.getDefaultImage());
             }
-            if(itemShown.getDefaultImage() != null) {
+            if(itemShown.isDefaultImageDownloaded()) {
+                Log.d(TAG, "Sætter billed på " + itemShown.toString());
                 itemImage.setImageBitmap(itemShown.getDefaultImage());
             }
 

@@ -38,6 +38,11 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         urldisplay = itemDTO.getDefaultImageURL();
     }
 
+    @Override
+    protected void onPreExecute() {
+        itemDTO.setGettingPicture(true);
+    }
+
     protected Bitmap doInBackground(String... urls) {
         Bitmap image = null;
 
@@ -79,7 +84,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         Log.d(TAG, "PostExecute defaultimage");
+        Log.d(TAG, itemDTO.getItemheadline());
         itemDTO.setDefaultImage(result);
+        itemDTO.defaultImageDownloaded(true);
 //        imageList.add(result);
         listAdapter.notifyDataSetChanged();
     }
