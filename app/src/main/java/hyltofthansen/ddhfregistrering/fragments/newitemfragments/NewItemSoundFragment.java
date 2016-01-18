@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -25,7 +27,7 @@ import hyltofthansen.ddhfregistrering.R;
  */
 public class NewItemSoundFragment extends Fragment {
     private static final String TAG = "NewItemSoundFragment";
-    Button b_start, b_play;
+    ImageButton b_record, b_play;
     TextView tv_filename;
     boolean playing = false, recording = false;
 
@@ -46,9 +48,7 @@ public class NewItemSoundFragment extends Fragment {
 //        if (recordingPath != null) {
             Log.d(TAG, "Læser recording: "+recordingPath);
             // Hvis der er en optagelse så vis filnavn i textview og initialiser afspilning med korrekt path
-            tv_filename.setText(recordingPath);
-        } else {
-            tv_filename.setVisibility(View.INVISIBLE);
+            tv_filename.setText("Valgt lydfil: "+recordingPath);
         }
         super.onResume();
     }
@@ -59,34 +59,26 @@ public class NewItemSoundFragment extends Fragment {
 
         tv_filename = (TextView) root.findViewById(R.id.newitem_voicefile);
 
-        b_start = (Button) root.findViewById(R.id.newitem_record);
-        b_start.setOnClickListener(new View.OnClickListener() {
+        b_record = (ImageButton) root.findViewById(R.id.newitem_record);
+        b_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!recording) {
                     startRecording();
-                    b_start.setText("Stop optagelse");
-                    recording = true;
                 } else {
                     stopRecording();
-                    b_start.setText("Start ny optagelse");
-                    recording = false;
                 }
             }
         });
 
-        b_play = (Button) root.findViewById(R.id.newitem_play);
+        b_play = (ImageButton) root.findViewById(R.id.newitem_play);
         b_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!playing) {
                     startPlaying();
-                    b_play.setText("Stop afspilning");
-                    playing = true;
                 } else {
                     stopPlaying();
-                    b_play.setText("Afspil optagelse");
-                    playing = false;
                 }
             }
         });
@@ -95,21 +87,24 @@ public class NewItemSoundFragment extends Fragment {
     }
 
     private void startRecording() {
-        newFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+createVoicePath();
-        Log.d(TAG, "newFilePath :"+newFilePath);
-        mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(newFilePath);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
         try {
+            newFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+createVoicePath();
+            Log.d(TAG, "newFilePath :"+newFilePath);
+            mRecorder = new MediaRecorder();
+            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mRecorder.setOutputFile(newFilePath);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mRecorder.prepare();
+            mRecorder.start();
+            b_record.setImageResource(R.drawable.ic_stop_black);
+            recording = true;
+        } catch (RuntimeException e) {
+            Toast.makeText(getContext(), e.getMessage(),
+                    Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.e(TAG, "prepare() failed i startRecording()");
         }
-
-        mRecorder.start();
     }
 
     private void startPlaying() {
@@ -118,7 +113,11 @@ public class NewItemSoundFragment extends Fragment {
             mPlayer.setDataSource(recordingPath);
             mPlayer.prepare();
             mPlayer.start();
+            b_play.setImageResource(R.drawable.ic_stop_black);
+            playing = true;
         } catch (IOException e) {
+            Toast.makeText(getContext(), e.getMessage(),
+                    Toast.LENGTH_LONG).show();
             Log.e(TAG, "prepare() failed i startPlaying()");
         }
     }
@@ -126,6 +125,8 @@ public class NewItemSoundFragment extends Fragment {
     private void stopPlaying() {
         mPlayer.release();
         mPlayer = null;
+        b_play.setImageResource(R.drawable.ic_play_arrow_black);
+        playing = false;
     }
 
     private void stopRecording() {
@@ -135,6 +136,8 @@ public class NewItemSoundFragment extends Fragment {
         recordingPath = newFilePath;
         tv_filename.setText(recordingPath);
         tv_filename.setVisibility(View.VISIBLE);
+        b_record.setImageResource(R.drawable.ic_mic_black);
+        recording = false;
         // Gem path til optagelse
         SharedPreferences.Editor prefedit = prefs.edit();
         Log.d(TAG, "Gemmer recording: " + recordingPath.toString());

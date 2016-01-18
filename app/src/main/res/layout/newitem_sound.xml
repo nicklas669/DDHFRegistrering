@@ -3,25 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start ny optagelse"
         android:id="@+id/newitem_record"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_mic_black" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Afspil optagelse"
         android:id="@+id/newitem_play"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_play_arrow_black" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Filnavn"
+        android:text="Valgt fil: ingen"
         android:id="@+id/newitem_voicefile"
         android:layout_gravity="center_horizontal" />
 
