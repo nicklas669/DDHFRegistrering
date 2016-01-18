@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.lang.Override;import java.lang.String;
 
+import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
 import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
 import hyltofthansen.ddhfregistrering.R;
@@ -73,6 +74,15 @@ public class NewItemInfoFragment extends Fragment {
         dateringFraTxt = (EditText) root.findViewById(R.id.dateringfraeditText);
         dateringTilTxt = (EditText) root.findViewById(R.id.dateringtileditText);
         postNrTxt = (EditText) root.findViewById(R.id.postnr);
+
+        FragmentDataSingleton.getInstance().setTitelTxt(titelTxt);
+        FragmentDataSingleton.getInstance().setBeskrivelseTxt(beskrivelseTxt);
+        FragmentDataSingleton.getInstance().setRefDonatorTxt(refDonatorTxt);
+        FragmentDataSingleton.getInstance().setRefProducentTxt(refProducentTxt);
+        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(modtagelsesDatoTxt);
+        FragmentDataSingleton.getInstance().setDateringFraTxt(dateringFraTxt);
+        FragmentDataSingleton.getInstance().setDateringTilTxt(dateringTilTxt);
+        FragmentDataSingleton.getInstance().setPostNrTxt(postNrTxt);
 
         setEditTextDatePicker(modtagelsesDatoTxt);
         setEditTextDatePicker(dateringFraTxt);

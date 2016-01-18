@@ -18,19 +18,28 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.Singleton;
 
 public class NewItemPicturesFragment extends Fragment {
     private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
@@ -142,6 +151,8 @@ public class NewItemPicturesFragment extends Fragment {
                 }
             }
         });
+
+        setHasOptionsMenu(true);
 
         return root;
     }
@@ -258,11 +269,48 @@ public class NewItemPicturesFragment extends Fragment {
 
         } catch (NullPointerException e) {
             f = new File(filePathFromState);
-            Uri contentUri = Uri.fromFile(f);
+//            Uri contentUri = Uri.fromFile(f);
             Log.d(TAG, e.toString());
         }
         getActivity().sendBroadcast(mediaScanIntent);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
+                //TODO dialog her der spørger om man er sikker på at man vil oprette
+                //TODO om man evt. har oprettet flere gange i træk?
+                Log.d(TAG, "Der blev trykket på opret");
+
+                EditText titelTxt = FragmentDataSingleton.getInstance().getTitelTxt();
+
+                if (titelTxt.getText().toString().trim().equals("")) {
+                    titelTxt.setError("Indtast en titel!");
+                    titelTxt.requestFocus();
+                } else {
+//                    try {
+                    JSONObject JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
+//                        JSONObject JSONitem = new JSONObject().put("itemheadline", titelTxt.getText().toString()).put("itemdescription",
+//                                beskrivelseTxt.getText().toString()).put("itemreceived", modtagelsesDatoTxt.getText().toString())
+//                                .put("itemdatingfrom", dateringFraTxt.getText().toString()).put("itemdatingto",
+//                                        dateringTilTxt.getText().toString()).put("donator",
+//                                        refDonatorTxt.getText().toString()).put("producer",
+//                                        refProducentTxt.getText().toString())
+//                                .put("postnummer", postNrTxt.getText().toString());
+                    Singleton.getInstance().callPostHTTPController(JSONitem, getActivity());
+//                        PostHTTPController postHTTPController = new PostHTTPController(JSONitem, getActivity(), fm);
+//                        postHTTPController.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+                    break;
+                }
+        }
+        return true;
+    }
+
 
     /**
      * http://developer.android.com/training/camera/photobasics.html
