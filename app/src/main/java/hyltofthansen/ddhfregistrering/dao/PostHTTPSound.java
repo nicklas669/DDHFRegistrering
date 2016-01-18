@@ -38,21 +38,11 @@ public class PostHTTPSound extends AsyncTask {
     Activity context;
     private SharedPreferences prefs;
     private int itemid;
-//    private android.support.v4.app.FragmentManager fm;
-
-
-//    public PostHTTPSound(Activity context, android.support.v4.app.FragmentManager fm, int itemid) {
-//        this.context = context;
-//        this.fm = fm;
-//        this.itemid = itemid;
-//    }
-
 
     public PostHTTPSound(Activity context, int itemid) {
         this.context = context;
         this.itemid = itemid;
     }
-
 
     @Override
     protected Integer doInBackground(Object[] params) {

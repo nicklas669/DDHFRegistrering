@@ -46,14 +46,6 @@ public class PostHTTPPicture extends AsyncTask {
     private JSONObject itemMedBilled;
     private SharedPreferences prefs;
     private int itemid;
-//    private android.support.v4.app.FragmentManager fm;
-
-
-//    public PostHTTPPicture(Activity context, android.support.v4.app.FragmentManager fm, int itemid) {
-//        this.context = context;
-//        this.fm = fm;
-//        this.itemid = itemid;
-//    }
 
     public PostHTTPPicture(Activity context, int itemid) {
         this.context = context;
@@ -112,7 +104,6 @@ public class PostHTTPPicture extends AsyncTask {
             Log.d(TAG, responseMsg);
 
 
-            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
             StringBuffer response = new StringBuffer();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(conn.getInputStream()));
@@ -143,9 +134,7 @@ public class PostHTTPPicture extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
         responseCode = Integer.valueOf(o.toString());
         if (responseCode == 200) {
                 builder.setMessage("Genstand oprettet. Responskode: " + responseCode).setTitle("Success")

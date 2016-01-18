@@ -26,12 +26,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     String urldisplay;
     private ItemDTO itemDTO;
 
-
-    public DownloadImageTask(ArrayList<Bitmap> imageList, BaseAdapter listAdapter) {
-        this.imageList = imageList;
-        this.listAdapter = listAdapter;
-    }
-
     public DownloadImageTask(ItemDTO itemDTO, CustomArrayAdapter customArrayAdapter) {
         this.itemDTO = itemDTO;
         this.listAdapter = customArrayAdapter;
@@ -50,7 +44,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-//        urldisplay = urls[0];
         //Log.d("DownloadImageTask", urldisplay);
         InputStream in;
         try {
@@ -75,11 +68,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             e.printStackTrace();
         }
         return image;
-    }
-
-    public void fetchImages(String url) {
-        urldisplay = url;
-        this.execute();
     }
 
     protected void onPostExecute(Bitmap result) {
