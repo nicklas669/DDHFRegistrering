@@ -82,10 +82,13 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
             }
             bufferedReader.close();
 
+            Log.d(TAG, String.valueOf(imageList.size()));
+
             JSONObject item = new JSONObject(response.toString());
             //Get all image URL's from an item
-            for (int x = 0; x < MAX_PICS; x++) {
+            for (int x = imageList.size(); x < MAX_PICS; x++) {
                 String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
+                Log.d(TAG, "Henter billed " + x + " :" + imageURL);
 
                     // First decode with inJustDecodeBounds=true to check dimensions
                     BitmapFactory.Options options = new BitmapFactory.Options();

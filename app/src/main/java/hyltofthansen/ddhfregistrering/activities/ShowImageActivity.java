@@ -28,8 +28,6 @@ public class ShowImageActivity extends Activity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarFullScreen);
         progressBar.setVisibility(View.INVISIBLE);
         Log.d(TAG, String.valueOf(itemid) + " img " + String.valueOf(clickedImage));
-//        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(this, itemid, clickedImage, imageView, progressBar);
-        //        dwTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         Singleton.getInstance().getFullScreenPic(this,itemid, clickedImage, imageView, progressBar);
 
         super.onCreate(savedInstanceState);

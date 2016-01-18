@@ -98,19 +98,13 @@ public class Singleton extends Application {
         return clickedItem;
     }
 
-//    public void fetchDefaultImage(String defaultImageUrl, ArrayList<Bitmap> images, BaseAdapter listAdapter) {
-////        cancelAllTask();
-//        DownloadImageTask dloadImageTask = new DownloadImageTask(images, listAdapter);
-//        allTasks.add(dloadImageTask);
-//        dloadImageTask.fetchImages(defaultImageUrl);
-//    }
-
     public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures, ItemDetailsImageAdapter itemDetailsImageAdapter, ProgressBar pb) {
                 GetItemPicturesForGridViewTask getItemGridPics = new GetItemPicturesForGridViewTask(context,
                         itemid,pictures, itemDetailsImageAdapter, pb);
         cancelAllTask();
         allTasks.add(getItemGridPics);
-        getItemGridPics.execute();
+//        getItemGridPics.execute();
+        getItemGridPics.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void getFullScreenPic(ShowImageActivity showImageActivity, int itemid, int clickedImage, ImageView imageView, ProgressBar progressBar) {

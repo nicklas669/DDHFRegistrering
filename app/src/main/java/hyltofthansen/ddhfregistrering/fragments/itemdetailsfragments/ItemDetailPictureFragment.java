@@ -30,7 +30,15 @@ public class ItemDetailPictureFragment extends Fragment {
     private ArrayList<Bitmap> pictures;
     private View root;
     private ProgressBar pb;
+    private ItemDetailsImageAdapter itemDetailsImageAdapter;
+    private int itemid;
 
+    @Override
+    public void onResume() {
+        Singleton.getInstance().fetchItemGridPictures(getContext(),
+                itemid, pictures, itemDetailsImageAdapter, pb);
+        super.onResume();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,18 +52,15 @@ public class ItemDetailPictureFragment extends Fragment {
         Log.d(TAG, "createView");
         pictures = new ArrayList<Bitmap>();
 
-        ItemDetailsImageAdapter itemDetailsImageAdapter = new ItemDetailsImageAdapter(getActivity(),pictures);
+        itemDetailsImageAdapter = new ItemDetailsImageAdapter(getActivity(),pictures);
 
-        final int itemid = Singleton.getInstance().getItemDetailsID();
+        itemid = Singleton.getInstance().getItemDetailsID();
         Log.d(TAG, String.valueOf(itemid) );
 
         //Fetch pictures for itemid
+
         Singleton.getInstance().fetchItemGridPictures(getContext(),
                 itemid,pictures, itemDetailsImageAdapter, pb);
-//        GetItemPicturesForGridViewTask getItemPictures =
-//                new GetItemPicturesForGridViewTask(getContext(),
-//                        itemid,pictures, itemDetailsImageAdapter, pb);
-//        getItemPictures.execute();  //TODO Køres uden at vente på liste tråden, men burde stoppe liste tråden (evt. brug singleton)
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);
