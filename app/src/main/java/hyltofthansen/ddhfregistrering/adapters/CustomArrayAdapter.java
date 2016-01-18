@@ -1,10 +1,7 @@
 package hyltofthansen.ddhfregistrering.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,7 +13,6 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
@@ -74,12 +70,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
                 Log.d(TAG, itemShown.getDefaultImageURL());
                 Log.d(TAG, "Henter billed");
                 Singleton.getInstance().fetchDefaultImage(itemShown, this);
+                itemImage.setImageResource(R.drawable.default_image_wait);
             }
             if(itemShown.isDefaultImageDownloaded()) {
                 Log.d(TAG, "Sætter billed på " + itemShown.toString());
                 itemImage.setImageBitmap(itemShown.getDefaultImage());
             }
-
         } else {
             itemImage.setImageResource(R.drawable.noimage);
         }
