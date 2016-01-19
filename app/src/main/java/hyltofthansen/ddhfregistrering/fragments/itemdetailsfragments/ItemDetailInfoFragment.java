@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -35,6 +36,7 @@ public class ItemDetailInfoFragment extends Fragment {
     View root;
     private EditText et_headline, et_descript, et_receiveDate, et_datingFrom, et_datingTo,
             et_donator, et_producer, et_zip;
+    private TextView tv_itemid;
     private boolean editing = false;
     private JSONObject JSONitem;
 
@@ -47,6 +49,7 @@ public class ItemDetailInfoFragment extends Fragment {
 
         Singleton.getInstance().getItemDetails(getActivity(), itemObject.getItemid(), this);
 
+        tv_itemid = (TextView) root.findViewById(R.id.itemdetails_tv_id);
         et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
         et_descript = (EditText) root.findViewById(R.id.itemdetails_DescripEdit);
         et_receiveDate = (EditText) root.findViewById(R.id.itemdetails_ReceiveEdit);
@@ -58,25 +61,27 @@ public class ItemDetailInfoFragment extends Fragment {
 
         disableEditTexts();
 
-        et_headline.setText(itemObject.getItemheadline().toString());
+        tv_itemid.setText("Genstand id: " + itemObject.getItemid());
 
-        et_descript.setText(itemObject.getItemdescription().toString());
-        Log.d(TAG, itemObject.getItemdescription().toString());
+        et_headline.setText(itemObject.getItemheadline());
+
+        et_descript.setText(itemObject.getItemdescription());
+        Log.d(TAG, itemObject.getItemdescription());
 
         if(!itemObject.getItemreceived().equals("null"))
-            et_receiveDate.setText(itemObject.getItemreceived().toString());
+            et_receiveDate.setText(itemObject.getItemreceived());
 
         if(!itemObject.getItemdatingfrom().equals("null") ||itemObject.getItemdatingfrom().equals("0000-00-00") )
-            et_datingFrom.setText(itemObject.getItemdatingfrom().toString());
+            et_datingFrom.setText(itemObject.getItemdatingfrom());
 
         if(!itemObject.getItemdatingto().equals("null") ||itemObject.getItemdatingto().equals("0000-00-00"))
-            et_datingTo.setText(itemObject.getItemdatingto().toString());
+            et_datingTo.setText(itemObject.getItemdatingto());
 
         if(!itemObject.getDonator().equals("null"))
-            et_donator.setText(itemObject.getDonator().toString());
+            et_donator.setText(itemObject.getDonator());
 
         if(!itemObject.getProducer().equals("null"))
-            et_producer.setText(itemObject.getProducer().toString());
+            et_producer.setText(itemObject.getProducer());
 
         if(!itemObject.getpostnummer().equals("0"))
             et_zip.setText(itemObject.getpostnummer());
