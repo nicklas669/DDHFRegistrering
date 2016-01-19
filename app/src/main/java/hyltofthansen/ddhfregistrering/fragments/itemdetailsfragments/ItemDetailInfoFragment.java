@@ -23,6 +23,7 @@ import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPEdit;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
 
 /**
  * ItemDetailInfoFragment is showing detailed information about a specific item which the user has clicked on
@@ -80,8 +81,21 @@ public class ItemDetailInfoFragment extends Fragment {
         if(!itemObject.getpostnummer().equals("0"))
             et_zip.setText(itemObject.getpostnummer());
 
+        setEditTextDatePicker(et_receiveDate);
+        setEditTextDatePicker(et_datingFrom);
+        setEditTextDatePicker(et_datingTo);
 
         return root;
+    }
+
+    private void setEditTextDatePicker(final EditText editText) {
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment newFragment = new DatePickerFragment(editText);
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
     }
 
     public void updateEditViews() {
