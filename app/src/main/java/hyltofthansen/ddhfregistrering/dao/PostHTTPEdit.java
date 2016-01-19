@@ -2,31 +2,21 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
  * Class responsible for POST HTTP editing an item's details

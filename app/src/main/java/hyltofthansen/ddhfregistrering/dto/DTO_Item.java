@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.Singleton;
 
-public class ItemDTO implements Serializable {
-    private static final String TAG = "ItemDTO";
+public class DTO_Item implements Serializable {
+    private static final String TAG = "DTO_Item";
     private int itemid, postnummer;
     private String itemheadline = "", itemdescription = "", itemreceived = "",
             itemdatingfrom = "", itemdatingto = "", donator = "", producer = "", defaultImageURL ="";
@@ -22,12 +22,12 @@ public class ItemDTO implements Serializable {
     private boolean gettingPicture = false;
     private boolean defaultImageDownloaded = false;
 
-    public ItemDTO(int itemid, String itemheadline) {
+    public DTO_Item(int itemid, String itemheadline) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
     }
 
-    public ItemDTO(int itemid, String itemheadline, String defaultimage) {
+    public DTO_Item(int itemid, String itemheadline, String defaultimage) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.defaultImageURL = defaultimage;
@@ -44,9 +44,9 @@ public class ItemDTO implements Serializable {
     private ArrayList<String> imageURLLists = new ArrayList<>();
 
 
-    public ItemDTO(int itemid, String itemheadline, String itemdescription,
-                   String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer) {
+    public DTO_Item(int itemid, String itemheadline, String itemdescription,
+                    String itemreceived, String itemdatingfrom, String itemdatingto,
+                    String donator, String producer, int postnummer) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;
@@ -59,9 +59,9 @@ public class ItemDTO implements Serializable {
     }
 
     // Constructor med item ID og billeder
-    public ItemDTO(int itemid, String itemheadline, String itemdescription,
-                   String itemreceived, String itemdatingfrom, String itemdatingto,
-                   String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
+    public DTO_Item(int itemid, String itemheadline, String itemdescription,
+                    String itemreceived, String itemdatingfrom, String itemdatingto,
+                    String donator, String producer, int postnummer, ArrayList<Bitmap> images) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;
@@ -74,8 +74,8 @@ public class ItemDTO implements Serializable {
         this.images = images;
     }
 
-    public ItemDTO(int itemid, String itemheadline, String defaultImageUrl, JSONArray allPics,
-                   BaseAdapter listAdapter) {
+    public DTO_Item(int itemid, String itemheadline, String defaultImageUrl, JSONArray allPics,
+                    BaseAdapter listAdapter) {
         //Converting jsonarray to ArrayList for putExtra's pleasure
         if (allPics != null) {
             imageURLLists = new ArrayList(allPics.length());
@@ -96,16 +96,16 @@ public class ItemDTO implements Serializable {
         }
     }
 
-    public ItemDTO(int itemid,
-                   String itemheadline,
-                   String itemdescription,
-                   String itemreceived,
-                   String itemdatingfrom,
-                   String itemdatingto,
-                   String donator,
-                   String producer,
-                   int postnummer,
-                   JSONArray imageURLLists) {
+    public DTO_Item(int itemid,
+                    String itemheadline,
+                    String itemdescription,
+                    String itemreceived,
+                    String itemdatingfrom,
+                    String itemdatingto,
+                    String donator,
+                    String producer,
+                    int postnummer,
+                    JSONArray imageURLLists) {
         this.itemid = itemid;
         this.itemheadline = itemheadline;
         this.itemdescription = itemdescription;

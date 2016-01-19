@@ -3,14 +3,14 @@ package hyltofthansen.ddhfregistrering.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentManager;
-import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemInfoFragment;
-import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemPicturesFragment;
-import hyltofthansen.ddhfregistrering.fragments.newitemfragments.NewItemSoundFragment;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.Frag_NewItemInfo;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.Frag_NewItemPictures;
+import hyltofthansen.ddhfregistrering.fragments.newitemfragments.Frag_NewItemSound;
 
-public class NewItemPagerAdapter extends FragmentStatePagerAdapter {
+public class Adapter_NewItemPager extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-    public NewItemPagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public Adapter_NewItemPager(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
@@ -20,13 +20,13 @@ public class NewItemPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                NewItemInfoFragment tab1 = new NewItemInfoFragment();
+                Frag_NewItemInfo tab1 = new Frag_NewItemInfo();
                 return tab1;
             case 1:
-                NewItemPicturesFragment tab2 = new NewItemPicturesFragment();
+                Frag_NewItemPictures tab2 = new Frag_NewItemPictures();
                 return tab2;
             case 2:
-                NewItemSoundFragment tab3 = new NewItemSoundFragment();
+                Frag_NewItemSound tab3 = new Frag_NewItemSound();
                 return tab3;
             default:
                 return null;

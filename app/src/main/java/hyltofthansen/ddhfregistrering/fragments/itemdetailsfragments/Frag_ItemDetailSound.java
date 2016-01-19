@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
 /**
- * ItemDetailInfoFragment is showing detailed informaiton about a specific item which the user has clicked on
+ * Frag_ItemDetailInfo is showing detailed informaiton about a specific item which the user has clicked on
  */
-public class ItemDetailSoundFragment extends Fragment {
+public class Frag_ItemDetailSound extends Fragment {
 
-    ItemDTO item;
+    DTO_Item item;
     View root;
-    ArrayList<ItemDTO> items;
+    ArrayList<DTO_Item> items;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

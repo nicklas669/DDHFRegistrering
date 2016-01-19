@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
 /**
  * Created by Nicklas on 07-01-2016.
@@ -24,17 +24,17 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ArrayList<Bitmap> imageList;
     BaseAdapter listAdapter;
     String urldisplay;
-    private ItemDTO itemDTO;
+    private DTO_Item DTOItem;
 
-    public DownloadImageTask(ItemDTO itemDTO, CustomArrayAdapter customArrayAdapter) {
-        this.itemDTO = itemDTO;
+    public DownloadImageTask(DTO_Item DTOItem, Adapter_SearchList customArrayAdapter) {
+        this.DTOItem = DTOItem;
         this.listAdapter = customArrayAdapter;
-        urldisplay = itemDTO.getDefaultImageURL();
+        urldisplay = DTOItem.getDefaultImageURL();
     }
 
     @Override
     protected void onPreExecute() {
-        itemDTO.setGettingPicture(true);
+        DTOItem.setGettingPicture(true);
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -72,9 +72,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         Log.d(TAG, "PostExecute defaultimage");
-        Log.d(TAG, itemDTO.getItemheadline());
-        itemDTO.setDefaultImage(result);
-        itemDTO.defaultImageDownloaded(true);
+        Log.d(TAG, DTOItem.getItemheadline());
+        DTOItem.setDefaultImage(result);
+        DTOItem.defaultImageDownloaded(true);
 //        imageList.add(result);
         listAdapter.notifyDataSetChanged();
     }

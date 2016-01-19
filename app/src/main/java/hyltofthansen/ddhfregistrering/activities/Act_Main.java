@@ -11,12 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
+import hyltofthansen.ddhfregistrering.fragments.Frag_SearchItem;
 
-public class MainActivity extends AppCompatActivity {
+public class Act_Main extends AppCompatActivity {
 
-    private SearchItemFragment searchFragment;
-    private final String TAG = "MainActivity";
+    private Frag_SearchItem searchFragment;
+    private final String TAG = "Act_Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "chosenImages remove kørt, chosenImage: " + prefs.getString("chosenImage", "null"));
         Log.d(TAG, "recording remove kørt, recording: " + prefs.getString("recording", "null"));
 
-        searchFragment = new SearchItemFragment();
+        searchFragment = new Frag_SearchItem();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, searchFragment).commit();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_create_main:   //Hvis man klikker på + knappen i action bar
-                Intent opretItem = new Intent(this, NewItemActivity.class);
+                Intent opretItem = new Intent(this, Act_NewItem.class);
                 startActivity(opretItem);
             default:
                 return super.onOptionsItemSelected(item);

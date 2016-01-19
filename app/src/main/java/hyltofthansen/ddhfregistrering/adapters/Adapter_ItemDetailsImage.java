@@ -15,13 +15,13 @@ import java.util.ArrayList;
 /**
  * Created by hylle on 13-01-2016.
  */
-public class ItemDetailsImageAdapter extends BaseAdapter {
-    private static final String TAG = "ItemDetailsImageAdapter";
+public class Adapter_ItemDetailsImage extends BaseAdapter {
+    private static final String TAG = "Adapter_ItemDetailsImage";
     private Context mContext;
     private int imgWidth;
     private ArrayList<Bitmap> pictures;
 
-    public ItemDetailsImageAdapter(Context c, ArrayList<Bitmap> pictures) {
+    public Adapter_ItemDetailsImage(Context c, ArrayList<Bitmap> pictures) {
         this.pictures = pictures;
         mContext = c;
     }

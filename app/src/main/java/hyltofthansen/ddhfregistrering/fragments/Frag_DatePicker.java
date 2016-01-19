@@ -15,7 +15,7 @@ import java.util.Calendar;
  * Inspiration fra http://developer.android.com/guide/topics/ui/controls/pickers.html
  */
 @SuppressLint("ValidFragment")
-public class DatePickerFragment extends DialogFragment
+public class Frag_DatePicker extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     EditText editText;
@@ -25,7 +25,7 @@ public class DatePickerFragment extends DialogFragment
      * Sæt hvilken editText der skal sættes dato på, og om datoen pr. default skal være dags dato.
      * @param editText Hvilken edittext skal der indsættes dato på?
      */
-    public DatePickerFragment (EditText editText) {
+    public Frag_DatePicker(EditText editText) {
         this.editText = editText;
     }
 

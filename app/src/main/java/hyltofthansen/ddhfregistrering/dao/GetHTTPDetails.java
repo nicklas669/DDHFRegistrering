@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
-import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.Frag_ItemDetailInfo;
 
 /**
  * Class responsible for GET HTTP functionality to API
@@ -26,14 +26,14 @@ import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailI
 public class GetHTTPDetails extends AsyncTask {
 
     private Context context;
-    private ArrayList<ItemDTO> items;
+    private ArrayList<DTO_Item> items;
     private static final String TAG = "GetHTTPDetails";
     private int itemID;
-    private ItemDetailInfoFragment detailsFragment;
+    private Frag_ItemDetailInfo detailsFragment;
 
 
-    public GetHTTPDetails(Context context, int itemID, ArrayList<ItemDTO> items,
-                          ItemDetailInfoFragment detailsFragment) {
+    public GetHTTPDetails(Context context, int itemID, ArrayList<DTO_Item> items,
+                          Frag_ItemDetailInfo detailsFragment) {
         this.context = context;
         this.itemID = itemID;
         this.items = items;
@@ -43,8 +43,8 @@ public class GetHTTPDetails extends AsyncTask {
     public GetHTTPDetails() {
     }
 
-    public void setDetails(Context context, int itemID, ArrayList<ItemDTO> items,
-                           ItemDetailInfoFragment detailsFragment) {
+    public void setDetails(Context context, int itemID, ArrayList<DTO_Item> items,
+                           Frag_ItemDetailInfo detailsFragment) {
         this.context = context;
         this.itemID = itemID;
         this.items = items;
@@ -84,7 +84,7 @@ public class GetHTTPDetails extends AsyncTask {
 
             JSONObject item = new JSONObject(response.toString());
 
-            Singleton.getInstance().setClickedItem(new ItemDTO(item.getInt("itemid"),
+            Singleton.getInstance().setClickedItem(new DTO_Item(item.getInt("itemid"),
                     item.getString("itemheadline"),
                     item.optString("itemdescription"),
                     item.optString("itemreceived"),

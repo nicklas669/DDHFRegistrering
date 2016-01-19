@@ -15,9 +15,9 @@ import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
 /**
  * Activity showing fullscreen image of a clicked gridview image
  */
-public class ShowImageActivity extends Activity {
+public class Act_ShowImage extends Activity {
 
-    private static final String TAG = "ShowImageActivity";
+    private static final String TAG = "Act_ShowImage";
     int itemid, clickedImage;
 
     @Override

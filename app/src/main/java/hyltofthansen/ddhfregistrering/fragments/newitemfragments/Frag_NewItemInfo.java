@@ -1,28 +1,22 @@
 package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.Override;import java.lang.String;
 
 import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
-import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
+import hyltofthansen.ddhfregistrering.fragments.Frag_DatePicker;
 
-public class NewItemInfoFragment extends Fragment {
+public class Frag_NewItemInfo extends Fragment {
 
     private ListView lv;
     private BaseAdapter listAdapter;
@@ -30,7 +24,7 @@ public class NewItemInfoFragment extends Fragment {
     private EditText titelTxt, beskrivelseTxt,
             modtagelsesDatoTxt, dateringFraTxt,
             dateringTilTxt, refDonatorTxt, refProducentTxt, postNrTxt;
-    private static final String TAG = "NewItemInfoFragment";
+    private static final String TAG = "Frag_NewItemInfo";
     private android.support.v4.app.FragmentManager fm;
 
 
@@ -72,7 +66,7 @@ public class NewItemInfoFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerFragment newFragment = new DatePickerFragment(editText);
+                Frag_DatePicker newFragment = new Frag_DatePicker(editText);
                 newFragment.show(fm, "datePicker");
             }
         });

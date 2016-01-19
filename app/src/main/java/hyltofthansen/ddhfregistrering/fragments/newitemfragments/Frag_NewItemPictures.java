@@ -44,12 +44,12 @@ import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
 
-public class NewItemPicturesFragment extends Fragment {
+public class Frag_NewItemPictures extends Fragment {
     private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
     ImageView iv_gallery;
     Uri imageUri;
     SharedPreferences prefs;
-    private static final String TAG = "NewItemPicturesFragment";
+    private static final String TAG = "Frag_NewItemPictures";
     private String mCurrentPhotoPath;
     private File photoFile;
     private String filePathFromState;

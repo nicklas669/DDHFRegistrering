@@ -13,22 +13,22 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
 /**
  * Custom Adapter for at muliggøre søgningen med filter() i ArrayAdapter.
  * Fra: http://stackoverflow.com/questions/14118309/how-to-use-search-functionality-in-custom-list-view-in-android/14119383#14119383
  *
  **/
-public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filterable {
+public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filterable {
 
-    private ArrayList<ItemDTO> mOriginalValues;
-    private ArrayList<ItemDTO> mDisplayedValues;
-    private static final String TAG = "CustomArrayAdapter";
+    private ArrayList<DTO_Item> mOriginalValues;
+    private ArrayList<DTO_Item> mDisplayedValues;
+    private static final String TAG = "Adapter_SearchList";
     private Context context;
 
 
-    public CustomArrayAdapter(Context context, int layout, int layout_textview, ArrayList<ItemDTO> mItemArrayList) {
+    public Adapter_SearchList(Context context, int layout, int layout_textview, ArrayList<DTO_Item> mItemArrayList) {
         super(context, layout, layout_textview, mItemArrayList);
         this.context = context;
         this.mDisplayedValues = mItemArrayList;
@@ -41,7 +41,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
     }
 
     @Override
-    public ItemDTO getItem(int position) {
+    public DTO_Item getItem(int position) {
         return mDisplayedValues.get(position);
     }
 
@@ -61,7 +61,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
 
-        ItemDTO itemShown = mDisplayedValues.get(position);
+        DTO_Item itemShown = mDisplayedValues.get(position);
 
         if(!(itemShown.getDefaultImageURL().equals("null") && itemShown.gettingPicture() == false)) {
             itemImage.setImageResource(R.drawable.default_image_wait);
@@ -89,17 +89,17 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
             @Override
             protected void publishResults(CharSequence constraint,FilterResults results) {
 
-                mDisplayedValues = (ArrayList<ItemDTO>) results.values; // has the filtered values
+                mDisplayedValues = (ArrayList<DTO_Item>) results.values; // has the filtered values
                 notifyDataSetChanged();  // notifies the data with new filtered values
             }
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                ArrayList<ItemDTO> FilteredArrList = new ArrayList<ItemDTO>();
+                ArrayList<DTO_Item> FilteredArrList = new ArrayList<DTO_Item>();
 
                 if (mOriginalValues == null) {
-                    mOriginalValues = new ArrayList<ItemDTO>(mDisplayedValues); // saves the original data in mOriginalValues
+                    mOriginalValues = new ArrayList<DTO_Item>(mDisplayedValues); // saves the original data in mOriginalValues
                 }
 
                 /********
@@ -132,7 +132,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ItemDTO> implements Filtera
         return filter;
     }
 
-    public void updateItemsList(ArrayList<ItemDTO> items) {
+    public void updateItemsList(ArrayList<DTO_Item> items) {
         //Log.d(TAG, "itemlist bliver opdateret!");
         this.mDisplayedValues = items;
         this.mOriginalValues = items;

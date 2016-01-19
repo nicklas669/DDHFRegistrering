@@ -2,7 +2,6 @@ package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,25 +11,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
-import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
-import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
+import hyltofthansen.ddhfregistrering.activities.Act_ShowImage;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_ItemDetailsImage;
 
 /**
- * ItemDetailPictureFragment shows gridview of an item's pictures
+ * Frag_ItemDetailPicture shows gridview of an item's pictures
  */
-public class ItemDetailPictureFragment extends Fragment {
+public class Frag_ItemDetailPicture extends Fragment {
 
     private static final String TAG ="ItemDetailsPicture" ;
     private ArrayList<Bitmap> pictures;
     private View root;
     private ProgressBar pb;
-    private ItemDetailsImageAdapter itemDetailsImageAdapter;
+    private Adapter_ItemDetailsImage itemDetailsImageAdapter;
     private int itemid;
 
     @Override
@@ -52,7 +49,7 @@ public class ItemDetailPictureFragment extends Fragment {
         Log.d(TAG, "createView");
         pictures = new ArrayList<Bitmap>();
 
-        itemDetailsImageAdapter = new ItemDetailsImageAdapter(getActivity(),pictures);
+        itemDetailsImageAdapter = new Adapter_ItemDetailsImage(getActivity(),pictures);
 
         itemid = Singleton.getInstance().getItemDetailsID();
         Log.d(TAG, String.valueOf(itemid) );
@@ -69,7 +66,7 @@ public class ItemDetailPictureFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 //                Toast.makeText(getActivity(), "Position " + position, Toast.LENGTH_SHORT).show();
-                Intent showImageAct  = new Intent(getActivity(), ShowImageActivity.class);
+                Intent showImageAct  = new Intent(getActivity(), Act_ShowImage.class);
                 Log.d(TAG, String.valueOf(itemid) + " img" + String.valueOf(position));
                 showImageAct.putExtra("clickedimage", position);
                 showImageAct.putExtra("itemid", itemid);

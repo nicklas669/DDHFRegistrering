@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -14,9 +13,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.activities.ShowImageActivity;
-import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
-import hyltofthansen.ddhfregistrering.adapters.ItemDetailsImageAdapter;
+import hyltofthansen.ddhfregistrering.activities.Act_ShowImage;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_ItemDetailsImage;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
 import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
 import hyltofthansen.ddhfregistrering.dao.DownloadImageTask;
 import hyltofthansen.ddhfregistrering.dao.GetFullScreenPicTask;
@@ -24,9 +23,9 @@ import hyltofthansen.ddhfregistrering.dao.GetHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dao.GetItemPicturesForGridViewTask;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPController;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
-import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
-import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.ItemDetailInfoFragment;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
+import hyltofthansen.ddhfregistrering.fragments.Frag_SearchItem;
+import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.Frag_ItemDetailInfo;
 
 /**
  * Singleton responsible for keeping track of the App's AsyncTask
@@ -36,25 +35,25 @@ public class Singleton extends Application {
     private static final String TAG = "Singleton";
     private static Singleton firstInstance = null;
     private GetHTTP getHTTP;
-    private ArrayList<ItemDTO> items;
+    private ArrayList<DTO_Item> items;
     private GetHTTPDetails getHTTPDetailsTask;
     private int itemdetailsID;
-    private ItemDTO clickedItem;
+    private DTO_Item clickedItem;
     private ArrayList<AsyncTask> allTasks;
 
-    public CustomArrayAdapter getSearchListAdapter() {
+    public Adapter_SearchList getSearchListAdapter() {
         return searchListAdapter;
     }
 
-    public SearchItemFragment getSearchFragment() {
+    public Frag_SearchItem getSearchFragment() {
         return searchFragment;
     }
 
-    private SearchItemFragment searchFragment;
-    private CustomArrayAdapter searchListAdapter;
+    private Frag_SearchItem searchFragment;
+    private Adapter_SearchList searchListAdapter;
 
     private Singleton() {
-        items = new ArrayList<ItemDTO>();
+        items = new ArrayList<DTO_Item>();
         allTasks = new ArrayList<>();
     }
 
@@ -65,9 +64,9 @@ public class Singleton extends Application {
         return firstInstance;
     }
 
-//    public void fetchItemsFromAPI(Context ctx, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
+//    public void fetchItemsFromAPI(Context ctx, Adapter_SearchList listAdapter, Frag_SearchItem searchItemFragment) {
 //        cancelAllTask();
-//        items = new ArrayList<ItemDTO>();
+//        items = new ArrayList<DTO_Item>();
 //        getHTTP = new GetHTTP(ctx, items, listAdapter, searchItemFragment);
 //        allTasks.add(getHTTP);
 //        getHTTP.execute();
@@ -75,7 +74,7 @@ public class Singleton extends Application {
 
     public void fetchItemsFromAPI() {
         cancelAllTask();
-        items = new ArrayList<ItemDTO>();
+        items = new ArrayList<DTO_Item>();
         getHTTP = new GetHTTP(searchFragment.getContext(), items, searchListAdapter, searchFragment);
         allTasks.add(getHTTP);
         getHTTP.execute();
@@ -92,7 +91,7 @@ public class Singleton extends Application {
         }
     }
 
-    public ArrayList<ItemDTO> getItems() {
+    public ArrayList<DTO_Item> getItems() {
         return items;
     }
 
@@ -100,7 +99,7 @@ public class Singleton extends Application {
         return itemdetailsID;
     }
 
-    public void getItemDetails(FragmentActivity activity, int itemid, ItemDetailInfoFragment itemDetailInfoFragment) {
+    public void getItemDetails(FragmentActivity activity, int itemid, Frag_ItemDetailInfo itemDetailInfoFragment) {
         itemdetailsID = itemid;
         cancelAllTask();
         getHTTPDetailsTask = new GetHTTPDetails(activity, itemid, items, itemDetailInfoFragment);
@@ -108,16 +107,16 @@ public class Singleton extends Application {
         getHTTPDetailsTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void setClickedItem(ItemDTO clickedItem) {
+    public void setClickedItem(DTO_Item clickedItem) {
         this.clickedItem = clickedItem;
     }
 
-    public ItemDTO getClickedItem() {
+    public DTO_Item getClickedItem() {
         Log.d(TAG, clickedItem.toString());
         return clickedItem;
     }
 
-    public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures, ItemDetailsImageAdapter itemDetailsImageAdapter, ProgressBar pb) {
+    public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures, Adapter_ItemDetailsImage itemDetailsImageAdapter, ProgressBar pb) {
                 GetItemPicturesForGridViewTask getItemGridPics = new GetItemPicturesForGridViewTask(context,
                         itemid,pictures, itemDetailsImageAdapter, pb);
         cancelAllTask();
@@ -126,16 +125,16 @@ public class Singleton extends Application {
         getItemGridPics.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void getFullScreenPic(ShowImageActivity showImageActivity, int itemid, int clickedImage, ImageView imageView, ProgressBar progressBar) {
-        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(showImageActivity, itemid, clickedImage, imageView, progressBar);
+    public void getFullScreenPic(Act_ShowImage actShowImage, int itemid, int clickedImage, ImageView imageView, ProgressBar progressBar) {
+        GetFullScreenPicTask dwTask = new GetFullScreenPicTask(actShowImage, itemid, clickedImage, imageView, progressBar);
         cancelAllTask();
         allTasks.add(dwTask);
         dwTask.execute();
     }
 
-    public void fetchDefaultImage(ItemDTO itemDTO, CustomArrayAdapter customArrayAdapter) {
+    public void fetchDefaultImage(DTO_Item DTOItem, Adapter_SearchList customArrayAdapter) {
 //        cancelAllTask();
-        DownloadImageTask dloadImageTask = new DownloadImageTask(itemDTO, customArrayAdapter);
+        DownloadImageTask dloadImageTask = new DownloadImageTask(DTOItem, customArrayAdapter);
         allTasks.add(dloadImageTask);
         dloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 //        dloadImageTask.execute();
@@ -153,11 +152,11 @@ public class Singleton extends Application {
         delHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void setSearchFragment(SearchItemFragment searchFragment) {
+    public void setSearchFragment(Frag_SearchItem searchFragment) {
         this.searchFragment = searchFragment;
     }
 
-    public void setSearchListAdapter(CustomArrayAdapter searchListAdapter) {
+    public void setSearchListAdapter(Adapter_SearchList searchListAdapter) {
         this.searchListAdapter = searchListAdapter;
     }
 }

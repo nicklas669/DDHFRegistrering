@@ -2,7 +2,6 @@ package hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,24 +14,20 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
-import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPEdit;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
-import hyltofthansen.ddhfregistrering.fragments.DatePickerFragment;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
+import hyltofthansen.ddhfregistrering.fragments.Frag_DatePicker;
 
 /**
- * ItemDetailInfoFragment is showing detailed information about a specific item which the user has clicked on
+ * Frag_ItemDetailInfo is showing detailed information about a specific item which the user has clicked on
  */
-public class ItemDetailInfoFragment extends Fragment {
+public class Frag_ItemDetailInfo extends Fragment {
 
-    private static final String TAG = "ItemDetailInfoFragment";
-    ItemDTO itemObject;
+    private static final String TAG = "Frag_ItemDetailInfo";
+    DTO_Item itemObject;
     View root;
     private EditText et_headline, et_descript, et_receiveDate, et_datingFrom, et_datingTo,
             et_donator, et_producer, et_zip;
@@ -97,7 +92,7 @@ public class ItemDetailInfoFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerFragment newFragment = new DatePickerFragment(editText);
+                Frag_DatePicker newFragment = new Frag_DatePicker(editText);
                 newFragment.show(getFragmentManager(), "datePicker");
             }
         });
@@ -133,7 +128,7 @@ public class ItemDetailInfoFragment extends Fragment {
             et_zip.setText(itemObject.getpostnummer());
     }
 
-    public void setItem(ItemDTO itemObject) {
+    public void setItem(DTO_Item itemObject) {
         this.itemObject = itemObject;
     }
 

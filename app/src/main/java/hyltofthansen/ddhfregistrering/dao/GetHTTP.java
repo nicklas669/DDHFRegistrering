@@ -2,7 +2,6 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,10 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
+import hyltofthansen.ddhfregistrering.fragments.Frag_SearchItem;
 
 /**
  * Class responsible for GET HTTP functionality to API
@@ -26,12 +25,12 @@ import hyltofthansen.ddhfregistrering.fragments.SearchItemFragment;
 public class GetHTTP extends AsyncTask {
 
     private Context context;
-    private CustomArrayAdapter listAdapter;
-    private ArrayList<ItemDTO> items;
-    private SearchItemFragment searchItemFragment;
+    private Adapter_SearchList listAdapter;
+    private ArrayList<DTO_Item> items;
+    private Frag_SearchItem searchItemFragment;
     private static final String TAG = "GetHTTP";
 
-    public GetHTTP(Context context, ArrayList<ItemDTO> items, CustomArrayAdapter listAdapter, SearchItemFragment searchItemFragment) {
+    public GetHTTP(Context context, ArrayList<DTO_Item> items, Adapter_SearchList listAdapter, Frag_SearchItem searchItemFragment) {
         this.context = context;
         this.items = items;
         this.listAdapter = listAdapter;
@@ -72,7 +71,7 @@ public class GetHTTP extends AsyncTask {
                     break;
                 }
                 JSONObject item = itemsfromDB.getJSONObject(x);
-                items.add(new ItemDTO(item.getInt("itemid"),
+                items.add(new DTO_Item(item.getInt("itemid"),
                         item.getString("itemheadline"),
                         item.getString("defaultimage")));
 //                        item.optJSONArray("images"), //Denne skal fjernes eller også skal der itereres detaljer for hver item allerede her!

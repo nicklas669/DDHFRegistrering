@@ -1,7 +1,6 @@
 package hyltofthansen.ddhfregistrering.fragments;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -24,21 +23,21 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.Singleton;
-import hyltofthansen.ddhfregistrering.activities.ItemDetailsActivity;
-import hyltofthansen.ddhfregistrering.adapters.CustomArrayAdapter;
+import hyltofthansen.ddhfregistrering.activities.Act_ItemDetails;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
-import hyltofthansen.ddhfregistrering.dto.ItemDTO;
+import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 import hyltofthansen.ddhfregistrering.R;
 
-public class SearchItemFragment extends Fragment {
+public class Frag_SearchItem extends Fragment {
 
     private ListView lv;
-    private CustomArrayAdapter listAdapter;
+    private Adapter_SearchList listAdapter;
     private GetHTTP getHTTP;
-    private ArrayList<ItemDTO> items;
+    private ArrayList<DTO_Item> items;
     private EditText inputSearch;
-    private static final String TAG = "SearchItemFragment";
-    private ItemDTO item;
+    private static final String TAG = "Frag_SearchItem";
+    private DTO_Item item;
     private Intent itemDetails;
     private Menu mymenu;
     private Singleton singleton;
@@ -67,11 +66,11 @@ public class SearchItemFragment extends Fragment {
         lv = (ListView) root.findViewById(R.id.search_lv);
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
-//        items = new ArrayList<ItemDTO>();
+//        items = new ArrayList<DTO_Item>();
         items = singleton.getInstance().getItems();
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
-        listAdapter = new CustomArrayAdapter(getActivity(),
+        listAdapter = new Adapter_SearchList(getActivity(),
                 R.layout.search_row, R.id.search_tvheadline, items);
 
         lv.setAdapter(listAdapter);
@@ -87,7 +86,7 @@ public class SearchItemFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                itemDetails = new Intent(getActivity(), ItemDetailsActivity.class);
+                itemDetails = new Intent(getActivity(), Act_ItemDetails.class);
                 item = listAdapter.getItem(position);
                 Singleton.getInstance().setClickedItem(item);
                 Log.d(TAG, "onClick " + item.toString());

@@ -24,8 +24,8 @@ import hyltofthansen.ddhfregistrering.R;
 /**
  * http://developer.android.com/guide/topics/media/audio-capture.html
  */
-public class NewItemSoundFragment extends Fragment {
-    private static final String TAG = "NewItemSoundFragment";
+public class Frag_NewItemSound extends Fragment {
+    private static final String TAG = "Frag_NewItemSound";
     ImageButton b_record, b_play;
     TextView tv_filename;
     boolean playing = false, recording = false;
