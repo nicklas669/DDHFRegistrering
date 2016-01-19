@@ -46,7 +46,7 @@ public class PostHTTPEdit extends AsyncTask {
     public PostHTTPEdit(Activity context, int itemid, JSONObject JSONitem) {
         this.context = context;
         this.itemid = itemid;
-        Log.d(TAG, "itemid er: "+itemid);
+        //Log.d(TAG, "itemid er: "+itemid);
         this.JSONitem = JSONitem;
     }
 
@@ -93,13 +93,7 @@ public class PostHTTPEdit extends AsyncTask {
             conn.disconnect();
 
         }
-        catch (UnsupportedEncodingException e) {
-            Log.d(TAG, e.toString());
-        } catch (ProtocolException e) {
-            Log.d(TAG, e.toString());
-        } catch (IOException e) {
-            Log.d(TAG, e.toString());
-        } catch (Exception e) {
+        catch (Exception e) {
             Log.d(TAG, e.toString());
         }
         return responseCode;

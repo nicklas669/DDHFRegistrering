@@ -172,11 +172,11 @@ public class ItemDetailInfoFragment extends Fragment {
     private void createJSONItem() {
         FragmentDataSingleton.getInstance().setTitelTxt(et_headline);
         FragmentDataSingleton.getInstance().setBeskrivelseTxt(et_descript);
-        FragmentDataSingleton.getInstance().setRefDonatorTxt(et_receiveDate);
-        FragmentDataSingleton.getInstance().setRefProducentTxt(et_datingFrom);
-        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(et_datingTo);
-        FragmentDataSingleton.getInstance().setDateringFraTxt(et_donator);
-        FragmentDataSingleton.getInstance().setDateringTilTxt(et_producer);
+        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(et_receiveDate);
+        FragmentDataSingleton.getInstance().setDateringFraTxt(et_datingFrom);
+        FragmentDataSingleton.getInstance().setDateringTilTxt(et_datingTo);
+        FragmentDataSingleton.getInstance().setRefDonatorTxt(et_donator);
+        FragmentDataSingleton.getInstance().setRefProducentTxt(et_producer);
         FragmentDataSingleton.getInstance().setPostNrTxt(et_zip);
         JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
     }
