@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
@@ -95,7 +97,6 @@ public class NewItemPicturesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //getActivity().setTitle("Vedhæft billede");
 
         View root = inflater.inflate(R.layout.fr_newitem_pictures, container, false); // sæt layout op
 
@@ -129,7 +130,6 @@ public class NewItemPicturesFragment extends Fragment {
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                     photoFile = null;
-
                     try {
                         photoFile = createImageFile();
                         //Log.d(TAG, "photoFile er instantieret...");
@@ -189,7 +189,7 @@ public class NewItemPicturesFragment extends Fragment {
                 String sel = MediaStore.Images.Media._ID + "=?";
 
                 Cursor cursor = getContext().getContentResolver().
-                        query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,     //Failure delivering result
                                 column, sel, new String[]{ id }, null);
 
                 String filePath = "";
@@ -226,6 +226,7 @@ public class NewItemPicturesFragment extends Fragment {
      */
 
     private void setPic(ImageView gallery, String path) {
+
         Log.d(TAG, "path: "+path);
 
         // Get the dimensions of the View
@@ -255,9 +256,39 @@ public class NewItemPicturesFragment extends Fragment {
         //bmOptions.inPurgeable = true;
 
         scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
+
+        try {
+            ExifInterface ei = new ExifInterface(path);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+            Log.d(TAG, orientation + " orientation");
+
+            switch(orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    scaledBitmap = rotateImage(scaledBitmap, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    scaledBitmap = rotateImage(scaledBitmap, 180);
+                    break;
+                // etc.
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
         gallery.setImageBitmap(scaledBitmap);
         //return bitmap;
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Bitmap retVal;
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+
+        return retVal;
     }
 
     private void galleryAddPic() {

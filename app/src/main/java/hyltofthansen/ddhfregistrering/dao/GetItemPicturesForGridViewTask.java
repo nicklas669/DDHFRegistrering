@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,9 @@ import android.widget.ProgressBar;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -102,6 +106,8 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                         currentImage = BitmapFactory.decodeStream(in);
 //                        currentImage = Bitmap.createScaledBitmap(currentImage,300,300,false);
                         in.close();
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -115,6 +121,21 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                         options.inJustDecodeBounds = false;
                         currentImage = BitmapFactory.decodeStream(in, null, options);
                         in.close();
+
+                        File f = new File(ctx.getCacheDir(), "gridpic");
+                        f.createNewFile();
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        currentImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                        byte[] bitmapdata = bos.toByteArray();
+
+                        FileOutputStream fos = new FileOutputStream(f);
+                        fos.write(bitmapdata);
+                        fos.flush();
+                        fos.close();
+
+                        ExifInterface exif = new ExifInterface(f.getAbsolutePath());
+                        String exifOrientation = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+                        Log.d(TAG, "exifOrientation: " + exifOrientation);
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
