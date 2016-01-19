@@ -25,7 +25,6 @@ public class Act_ShowImage extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.fullimageView);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarFullScreen);
         progressBar.setVisibility(View.INVISIBLE);
-        Log.d(TAG, String.valueOf(itemid) + " img " + String.valueOf(clickedImage));
         Sing_AsyncTasks.getInstance().getFullScreenPic(this,itemid, clickedImage, imageView, progressBar);
 
         super.onCreate(savedInstanceState);

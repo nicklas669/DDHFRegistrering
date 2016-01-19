@@ -1,16 +1,13 @@
 package hyltofthansen.ddhfregistrering.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
     private ArrayList<DTO_Item> mDisplayedValues;
     private static final String TAG = "Adapter_SearchList";
     private Context context;
-
 
     public Adapter_SearchList(Context context, int layout, int layout_textview, ArrayList<DTO_Item> mItemArrayList) {
         super(context, layout, layout_textview, mItemArrayList);
@@ -55,7 +51,6 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //Log.d(TAG, "getView pos: " + position + ", genstandid: " + mDisplayedValues.get(position).getItemid());
         View view = super.getView(position, convertView, parent);
         TextView itemHeadline = (TextView) view.findViewById(R.id.search_tvheadline);
         itemHeadline.setText(mDisplayedValues.get(position).getItemheadline());
@@ -88,6 +83,7 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
         }
         return view;
     }
+
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
@@ -109,14 +105,7 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
                     mOriginalValues = new ArrayList<DTO_Item>(mDisplayedValues); // saves the original data in mOriginalValues
                 }
 
-                /********
-                 *
-                 *  If constraint(CharSequence that is received) is null returns the mOriginalValues(Original) values
-                 *  else does the Filtering and returns FilteredArrList(Filtered)
-                 *
-                 ********/
                 if (constraint == null || constraint.length() == 0) {
-
                     // set the Original result to return
                     results.count = mOriginalValues.size();
                     results.values = mOriginalValues;
@@ -140,10 +129,8 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
     }
 
     public void updateItemsList(ArrayList<DTO_Item> items) {
-        //Log.d(TAG, "itemlist bliver opdateret!");
         this.mDisplayedValues = items;
         this.mOriginalValues = items;
-        //notifyDataSetChanged();
         this.notifyDataSetChanged();
     }
 }

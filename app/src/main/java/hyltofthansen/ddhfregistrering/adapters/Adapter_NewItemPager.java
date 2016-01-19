@@ -17,7 +17,6 @@ public class Adapter_NewItemPager extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 Frag_NewItemInfo tab1 = new Frag_NewItemInfo();

@@ -44,7 +44,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        //Log.d("DownloadImageTask", urldisplay);
         InputStream in;
         try {
             in = new java.net.URL(urldisplay).openStream();
@@ -55,7 +54,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             e.printStackTrace();
         }
 
-//         Calculate inSampleSize
+        //Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, 50, 50);
 
         // Decode bitmap with inSampleSize set
@@ -75,7 +74,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         Log.d(TAG, DTOItem.getItemheadline());
         DTOItem.setDefaultImage(result);
         DTOItem.defaultImageDownloaded(true);
-//        imageList.add(result);
         listAdapter.notifyDataSetChanged();
     }
 
@@ -94,7 +92,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 

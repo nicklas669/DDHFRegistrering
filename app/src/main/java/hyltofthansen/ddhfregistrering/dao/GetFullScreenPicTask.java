@@ -3,29 +3,21 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.opengl.GLES10;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -40,7 +32,6 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     private ProgressBar pb;
     private int clickedImage;
     private ImageView imageView;
-
 
     public GetFullScreenPicTask(Context ctx, int itemid, int clickedImage, ImageView imageView, ProgressBar pb) {
         this.ctx = ctx;
@@ -57,6 +48,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... urls) {
+        // TODO: Slet debug logs
         Log.d(TAG, "Henter fullscreen pic");
         itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
                 "?userID=56837dedd2d76438906140";
@@ -68,9 +60,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
         try {
             URL obj = new URL(itemIDURL);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            // optional, default is GET
             con.setRequestMethod("GET");
-            //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
 
             BufferedReader bufferedReader = new BufferedReader(
@@ -86,7 +76,6 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
             //Get all image URL's from an item
             String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
 
-            // First decode with inJustDecodeBounds=true to check dimensions
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             InputStream in;
@@ -101,14 +90,11 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
 
             options.inSampleSize = calculateInSampleSize(options, 1280, 720);
 
-            // Decode bitmap with inSampleSize set
             try {
                 in = new java.net.URL(imageURL).openStream();
                 options.inJustDecodeBounds = false;
                 currentImage = BitmapFactory.decodeStream(in, null, options);
                 in.close();
-
-//                currentImage = ImgRotationDetection.getCorrectRotatedBitmap(ctx, currentImage, f.getAbsolutePath());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,8 +118,6 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         pb.setVisibility(View.INVISIBLE);
         imageView.setImageBitmap(currentImage);
-        Log.d(TAG, "Sat imageView bitmap height:" + currentImage.getHeight());
-//        super.onPostExecute(bitmap);
     }
 
     /**
@@ -151,7 +135,6 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 

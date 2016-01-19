@@ -18,7 +18,6 @@ public class Adapter_ItemDetailsPager extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 Frag_ItemDetailInfo tab1 = new Frag_ItemDetailInfo();

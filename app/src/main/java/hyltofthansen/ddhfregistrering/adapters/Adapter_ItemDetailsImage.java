@@ -61,7 +61,6 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
         if (pictures != null && (pictures.size() > 0)) {
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
-//                    Log.d(TAG, "picture indeholder noget");
                     imageView.setImageBitmap(pictures.get(position));
 //                    rotation.cancel(); rotation.reset();
                 } else {
@@ -88,5 +87,4 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
         imgWidth = size.x / 2;
         return imgWidth;
     }
-
 }

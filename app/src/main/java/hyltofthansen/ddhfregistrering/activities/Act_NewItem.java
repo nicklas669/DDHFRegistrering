@@ -78,8 +78,6 @@ public class Act_NewItem extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_create_item: //Der blev trykket på "Opret" knappen i Opret Genstand actionbaren
                 //TODO dialog her der spørger om man er sikker på at man vil oprette
-                //TODO om man evt. har oprettet flere gange i træk?
-                Log.d(TAG, "Der blev trykket på opret");
 
                 EditText titelTxt = Sing_NewItemData.getInstance().getTitelTxt();
 
