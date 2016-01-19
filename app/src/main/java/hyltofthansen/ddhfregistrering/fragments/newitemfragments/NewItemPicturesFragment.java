@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
+import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
 
@@ -257,38 +258,11 @@ public class NewItemPicturesFragment extends Fragment {
 
         scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
 
-        try {
-            ExifInterface ei = new ExifInterface(path);
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-
-            Log.d(TAG, orientation + " orientation");
-
-            switch(orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    scaledBitmap = rotateImage(scaledBitmap, 90);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    scaledBitmap = rotateImage(scaledBitmap, 180);
-                    break;
-                // etc.
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        scaledBitmap = ImgRotationDetection.getCorrectRotatedBitmap(scaledBitmap, path);
 
         Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
         gallery.setImageBitmap(scaledBitmap);
         //return bitmap;
-    }
-
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Bitmap retVal;
-
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-
-        return retVal;
     }
 
     private void galleryAddPic() {
