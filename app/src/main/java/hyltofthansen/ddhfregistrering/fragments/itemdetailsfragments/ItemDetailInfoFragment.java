@@ -147,14 +147,18 @@ public class ItemDetailInfoFragment extends Fragment {
                 dialog.show();
                 return true;
             case R.id.action_edit_item:
-                // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar
+                // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar og fjern skraldespand
                 if (!editing) {
                     Log.d(TAG, "enabling edit texts!");
                     enableEditTexts();
                     editing = true;
                 } else {
                     Log.d(TAG, "Opdaterer genstand!");
-                    // TODO: Opdater item her!
+                    if (et_headline.getText().toString().trim().equals("")) {
+                        et_headline.setError("Indtast en titel!");
+                        et_headline.requestFocus();
+                        return false;
+                    }
                     Log.d(TAG, "createJSONItem() start");
                     createJSONItem();
                     Log.d(TAG, "createJSONItem() slut");
