@@ -19,6 +19,8 @@ public class ImgRotationDetection {
             ExifInterface ei = new ExifInterface(path);
             int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
+            Log.d(TAG, String.valueOf(scaledBitmap.getHeight() + " bitmap height"));
+
             Log.d(TAG, orientation + " orientation");
 
             switch(orientation) {

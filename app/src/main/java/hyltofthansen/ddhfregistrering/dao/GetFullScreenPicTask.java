@@ -15,6 +15,9 @@ import android.widget.ProgressBar;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -103,6 +107,24 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
                 options.inJustDecodeBounds = false;
                 currentImage = BitmapFactory.decodeStream(in, null, options);
                 in.close();
+
+
+                File f = new File(ctx.getCacheDir(), "gridpic.png");
+                f.createNewFile();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                currentImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                byte[] bitmapdata = bos.toByteArray();
+
+                FileOutputStream fos = new FileOutputStream(f);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+
+                Log.d(TAG, f.getAbsolutePath() + " filepath");
+                Log.d(TAG, f.toString());
+
+                currentImage = ImgRotationDetection.getCorrectRotatedBitmap(currentImage, f.getAbsolutePath());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

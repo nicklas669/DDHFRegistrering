@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.Singleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
 /**
@@ -69,7 +69,7 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
                 itemShown.setGettingPicture(true);
                 Log.d(TAG, itemShown.getDefaultImageURL());
                 Log.d(TAG, "Henter billed");
-                Singleton.getInstance().fetchDefaultImage(itemShown, this);
+                Sing_AsyncTasks.getInstance().fetchDefaultImage(itemShown, this);
                 itemImage.setImageResource(R.drawable.default_image_wait);
             }
             if(itemShown.isDefaultImageDownloaded()) {

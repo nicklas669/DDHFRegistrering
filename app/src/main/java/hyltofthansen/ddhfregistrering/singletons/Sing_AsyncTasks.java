@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering;
+package hyltofthansen.ddhfregistrering.singletons;
 
 import android.app.Application;
 import android.content.Context;
@@ -28,12 +28,12 @@ import hyltofthansen.ddhfregistrering.fragments.Frag_SearchItem;
 import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.Frag_ItemDetailInfo;
 
 /**
- * Singleton responsible for keeping track of the App's AsyncTask
+ * Sing_AsyncTasks responsible for keeping track of the App's AsyncTask
  */
-public class Singleton extends Application {
+public class Sing_AsyncTasks extends Application {
 
-    private static final String TAG = "Singleton";
-    private static Singleton firstInstance = null;
+    private static final String TAG = "Sing_AsyncTasks";
+    private static Sing_AsyncTasks firstInstance = null;
     private GetHTTP getHTTP;
     private ArrayList<DTO_Item> items;
     private GetHTTPDetails getHTTPDetailsTask;
@@ -52,14 +52,14 @@ public class Singleton extends Application {
     private Frag_SearchItem searchFragment;
     private Adapter_SearchList searchListAdapter;
 
-    private Singleton() {
+    private Sing_AsyncTasks() {
         items = new ArrayList<DTO_Item>();
         allTasks = new ArrayList<>();
     }
 
-    public static Singleton getInstance() {
+    public static Sing_AsyncTasks getInstance() {
         if (firstInstance == null) {
-            firstInstance = new Singleton();
+            firstInstance = new Sing_AsyncTasks();
         }
         return firstInstance;
     }

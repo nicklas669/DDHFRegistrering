@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.Singleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 import hyltofthansen.ddhfregistrering.activities.Act_ShowImage;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_ItemDetailsImage;
 
@@ -32,7 +32,7 @@ public class Frag_ItemDetailPicture extends Fragment {
 
     @Override
     public void onResume() {
-        Singleton.getInstance().fetchItemGridPictures(getContext(),
+        Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
                 itemid, pictures, itemDetailsImageAdapter, pb);
         super.onResume();
     }
@@ -51,12 +51,12 @@ public class Frag_ItemDetailPicture extends Fragment {
 
         itemDetailsImageAdapter = new Adapter_ItemDetailsImage(getActivity(),pictures);
 
-        itemid = Singleton.getInstance().getItemDetailsID();
+        itemid = Sing_AsyncTasks.getInstance().getItemDetailsID();
         Log.d(TAG, String.valueOf(itemid) );
 
         //Fetch pictures for itemid
 
-        Singleton.getInstance().fetchItemGridPictures(getContext(),
+        Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
                 itemid,pictures, itemDetailsImageAdapter, pb);
 
         //Set adapter

@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
+import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.PostHTTPEdit;
 import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 import hyltofthansen.ddhfregistrering.fragments.Frag_DatePicker;
@@ -39,10 +39,10 @@ public class Frag_ItemDetailInfo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         root = inflater.inflate(R.layout.fr_itemdetails_info, container, false);
-        itemObject = Singleton.getInstance().getClickedItem();
+        itemObject = Sing_AsyncTasks.getInstance().getClickedItem();
         getActivity().setTitle(itemObject.getItemheadline().toString());
 
-        Singleton.getInstance().getItemDetails(getActivity(), itemObject.getItemid(), this);
+        Sing_AsyncTasks.getInstance().getItemDetails(getActivity(), itemObject.getItemid(), this);
 
         tv_itemid = (TextView) root.findViewById(R.id.itemdetails_tv_id);
         et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
@@ -99,7 +99,7 @@ public class Frag_ItemDetailInfo extends Fragment {
     }
 
     public void updateEditViews() {
-        itemObject = Singleton.getInstance().getClickedItem();
+        itemObject = Sing_AsyncTasks.getInstance().getClickedItem();
         Log.d(TAG, "updateEditView");
 
         disableEditTexts();
@@ -174,15 +174,15 @@ public class Frag_ItemDetailInfo extends Fragment {
     }
 
     private void createJSONItem() {
-        FragmentDataSingleton.getInstance().setTitelTxt(et_headline);
-        FragmentDataSingleton.getInstance().setBeskrivelseTxt(et_descript);
-        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(et_receiveDate);
-        FragmentDataSingleton.getInstance().setDateringFraTxt(et_datingFrom);
-        FragmentDataSingleton.getInstance().setDateringTilTxt(et_datingTo);
-        FragmentDataSingleton.getInstance().setRefDonatorTxt(et_donator);
-        FragmentDataSingleton.getInstance().setRefProducentTxt(et_producer);
-        FragmentDataSingleton.getInstance().setPostNrTxt(et_zip);
-        JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
+        Sing_NewItemData.getInstance().setTitelTxt(et_headline);
+        Sing_NewItemData.getInstance().setBeskrivelseTxt(et_descript);
+        Sing_NewItemData.getInstance().setModtagelsesDatoTxt(et_receiveDate);
+        Sing_NewItemData.getInstance().setDateringFraTxt(et_datingFrom);
+        Sing_NewItemData.getInstance().setDateringTilTxt(et_datingTo);
+        Sing_NewItemData.getInstance().setRefDonatorTxt(et_donator);
+        Sing_NewItemData.getInstance().setRefProducentTxt(et_producer);
+        Sing_NewItemData.getInstance().setPostNrTxt(et_zip);
+        JSONitem = Sing_NewItemData.getInstance().getJSONitem();
     }
 
     /**
@@ -217,8 +217,8 @@ public class Frag_ItemDetailInfo extends Fragment {
         public void onClick(DialogInterface dialog, int id) {
             switch (id){
                 case DialogInterface.BUTTON_POSITIVE:
-                    Singleton.getInstance().deleteHTTP(getActivity());
-//                    DeleteHTTP deleteHTTP = new DeleteHTTP(getActivity(), Singleton.getInstance().getClickedItem().getItemid());
+                    Sing_AsyncTasks.getInstance().deleteHTTP(getActivity());
+//                    DeleteHTTP deleteHTTP = new DeleteHTTP(getActivity(), Sing_AsyncTasks.getInstance().getClickedItem().getItemid());
 //                    deleteHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     break;
 

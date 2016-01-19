@@ -77,7 +77,7 @@ public class DeleteHTTP extends AsyncTask {
                             //Tilbage til hovedmenu
                             Activity activity = (Activity) context;
                             activity.onBackPressed();
-//                            Singleton.getInstance().fetchItemsFromAPI();
+//                            Sing_AsyncTasks.getInstance().fetchItemsFromAPI();
                         }
                     });
         } else {

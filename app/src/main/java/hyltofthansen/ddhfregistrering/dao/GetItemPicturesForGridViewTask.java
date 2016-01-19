@@ -120,22 +120,6 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                         options.inJustDecodeBounds = false;
                         currentImage = BitmapFactory.decodeStream(in, null, options);
                         in.close();
-
-                        File f = new File(ctx.getCacheDir(), "gridpic");
-                        f.createNewFile();
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        currentImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                        byte[] bitmapdata = bos.toByteArray();
-
-                        FileOutputStream fos = new FileOutputStream(f);
-                        fos.write(bitmapdata);
-                        fos.flush();
-                        fos.close();
-
-                        Log.d(TAG, f.getAbsolutePath() + " filepath");
-
-                        currentImage = ImgRotationDetection.getCorrectRotatedBitmap(currentImage,f.getAbsolutePath());
-
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;

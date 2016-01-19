@@ -15,8 +15,8 @@ import android.widget.EditText;
 
 import org.json.JSONObject;
 
-import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
-import hyltofthansen.ddhfregistrering.Singleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_NewItemPager;
 import hyltofthansen.ddhfregistrering.R;
 
@@ -81,14 +81,14 @@ public class Act_NewItem extends AppCompatActivity {
                 //TODO om man evt. har oprettet flere gange i træk?
                 Log.d(TAG, "Der blev trykket på opret");
 
-                EditText titelTxt = FragmentDataSingleton.getInstance().getTitelTxt();
+                EditText titelTxt = Sing_NewItemData.getInstance().getTitelTxt();
 
                 if (titelTxt.getText().toString().trim().equals("")) {
                     titelTxt.setError("Indtast en titel!");
                     titelTxt.requestFocus();
                 } else {
-                    JSONObject JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
-                    Singleton.getInstance().callPostHTTPController(JSONitem, this);
+                    JSONObject JSONitem = Sing_NewItemData.getInstance().getJSONitem();
+                    Sing_AsyncTasks.getInstance().callPostHTTPController(JSONitem, this);
                     break;
                 }
         }

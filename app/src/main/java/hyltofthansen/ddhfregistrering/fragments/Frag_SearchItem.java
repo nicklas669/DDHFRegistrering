@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.Singleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 import hyltofthansen.ddhfregistrering.activities.Act_ItemDetails;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
 import hyltofthansen.ddhfregistrering.dao.GetHTTP;
@@ -40,7 +40,7 @@ public class Frag_SearchItem extends Fragment {
     private DTO_Item item;
     private Intent itemDetails;
     private Menu mymenu;
-    private Singleton singleton;
+    private Sing_AsyncTasks singAsyncTasks;
 
 
     @Override
@@ -51,7 +51,7 @@ public class Frag_SearchItem extends Fragment {
         if (inputSearch != null) {
             inputSearch.setText("");
         }
-        Singleton.getInstance().fetchItemsFromAPI();
+        Sing_AsyncTasks.getInstance().fetchItemsFromAPI();
         super.onResume();
     }
 
@@ -59,7 +59,7 @@ public class Frag_SearchItem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         Log.d(TAG, "onCreateView køres!");
-        singleton = Singleton.getInstance();
+        singAsyncTasks = Sing_AsyncTasks.getInstance();
 
         View root = inflater.inflate(R.layout.search_layout, container, false);
 
@@ -67,7 +67,7 @@ public class Frag_SearchItem extends Fragment {
         inputSearch = (EditText) root.findViewById(R.id.inputSearch);
 
 //        items = new ArrayList<DTO_Item>();
-        items = singleton.getInstance().getItems();
+        items = singAsyncTasks.getInstance().getItems();
 
         // Opsætning af ArrayAdapter der bruges til at bestemme hvordan listview skal vises og filtreres
         listAdapter = new Adapter_SearchList(getActivity(),
@@ -75,10 +75,10 @@ public class Frag_SearchItem extends Fragment {
 
         lv.setAdapter(listAdapter);
 
-//        singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
-        Singleton.getInstance().setSearchFragment(this);
-        Singleton.getInstance().setSearchListAdapter(listAdapter);
-        Singleton.getInstance().fetchItemsFromAPI();
+//        singAsyncTasks.fetchItemsFromAPI(getActivity(), listAdapter, this);
+        Sing_AsyncTasks.getInstance().setSearchFragment(this);
+        Sing_AsyncTasks.getInstance().setSearchListAdapter(listAdapter);
+        Sing_AsyncTasks.getInstance().fetchItemsFromAPI();
 
 
 
@@ -88,7 +88,7 @@ public class Frag_SearchItem extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 itemDetails = new Intent(getActivity(), Act_ItemDetails.class);
                 item = listAdapter.getItem(position);
-                Singleton.getInstance().setClickedItem(item);
+                Sing_AsyncTasks.getInstance().setClickedItem(item);
                 Log.d(TAG, "onClick " + item.toString());
                 startActivity(itemDetails);
             }
@@ -124,8 +124,8 @@ public class Frag_SearchItem extends Fragment {
         switch (menuItem.getItemId()) {
             case R.id.action_refresh_items: // Der er klikket på refresh knappen i toolbar
                 //Log.d(TAG, "Trykket på refresh!");
-//                singleton.fetchItemsFromAPI(getActivity(), listAdapter, this);
-                singleton.fetchItemsFromAPI();
+//                singAsyncTasks.fetchItemsFromAPI(getActivity(), listAdapter, this);
+                singAsyncTasks.fetchItemsFromAPI();
 
                 // Do animation start
                 LayoutInflater inflater = getLayoutInflater(getArguments());

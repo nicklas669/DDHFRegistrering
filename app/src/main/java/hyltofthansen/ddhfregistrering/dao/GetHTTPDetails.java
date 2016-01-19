@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.Singleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 import hyltofthansen.ddhfregistrering.fragments.itemdetailsfragments.Frag_ItemDetailInfo;
 
@@ -84,7 +84,7 @@ public class GetHTTPDetails extends AsyncTask {
 
             JSONObject item = new JSONObject(response.toString());
 
-            Singleton.getInstance().setClickedItem(new DTO_Item(item.getInt("itemid"),
+            Sing_AsyncTasks.getInstance().setClickedItem(new DTO_Item(item.getInt("itemid"),
                     item.getString("itemheadline"),
                     item.optString("itemdescription"),
                     item.optString("itemreceived"),
@@ -97,7 +97,7 @@ public class GetHTTPDetails extends AsyncTask {
 //            Log.d(TAG, item.getString("itemheadline"));
 //            Log.d(TAG, item.getString("itemdescription"));
 
-            Log.d(TAG, Singleton.getInstance().getClickedItem().toString());
+            Log.d(TAG, Sing_AsyncTasks.getInstance().getClickedItem().toString());
 
         } catch (JSONException e) {
             Log.d(TAG, e.toString());

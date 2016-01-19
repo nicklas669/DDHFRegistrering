@@ -10,8 +10,6 @@ import org.json.JSONException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.Singleton;
-
 public class DTO_Item implements Serializable {
     private static final String TAG = "DTO_Item";
     private int itemid, postnummer;
@@ -92,7 +90,7 @@ public class DTO_Item implements Serializable {
         // Hvis der er et billede tilknytte genstanden
         if (defaultImageUrl != "null") {
             Log.d(TAG, "Lavet ny tråd");
-//            Singleton.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
+//            Sing_AsyncTasks.getInstance().fetchDefaultImage(defaultImageUrl, images, listAdapter);
         }
     }
 

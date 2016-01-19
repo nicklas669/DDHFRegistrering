@@ -1,4 +1,4 @@
-package hyltofthansen.ddhfregistrering;
+package hyltofthansen.ddhfregistrering.singletons;
 
 import android.app.Application;
 import android.widget.EditText;
@@ -7,9 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Singleton responsible for sharing data between Fragments in Swipeviews.
+ * Sing_AsyncTasks responsible for sharing data between Fragments in Swipeviews.
  */
-public class FragmentDataSingleton extends Application {
+public class Sing_NewItemData extends Application {
 
     private JSONObject JSONitem;
 
@@ -22,15 +22,15 @@ public class FragmentDataSingleton extends Application {
     private EditText refProducentTxt;
     private EditText postNrTxt;
 
-    private static FragmentDataSingleton firstInstance = null;
+    private static Sing_NewItemData firstInstance = null;
 
-    private FragmentDataSingleton() {
+    private Sing_NewItemData() {
 
     }
 
-    public static FragmentDataSingleton getInstance() {
+    public static Sing_NewItemData getInstance() {
         if (firstInstance == null) {
-            firstInstance = new FragmentDataSingleton();
+            firstInstance = new Sing_NewItemData();
         }
         return firstInstance;
     }

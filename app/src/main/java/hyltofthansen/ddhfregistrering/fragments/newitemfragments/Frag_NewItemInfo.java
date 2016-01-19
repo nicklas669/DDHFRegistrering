@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import java.lang.Override;import java.lang.String;
 
-import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
+import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.fragments.Frag_DatePicker;
 
@@ -44,14 +44,14 @@ public class Frag_NewItemInfo extends Fragment {
         dateringTilTxt = (EditText) root.findViewById(R.id.dateringtileditText);
         postNrTxt = (EditText) root.findViewById(R.id.postnr);
 
-        FragmentDataSingleton.getInstance().setTitelTxt(titelTxt);
-        FragmentDataSingleton.getInstance().setBeskrivelseTxt(beskrivelseTxt);
-        FragmentDataSingleton.getInstance().setRefDonatorTxt(refDonatorTxt);
-        FragmentDataSingleton.getInstance().setRefProducentTxt(refProducentTxt);
-        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(modtagelsesDatoTxt);
-        FragmentDataSingleton.getInstance().setDateringFraTxt(dateringFraTxt);
-        FragmentDataSingleton.getInstance().setDateringTilTxt(dateringTilTxt);
-        FragmentDataSingleton.getInstance().setPostNrTxt(postNrTxt);
+        Sing_NewItemData.getInstance().setTitelTxt(titelTxt);
+        Sing_NewItemData.getInstance().setBeskrivelseTxt(beskrivelseTxt);
+        Sing_NewItemData.getInstance().setRefDonatorTxt(refDonatorTxt);
+        Sing_NewItemData.getInstance().setRefProducentTxt(refProducentTxt);
+        Sing_NewItemData.getInstance().setModtagelsesDatoTxt(modtagelsesDatoTxt);
+        Sing_NewItemData.getInstance().setDateringFraTxt(dateringFraTxt);
+        Sing_NewItemData.getInstance().setDateringTilTxt(dateringTilTxt);
+        Sing_NewItemData.getInstance().setPostNrTxt(postNrTxt);
 
         setEditTextDatePicker(modtagelsesDatoTxt);
         setEditTextDatePicker(dateringFraTxt);

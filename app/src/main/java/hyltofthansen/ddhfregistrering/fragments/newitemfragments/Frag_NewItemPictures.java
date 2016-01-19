@@ -2,11 +2,7 @@ package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
@@ -20,29 +16,19 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
-import hyltofthansen.ddhfregistrering.Singleton;
 
 public class Frag_NewItemPictures extends Fragment {
     private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
