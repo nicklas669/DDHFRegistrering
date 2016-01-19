@@ -1,13 +1,17 @@
 package hyltofthansen.ddhfregistrering.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -60,20 +64,23 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
         itemID.setText(String.valueOf(mDisplayedValues.get(position).getItemid()));
 
         ImageView itemImage = (ImageView) view.findViewById(R.id.search_iv);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar_searchrow);
+        progressBar.setVisibility(View.INVISIBLE);
 
         DTO_Item itemShown = mDisplayedValues.get(position);
 
         if(!(itemShown.getDefaultImageURL().equals("null") && itemShown.gettingPicture() == false)) {
-            itemImage.setImageResource(R.drawable.default_image_wait);
+            progressBar.setVisibility(View.VISIBLE);
+            itemImage.setImageDrawable(null);
             if(itemShown.getDefaultImage() == null && itemShown.gettingPicture() == false) {
                 itemShown.setGettingPicture(true);
                 Log.d(TAG, itemShown.getDefaultImageURL());
                 Log.d(TAG, "Henter billed");
                 Sing_AsyncTasks.getInstance().fetchDefaultImage(itemShown, this);
-                itemImage.setImageResource(R.drawable.default_image_wait);
             }
             if(itemShown.isDefaultImageDownloaded()) {
                 Log.d(TAG, "Sætter billed på " + itemShown.toString());
+                progressBar.setVisibility(View.INVISIBLE);
                 itemImage.setImageBitmap(itemShown.getDefaultImage());
             }
         } else {

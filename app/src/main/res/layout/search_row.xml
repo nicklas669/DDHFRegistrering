@@ -10,14 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:id="@+id/search_iv"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
+            <ProgressBar
+                android:id="@+id/progressBar_searchrow"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                style="@android:style/Widget.ProgressBar.Large"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:id="@+id/search_iv"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                />
+        </FrameLayout>
 
         <TextView
             android:layout_width="200dp"
