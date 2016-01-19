@@ -108,22 +108,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
                 currentImage = BitmapFactory.decodeStream(in, null, options);
                 in.close();
 
-
-                File f = new File(ctx.getCacheDir(), "gridpic.png");
-                f.createNewFile();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                currentImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                byte[] bitmapdata = bos.toByteArray();
-
-                FileOutputStream fos = new FileOutputStream(f);
-                fos.write(bitmapdata);
-                fos.flush();
-                fos.close();
-
-                Log.d(TAG, f.getAbsolutePath() + " filepath");
-                Log.d(TAG, f.toString());
-
-                currentImage = ImgRotationDetection.getCorrectRotatedBitmap(currentImage, f.getAbsolutePath());
+//                currentImage = ImgRotationDetection.getCorrectRotatedBitmap(ctx, currentImage, f.getAbsolutePath());
 
             } catch (IOException e) {
                 e.printStackTrace();

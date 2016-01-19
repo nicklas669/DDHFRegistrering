@@ -132,46 +132,46 @@ public class Frag_ItemDetailInfo extends Fragment {
         this.itemObject = itemObject;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete_item:   //Hvis man klikker på skraldespanden
-                //Log.d(TAG, "Skraldespand kaldt fra " + TAG);
-                Bundle extras = getActivity().getIntent().getExtras();
-                //Log.d(TAG, "itemid: "+extras.getInt("itemid"));
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-                dialogBuilder.setMessage("Er du sikker på at du vil slette genstanden?").setTitle("Verifikation");
-                dialogBuilder.setPositiveButton("Ja", dialogClickListener);
-                dialogBuilder.setNegativeButton("Nej", dialogClickListener);
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
-                return true;
-            case R.id.action_edit_item:
-                // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar og fjern skraldespand
-                if (!editing) {
-                    Log.d(TAG, "enabling edit texts!");
-                    enableEditTexts();
-                    editing = true;
-                } else {
-                    Log.d(TAG, "Opdaterer genstand!");
-                    if (et_headline.getText().toString().trim().equals("")) {
-                        et_headline.setError("Indtast en titel!");
-                        et_headline.requestFocus();
-                        return false;
-                    }
-                    Log.d(TAG, "createJSONItem() start");
-                    createJSONItem();
-                    Log.d(TAG, "createJSONItem() slut");
-                    PostHTTPEdit postHTTPEdit = new PostHTTPEdit(getActivity(), itemObject.getItemid(), JSONitem);
-                    postHTTPEdit.execute();
-                    disableEditTexts();
-                    editing = false;
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_delete_item:   //Hvis man klikker på skraldespanden
+//                //Log.d(TAG, "Skraldespand kaldt fra " + TAG);
+//                Bundle extras = getActivity().getIntent().getExtras();
+//                //Log.d(TAG, "itemid: "+extras.getInt("itemid"));
+//                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+//                dialogBuilder.setMessage("Er du sikker på at du vil slette genstanden?").setTitle("Verifikation");
+//                dialogBuilder.setPositiveButton("Ja", dialogClickListener);
+//                dialogBuilder.setNegativeButton("Nej", dialogClickListener);
+//                AlertDialog dialog = dialogBuilder.create();
+//                dialog.show();
+//                return true;
+//            case R.id.action_edit_item:
+//                // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar og fjern skraldespand
+//                if (!editing) {
+//                    Log.d(TAG, "enabling edit texts!");
+//                    enableEditTexts();
+//                    editing = true;
+//                } else {
+//                    Log.d(TAG, "Opdaterer genstand!");
+//                    if (et_headline.getText().toString().trim().equals("")) {
+//                        et_headline.setError("Indtast en titel!");
+//                        et_headline.requestFocus();
+//                        return false;
+//                    }
+//                    Log.d(TAG, "createJSONItem() start");
+//                    createJSONItem();
+//                    Log.d(TAG, "createJSONItem() slut");
+//                    PostHTTPEdit postHTTPEdit = new PostHTTPEdit(getActivity(), itemObject.getItemid(), JSONitem);
+//                    postHTTPEdit.execute();
+//                    disableEditTexts();
+//                    editing = false;
+//                }
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void createJSONItem() {
         Sing_NewItemData.getInstance().setTitelTxt(et_headline);
@@ -212,21 +212,19 @@ public class Frag_ItemDetailInfo extends Fragment {
         et_zip.setEnabled(true);
     }
 
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int id) {
-            switch (id){
-                case DialogInterface.BUTTON_POSITIVE:
-                    Sing_AsyncTasks.getInstance().deleteHTTP(getActivity());
-//                    DeleteHTTP deleteHTTP = new DeleteHTTP(getActivity(), Sing_AsyncTasks.getInstance().getClickedItem().getItemid());
-//                    deleteHTTP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    //No button clicked
-                    Log.d(TAG, "Der blev trykket nej!");
-                    break;
-            }
-        }
-    };
+//    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int id) {
+//            switch (id){
+//                case DialogInterface.BUTTON_POSITIVE:
+//                    Sing_AsyncTasks.getInstance().deleteHTTP(getActivity());
+//                    break;
+//
+//                case DialogInterface.BUTTON_NEGATIVE:
+//                    //No button clicked
+//                    Log.d(TAG, "Der blev trykket nej!");
+//                    break;
+//            }
+//        }
+//    };
 }

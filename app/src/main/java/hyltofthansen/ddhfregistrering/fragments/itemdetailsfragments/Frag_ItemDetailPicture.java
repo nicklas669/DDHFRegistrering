@@ -65,7 +65,6 @@ public class Frag_ItemDetailPicture extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-//                Toast.makeText(getActivity(), "Position " + position, Toast.LENGTH_SHORT).show();
                 Intent showImageAct  = new Intent(getActivity(), Act_ShowImage.class);
                 Log.d(TAG, String.valueOf(itemid) + " img" + String.valueOf(position));
                 showImageAct.putExtra("clickedimage", position);
@@ -78,9 +77,4 @@ public class Frag_ItemDetailPicture extends Fragment {
 
 
     }
-
-//    public int getItemIdFromExtra() {
-//        Bundle bundle = getActivity().getIntent().getExtras();
-//        return bundle.getInt("itemid");
-//    }
 }

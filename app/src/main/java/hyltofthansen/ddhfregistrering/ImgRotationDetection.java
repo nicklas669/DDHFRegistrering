@@ -1,10 +1,14 @@
 package hyltofthansen.ddhfregistrering;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -22,6 +26,9 @@ public class ImgRotationDetection {
             Log.d(TAG, String.valueOf(scaledBitmap.getHeight() + " bitmap height"));
 
             Log.d(TAG, orientation + " orientation");
+
+            ei = new ExifInterface(path);
+            orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
             switch(orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90:
