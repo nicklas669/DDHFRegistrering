@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -106,8 +107,6 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                         currentImage = BitmapFactory.decodeStream(in);
 //                        currentImage = Bitmap.createScaledBitmap(currentImage,300,300,false);
                         in.close();
-
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -133,9 +132,10 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                         fos.flush();
                         fos.close();
 
-                        ExifInterface exif = new ExifInterface(f.getAbsolutePath());
-                        String exifOrientation = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-                        Log.d(TAG, "exifOrientation: " + exifOrientation);
+                        Log.d(TAG, f.getAbsolutePath() + " filepath");
+
+                        currentImage = ImgRotationDetection.getCorrectRotatedBitmap(currentImage,f.getAbsolutePath());
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
