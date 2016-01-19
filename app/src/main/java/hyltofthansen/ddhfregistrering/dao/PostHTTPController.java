@@ -36,7 +36,6 @@ public class PostHTTPController extends AsyncTask {
     Activity context;
     private JSONObject item;
     private SharedPreferences prefs;
-//    private android.support.v4.app.FragmentManager fm;
     private Fragment fragment;
 
 

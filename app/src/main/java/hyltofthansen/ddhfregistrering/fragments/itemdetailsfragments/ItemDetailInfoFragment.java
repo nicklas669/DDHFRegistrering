@@ -12,11 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.FragmentDataSingleton;
 import hyltofthansen.ddhfregistrering.R;
 import hyltofthansen.ddhfregistrering.Singleton;
 import hyltofthansen.ddhfregistrering.dao.DeleteHTTP;
 import hyltofthansen.ddhfregistrering.dao.GetHTTPDetails;
+import hyltofthansen.ddhfregistrering.dao.PostHTTPEdit;
 import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 
 /**
@@ -25,19 +30,21 @@ import hyltofthansen.ddhfregistrering.dto.ItemDTO;
 public class ItemDetailInfoFragment extends Fragment {
 
     private static final String TAG = "ItemDetailInfoFragment";
-    ItemDTO item;
+    ItemDTO itemObject;
     View root;
     private EditText et_headline, et_descript, et_receiveDate, et_datingFrom, et_datingTo,
             et_donator, et_producer, et_zip;
+    private boolean editing = false;
+    private JSONObject JSONitem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         root = inflater.inflate(R.layout.fr_itemdetails_info, container, false);
-        item = Singleton.getInstance().getClickedItem();
-        getActivity().setTitle(item.getItemheadline().toString());
+        itemObject = Singleton.getInstance().getClickedItem();
+        getActivity().setTitle(itemObject.getItemheadline().toString());
 
-        Singleton.getInstance().getItemDetails(getActivity(), item.getItemid(), this);
+        Singleton.getInstance().getItemDetails(getActivity(), itemObject.getItemid(), this);
 
         et_headline = (EditText) root.findViewById(R.id.itemdetails_TitleEdit);
         et_descript = (EditText) root.findViewById(R.id.itemdetails_DescripEdit);
@@ -48,48 +55,67 @@ public class ItemDetailInfoFragment extends Fragment {
         et_producer = (EditText) root.findViewById(R.id.itemdetails_ProdEdit);
         et_zip = (EditText) root.findViewById(R.id.itemdetails_ZipEdit);
 
+        disableEditTexts();
+
+        et_headline.setText(itemObject.getItemheadline().toString());
+
+        et_descript.setText(itemObject.getItemdescription().toString());
+        Log.d(TAG, itemObject.getItemdescription().toString());
+
+        if(!itemObject.getItemreceived().equals("null"))
+            et_receiveDate.setText(itemObject.getItemreceived().toString());
+
+        if(!itemObject.getItemdatingfrom().equals("null") ||itemObject.getItemdatingfrom().equals("0000-00-00") )
+            et_datingFrom.setText(itemObject.getItemdatingfrom().toString());
+
+        if(!itemObject.getItemdatingto().equals("null") ||itemObject.getItemdatingto().equals("0000-00-00"))
+            et_datingTo.setText(itemObject.getItemdatingto().toString());
+
+        if(!itemObject.getDonator().equals("null"))
+            et_donator.setText(itemObject.getDonator().toString());
+
+        if(!itemObject.getProducer().equals("null"))
+            et_producer.setText(itemObject.getProducer().toString());
+
+        if(!itemObject.getpostnummer().equals("0"))
+            et_zip.setText(itemObject.getpostnummer());
+
+
         return root;
     }
 
     public void updateEditViews() {
-        item = Singleton.getInstance().getClickedItem();
+        itemObject = Singleton.getInstance().getClickedItem();
         Log.d(TAG, "updateEditView");
-        et_headline.setEnabled(false);
-        et_headline.setText(item.getItemheadline().toString());
 
-        et_descript.setEnabled(false);
-        et_descript.setText(item.getItemdescription().toString());
-        Log.d(TAG, item.getItemdescription().toString());
+        disableEditTexts();
 
-        et_receiveDate.setEnabled(false);
-        if(!item.getItemreceived().equals("null"))
-            et_receiveDate.setText(item.getItemreceived().toString());
+        et_headline.setText(itemObject.getItemheadline().toString());
 
+        et_descript.setText(itemObject.getItemdescription().toString());
+        Log.d(TAG, itemObject.getItemdescription().toString());
 
-        et_datingFrom.setEnabled(false);
-        if(!item.getItemdatingfrom().equals("null") ||item.getItemdatingfrom().equals("0000-00-00") )
-            et_datingFrom.setText(item.getItemdatingfrom().toString());
+        if(!itemObject.getItemreceived().equals("null"))
+            et_receiveDate.setText(itemObject.getItemreceived().toString());
 
+        if(!itemObject.getItemdatingfrom().equals("null") ||itemObject.getItemdatingfrom().equals("0000-00-00") )
+            et_datingFrom.setText(itemObject.getItemdatingfrom().toString());
 
-        et_datingTo.setEnabled(false);
-        if(!item.getItemdatingto().equals("null") ||item.getItemdatingto().equals("0000-00-00"))
-            et_datingTo.setText(item.getItemdatingto().toString());
+        if(!itemObject.getItemdatingto().equals("null") ||itemObject.getItemdatingto().equals("0000-00-00"))
+            et_datingTo.setText(itemObject.getItemdatingto().toString());
 
-        et_donator.setEnabled(false);
-        if(!item.getDonator().equals("null"))
-            et_donator.setText(item.getDonator().toString());
+        if(!itemObject.getDonator().equals("null"))
+            et_donator.setText(itemObject.getDonator().toString());
 
-        et_producer.setEnabled(false);
-        if(!item.getProducer().equals("null"))
-            et_producer.setText(item.getProducer().toString());
+        if(!itemObject.getProducer().equals("null"))
+            et_producer.setText(itemObject.getProducer().toString());
 
-        et_zip.setEnabled(false);
-        if(!item.getpostnummer().equals("0"))
-            et_zip.setText(item.getpostnummer());
+        if(!itemObject.getpostnummer().equals("0"))
+            et_zip.setText(itemObject.getpostnummer());
     }
 
-    public void setItem(ItemDTO item) {
-        this.item = item;
+    public void setItem(ItemDTO itemObject) {
+        this.itemObject = itemObject;
     }
 
     @Override
@@ -108,13 +134,52 @@ public class ItemDetailInfoFragment extends Fragment {
                 return true;
             case R.id.action_edit_item:
                 // TODO: Skift "blyant" ud med "done"-tegn i toolbar/actionbar
-                enableEditTexts();
+                if (!editing) {
+                    Log.d(TAG, "enabling edit texts!");
+                    enableEditTexts();
+                    editing = true;
+                } else {
+                    Log.d(TAG, "Opdaterer genstand!");
+                    // TODO: Opdater item her!
+                    Log.d(TAG, "createJSONItem() start");
+                    createJSONItem();
+                    Log.d(TAG, "createJSONItem() slut");
+                    PostHTTPEdit postHTTPEdit = new PostHTTPEdit(getActivity(), itemObject.getItemid(), JSONitem);
+                    postHTTPEdit.execute();
+                    disableEditTexts();
+                    editing = false;
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void createJSONItem() {
+        FragmentDataSingleton.getInstance().setTitelTxt(et_headline);
+        FragmentDataSingleton.getInstance().setBeskrivelseTxt(et_descript);
+        FragmentDataSingleton.getInstance().setRefDonatorTxt(et_receiveDate);
+        FragmentDataSingleton.getInstance().setRefProducentTxt(et_datingFrom);
+        FragmentDataSingleton.getInstance().setModtagelsesDatoTxt(et_datingTo);
+        FragmentDataSingleton.getInstance().setDateringFraTxt(et_donator);
+        FragmentDataSingleton.getInstance().setDateringTilTxt(et_producer);
+        FragmentDataSingleton.getInstance().setPostNrTxt(et_zip);
+        JSONitem = FragmentDataSingleton.getInstance().getJSONitem();
+    }
+
+    /**
+     * Disables all the edittexts, making them editable.
+     */
+    private void disableEditTexts() {
+        et_headline.setEnabled(false);
+        et_descript.setEnabled(false);
+        et_receiveDate.setEnabled(false);
+        et_datingFrom.setEnabled(false);
+        et_datingTo.setEnabled(false);
+        et_donator.setEnabled(false);
+        et_producer.setEnabled(false);
+        et_zip.setEnabled(false);
+    }
     /**
      * Enables all the edittexts, making them editable.
      */
