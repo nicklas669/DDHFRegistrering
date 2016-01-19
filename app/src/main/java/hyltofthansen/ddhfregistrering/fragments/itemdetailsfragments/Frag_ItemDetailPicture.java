@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,6 +32,8 @@ public class Frag_ItemDetailPicture extends Fragment {
     private ProgressBar pb;
     private Adapter_ItemDetailsImage itemDetailsImageAdapter;
     private int itemid;
+    private Menu activityMenu;
+    private MenuItem editMenuItem;
 
     @Override
     public void onResume() {
@@ -38,8 +43,16 @@ public class Frag_ItemDetailPicture extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        activityMenu = menu;
+        editMenuItem = activityMenu.findItem(R.id.action_edit_item);
+        editMenuItem.setVisible(false);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         root = inflater.inflate(R.layout.fr_itemdetails_picture, container, false);
         pb = (ProgressBar) root.findViewById(R.id.progressBar);
         pb.setVisibility(View.INVISIBLE);
@@ -57,7 +70,7 @@ public class Frag_ItemDetailPicture extends Fragment {
         //Fetch pictures for itemid
 
         Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
-                itemid,pictures, itemDetailsImageAdapter, pb);
+                itemid, pictures, itemDetailsImageAdapter, pb);
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);
@@ -65,7 +78,7 @@ public class Frag_ItemDetailPicture extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Intent showImageAct  = new Intent(getActivity(), Act_ShowImage.class);
+                Intent showImageAct = new Intent(getActivity(), Act_ShowImage.class);
                 Log.d(TAG, String.valueOf(itemid) + " img" + String.valueOf(position));
                 showImageAct.putExtra("clickedimage", position);
                 showImageAct.putExtra("itemid", itemid);
