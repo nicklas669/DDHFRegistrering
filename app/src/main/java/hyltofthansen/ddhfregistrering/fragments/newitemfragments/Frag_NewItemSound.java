@@ -128,7 +128,11 @@ public class Frag_NewItemSound extends Fragment {
     }
 
     private void stopRecording() {
-        mRecorder.stop();
+        try {
+            mRecorder.stop();
+        } catch (RuntimeException stopException) {
+            Log.e(TAG, stopException.toString());
+        }
         mRecorder.release();
         mRecorder = null;
         recordingPath = newFilePath;
