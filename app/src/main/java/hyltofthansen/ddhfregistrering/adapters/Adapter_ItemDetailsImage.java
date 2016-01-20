@@ -1,29 +1,38 @@
 package hyltofthansen.ddhfregistrering.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import java.util.ArrayList;
+
+import hyltofthansen.ddhfregistrering.R;
 
 /**
  * Created by hylle on 13-01-2016.
  */
 public class Adapter_ItemDetailsImage extends BaseAdapter {
     private static final String TAG = "Adapter_ItemDetailsImage";
+    private final int layoutResourceId;
     private Context mContext;
     private int imgWidth;
     private ArrayList<Bitmap> pictures;
 
-    public Adapter_ItemDetailsImage(Context c, ArrayList<Bitmap> pictures) {
+    public Adapter_ItemDetailsImage(Context c, ArrayList<Bitmap> pictures, int layoutResourceId) {
         this.pictures = pictures;
         mContext = c;
+        this.layoutResourceId = layoutResourceId;
     }
 
     public int getCount() {
@@ -38,33 +47,33 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
         return 0;
     }
 
+    static class ViewHolder {
+        ProgressBar progressBar;
+        ImageView imageView;
+    }
+
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) {
+        View row = convertView;
+        ViewHolder holder = null;
+
+        if (row == null) {
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-            int imgWidth = getImgWidthFromDisplaySize();
-            imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, 300));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setImageResource(R.drawable.ic_autorenew_black);
+            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+            row = inflater.inflate(layoutResourceId, parent, false);
+            holder = new ViewHolder();
+            holder.progressBar = (ProgressBar) row.findViewById(R.id.progressBar_grid);
+            holder.imageView = (ImageView) row.findViewById(R.id.grid_imageview);
+            row.setTag(holder);
         } else {
-            imageView = (ImageView) convertView;
+            holder = (ViewHolder) row.getTag();
         }
 
-        // Do animation start (skulle være en spinner for hvert billed men fik det aldrig helt til at virke)
-//        imageView.setImageResource(R.drawable.ic_autorenew_black);
-//        Animation rotation = AnimationUtils.loadAnimation(mContext, R.anim.searchlist_refresh_rotate);
-//        rotation.setRepeatCount(Animation.INFINITE);
-//        imageView.startAnimation(rotation);
-        //Check if picture actually contains data before displaying it
         if (pictures != null && (pictures.size() > 0)) {
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
-                    imageView.setImageBitmap(pictures.get(position));
-//                    rotation.cancel(); rotation.reset();
+                    holder.imageView.setImageBitmap(pictures.get(position));
                 } else {
-//                    imageView.setImageResource(R.drawable.noimage);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -72,7 +81,7 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
         }
 
         //Get scaled picture array from itemid
-        return imageView;
+        return row;
     }
 
     /**

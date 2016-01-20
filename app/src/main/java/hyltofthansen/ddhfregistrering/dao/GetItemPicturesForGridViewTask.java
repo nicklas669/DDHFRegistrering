@@ -55,7 +55,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
 
     @Override
     protected void onPreExecute() {
-        pb.setVisibility(View.VISIBLE);
+//        pb.setVisibility(View.VISIBLE);
         super.onPreExecute();
     }
 
@@ -144,7 +144,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        pb.setVisibility(View.INVISIBLE);
+//        pb.setVisibility(View.INVISIBLE);
         super.onPostExecute(bitmap);
     }
 

@@ -54,15 +54,15 @@ public class Frag_ItemDetailPicture extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         root = inflater.inflate(R.layout.fr_itemdetails_picture, container, false);
-        pb = (ProgressBar) root.findViewById(R.id.progressBar);
-        pb.setVisibility(View.INVISIBLE);
+//        pb = (ProgressBar) root.findViewById(R.id.progressBar_grid);
+//        pb.setVisibility(View.INVISIBLE);
         super.onCreate(savedInstanceState);
 
         GridView gridview = (GridView) root.findViewById(R.id.gridview);
         Log.d(TAG, "createView");
         pictures = new ArrayList<Bitmap>();
 
-        itemDetailsImageAdapter = new Adapter_ItemDetailsImage(getActivity(),pictures);
+        itemDetailsImageAdapter = new Adapter_ItemDetailsImage(getActivity(),pictures, R.layout.grid_item_layout);
 
         itemid = Sing_AsyncTasks.getInstance().getItemDetailsID();
         Log.d(TAG, String.valueOf(itemid) );
