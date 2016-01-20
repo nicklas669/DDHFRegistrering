@@ -69,12 +69,12 @@ public class Adapter_SearchList extends ArrayAdapter<DTO_Item> implements Filter
             itemImage.setImageDrawable(null);
             if(itemShown.getDefaultImage() == null && itemShown.gettingPicture() == false) {
                 itemShown.setGettingPicture(true);
-                Log.d(TAG, itemShown.getDefaultImageURL());
-                Log.d(TAG, "Henter billed");
+//                Log.d(TAG, itemShown.getDefaultImageURL());
+//                Log.d(TAG, "Henter billed");
                 Sing_AsyncTasks.getInstance().fetchDefaultImage(itemShown, this);
             }
             if(itemShown.isDefaultImageDownloaded()) {
-                Log.d(TAG, "Sætter billed på " + itemShown.toString());
+//                Log.d(TAG, "Sætter billed på " + itemShown.toString());
                 progressBar.setVisibility(View.INVISIBLE);
                 itemImage.setImageBitmap(itemShown.getDefaultImage());
             }

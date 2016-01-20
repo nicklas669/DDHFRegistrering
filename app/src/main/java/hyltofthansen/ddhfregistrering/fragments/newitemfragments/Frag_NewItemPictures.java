@@ -29,6 +29,7 @@ import java.util.Date;
 
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
 
 public class Frag_NewItemPictures extends Fragment {
     private static final int PICK_IMAGE = 100, REQUEST_TAKE_PHOTO = 99;
@@ -200,6 +201,8 @@ public class Frag_NewItemPictures extends Fragment {
             else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic();
                 setPic(iv_gallery, photoFile.getAbsolutePath());
+                Sing_NewItemData.getInstance().addPhotoFilePath(photoFile.getAbsolutePath());
+
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
@@ -214,9 +217,7 @@ public class Frag_NewItemPictures extends Fragment {
     /**
      * http://developer.android.com/training/camera/photobasics.html
      */
-
     private void setPic(ImageView gallery, String path) {
-
         Log.d(TAG, "path: "+path);
 
         // Get the dimensions of the View
@@ -254,6 +255,9 @@ public class Frag_NewItemPictures extends Fragment {
         //return bitmap;
     }
 
+    /**
+     * Initiate media scanning so picture taken with camera appears on the phone's gallery
+     */
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         try {

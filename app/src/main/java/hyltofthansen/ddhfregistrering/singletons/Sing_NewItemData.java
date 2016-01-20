@@ -6,6 +6,9 @@ import android.widget.EditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Identity;
+import java.util.ArrayList;
+
 /**
  * Sing_AsyncTasks responsible for sharing data between Fragments in Swipeviews.
  */
@@ -21,11 +24,16 @@ public class Sing_NewItemData extends Application {
     private EditText refDonatorTxt;
     private EditText refProducentTxt;
     private EditText postNrTxt;
+    private ArrayList<String> photoFilePathList;
 
     private static Sing_NewItemData firstInstance = null;
 
     private Sing_NewItemData() {
+        photoFilePathList = new ArrayList<>();
+    }
 
+    public void addPhotoFilePath(String photoFilePath) {
+        photoFilePathList.add(photoFilePath);
     }
 
     public static Sing_NewItemData getInstance() {
@@ -86,5 +94,9 @@ public class Sing_NewItemData extends Application {
 
     public EditText getTitelTxt() {
         return titelTxt;
+    }
+
+    public ArrayList getPhotoFileList() {
+        return photoFilePathList;
     }
 }
