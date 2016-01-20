@@ -159,4 +159,13 @@ public class Sing_AsyncTasks extends Application {
     public void setSearchListAdapter(Adapter_SearchList searchListAdapter) {
         this.searchListAdapter = searchListAdapter;
     }
+
+    public void fetchItemGridPictures(Context mContext, ArrayList<Bitmap> pictures, Adapter_ItemDetailsImage adapter_itemDetailsImage) {
+        GetItemPicturesForGridViewTask getItemGridPics = new GetItemPicturesForGridViewTask(mContext,
+                pictures, adapter_itemDetailsImage);
+        cancelAllTask();
+        allTasks.add(getItemGridPics);
+//        getItemGridPics.execute();
+        getItemGridPics.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 }

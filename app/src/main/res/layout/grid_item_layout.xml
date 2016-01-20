@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/grid_imageview"
             android:adjustViewBounds="true"
-
             />
     </FrameLayout>
 

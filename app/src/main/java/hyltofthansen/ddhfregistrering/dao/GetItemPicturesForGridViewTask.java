@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_ItemDetailsImage;
 
 /**
  * Class getting images for gridview for a specific item
@@ -51,6 +52,12 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         this.imageList = imageList;
         this.listAdapter = listAdapter;
         this.pb = pb;
+    }
+
+    public GetItemPicturesForGridViewTask(Context mContext, ArrayList<Bitmap> pictures, Adapter_ItemDetailsImage adapter_itemDetailsImage) {
+        this.ctx = mContext;
+        this.imageList = pictures;
+        this.listAdapter = adapter_itemDetailsImage;
     }
 
     @Override

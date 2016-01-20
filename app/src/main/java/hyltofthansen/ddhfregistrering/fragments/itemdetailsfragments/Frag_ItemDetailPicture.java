@@ -69,8 +69,8 @@ public class Frag_ItemDetailPicture extends Fragment {
 
         //Fetch pictures for itemid
 
-        Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
-                itemid, pictures, itemDetailsImageAdapter, pb);
+//        Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
+//                itemid, pictures, itemDetailsImageAdapter, pb);
 
         //Set adapter
         gridview.setAdapter(itemDetailsImageAdapter);

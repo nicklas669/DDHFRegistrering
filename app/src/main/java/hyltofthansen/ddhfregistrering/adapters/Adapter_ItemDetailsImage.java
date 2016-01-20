@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.singletons.Sing_AsyncTasks;
 
 /**
  * Created by hylle on 13-01-2016.
@@ -33,6 +34,9 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
         this.pictures = pictures;
         mContext = c;
         this.layoutResourceId = layoutResourceId;
+        Sing_AsyncTasks.getInstance().fetchItemGridPictures(mContext,
+                pictures, this);
+
     }
 
     public int getCount() {
@@ -74,8 +78,9 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
                     holder.imageView.setImageBitmap(pictures.get(position));
-                    holder.progressBar.setVisibility(View.INVISIBLE);
                 } else {
+//                    holder.progressBar.setVisibility(View.VISIBLE);
+                    holder.imageView.setImageResource(R.drawable.default_image_wait);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -84,18 +89,5 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
 
         //Get scaled picture array from itemid
         return row;
-    }
-
-    /**
-     * Sets the imgwidth to half of screensize - so two pictures for each row on gridview.
-     * @return int half of screen size
-     */
-    public int getImgWidthFromDisplaySize() {
-        WindowManager wm  = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        imgWidth = size.x / 2;
-        return imgWidth;
     }
 }
