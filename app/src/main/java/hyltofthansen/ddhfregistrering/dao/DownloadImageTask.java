@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
 import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
@@ -40,6 +41,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         Bitmap image = null;
 
+//        ImgRotationDetection.saveFileToGetOrientation(urldisplay);
+
+
         // First decode with inJustDecodeBounds=true to check dimensions
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -63,6 +67,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             options.inJustDecodeBounds = false;
             image = BitmapFactory.decodeStream(in, null, options);
             in.close();
+
+//            image = ImgRotationDetection.getCorrectRotatedBitmap(image);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
