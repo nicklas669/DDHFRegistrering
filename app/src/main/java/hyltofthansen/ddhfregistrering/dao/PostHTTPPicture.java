@@ -72,19 +72,8 @@ public class PostHTTPPicture extends AsyncTask {
                 conn.setRequestProperty("Content-Type", "image/jpg"); // content type til Mathias' API
 
                 prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//            String imgPath = prefs.getString("chosenImage", null);
-//            Log.d(TAG, "imgPath: "+imgPath);
-//            // Lav file path
-//            if (imgPath.contains("file:")) {
-//                imgPath = imgPath.split(":/")[1];
-//            } else {
-//                imgPath = getFilePathFromContentUri(Uri.parse(imgPath), context.getContentResolver());
-//                //Log.d(TAG, "ny imgPath: "+imgPath);
-//            }
-//            Log.d(TAG, "ny imgPath: "+imgPath);
 
                 OutputStream os = conn.getOutputStream();
-//            File imgFile = new File(imgPath);
                 FileInputStream inputStream = new FileInputStream(imageFilePathList.get(x));
 
                 byte[] data = new byte[1024];

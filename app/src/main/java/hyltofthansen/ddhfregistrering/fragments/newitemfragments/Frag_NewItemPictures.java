@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -29,6 +30,7 @@ import java.util.Date;
 
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.adapters.Adapter_NewItemPicture;
 import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
 
 public class Frag_NewItemPictures extends Fragment {
@@ -89,16 +91,20 @@ public class Frag_NewItemPictures extends Fragment {
         View root = inflater.inflate(R.layout.fr_newitem_pictures, container, false); // sæt layout op
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        iv_gallery = (ImageView) root.findViewById(R.id.imgBrowse_galleryView);
+        GridView gridview = (GridView) root.findViewById(R.id.gridview_newitem_pics);
 
-        iv_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                width = iv_gallery.getWidth() / 2; // width is ready
-                height = iv_gallery.getHeight() / 2; // height is ready
-                Log.d(TAG, "onGlobalLayout(): " + width + " width og height " + height);
-            }
-        });
+        Adapter_NewItemPicture adapter_newItemPicture = new Adapter_NewItemPicture(getContext());
+
+        gridview.setAdapter(adapter_newItemPicture);
+
+//        iv_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                width = iv_gallery.getWidth() / 2; // width is ready
+//                height = iv_gallery.getHeight() / 2; // height is ready
+//                Log.d(TAG, "onGlobalLayout(): " + width + " width og height " + height);
+//            }
+//        });
 
 //        Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
 //        b_gallery.setOnClickListener(new View.OnClickListener() {
@@ -123,16 +129,12 @@ public class Frag_NewItemPictures extends Fragment {
                     photoFile = null;
                     try {
                         photoFile = createImageFile();
-                        //Log.d(TAG, "photoFile er instantieret...");
                     } catch (IOException ex) {
                         Log.d(TAG, ex.toString());
                     }
-                    // Continue only if the File was successfully created
                     if (photoFile != null) {
-                        //Log.d(TAG, "putExtra på takePictureIntent");
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                                 Uri.fromFile(photoFile));
-                        //Log.d(TAG, "takePictureIntent startActivityForResult");
                         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                     }
 
@@ -190,7 +192,7 @@ public class Frag_NewItemPictures extends Fragment {
                 }
                 cursor.close();
 
-                setPic(iv_gallery, filePath);
+//                setPic(iv_gallery, filePath);
 
                 // Gem path til valgt billede
                 SharedPreferences.Editor prefedit = prefs.edit();
@@ -200,7 +202,7 @@ public class Frag_NewItemPictures extends Fragment {
             }
             else if (requestCode == REQUEST_TAKE_PHOTO) {
                 galleryAddPic();
-                setPic(iv_gallery, photoFile.getAbsolutePath());
+//                setPic(iv_gallery, photoFile.getAbsolutePath());
                 Sing_NewItemData.getInstance().addPhotoFilePath(photoFile.getAbsolutePath());
 
 
@@ -214,46 +216,46 @@ public class Frag_NewItemPictures extends Fragment {
         }
     }
 
-    /**
-     * http://developer.android.com/training/camera/photobasics.html
-     */
-    private void setPic(ImageView gallery, String path) {
-        Log.d(TAG, "path: "+path);
-
-        // Get the dimensions of the View
-        int targetW = width;
-        int targetH = height;
-        Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        //BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
-        //Log.d(TAG, "path: "+path);
-        BitmapFactory.decodeFile(path, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-        Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
-
-        // Determine how much to scale down the image
-        Log.d(TAG, "photoW/targetW: "+photoW/targetW);
-        Log.d(TAG, "photoH/targetH: "+photoH/targetH);
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-        Log.d(TAG, "scaleFactor: "+scaleFactor);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        //bmOptions.inPurgeable = true;
-
-        scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
-
-        scaledBitmap = ImgRotationDetection.getCorrectRotatedBitmap(scaledBitmap, path);
-
-        Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
-        gallery.setImageBitmap(scaledBitmap);
-        //return bitmap;
-    }
+//    /**
+//     * http://developer.android.com/training/camera/photobasics.html
+//     */
+//    private void setPic(ImageView gallery, String path) {
+//        Log.d(TAG, "path: "+path);
+//
+//        // Get the dimensions of the View
+//        int targetW = width;
+//        int targetH = height;
+//        Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
+//
+//        // Get the dimensions of the bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//        //BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
+//        //Log.d(TAG, "path: "+path);
+//        BitmapFactory.decodeFile(path, bmOptions);
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//        Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
+//
+//        // Determine how much to scale down the image
+//        Log.d(TAG, "photoW/targetW: "+photoW/targetW);
+//        Log.d(TAG, "photoH/targetH: "+photoH/targetH);
+//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+//        Log.d(TAG, "scaleFactor: "+scaleFactor);
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        //bmOptions.inPurgeable = true;
+//
+//        scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
+//
+//        scaledBitmap = ImgRotationDetection.getCorrectRotatedBitmap(scaledBitmap, path);
+//
+//        Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
+//        gallery.setImageBitmap(scaledBitmap);
+//        //return bitmap;
+//    }
 
     /**
      * Initiate media scanning so picture taken with camera appears on the phone's gallery

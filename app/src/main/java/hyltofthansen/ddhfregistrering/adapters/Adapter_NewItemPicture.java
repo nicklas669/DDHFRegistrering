@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.View;
@@ -10,20 +11,27 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import java.io.File;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
+
 /**
- * Created by hylle on 13-01-2016.
+ * Created by hylle on 20-01-2016.
  */
-public class Adapter_ItemDetailsImage extends BaseAdapter {
-    private static final String TAG = "Adapter_ItemDetailsImage";
+public class Adapter_NewItemPicture extends BaseAdapter {
+    private static final String TAG = "Adapter_NewItemPicture";
     private Context mContext;
     private int imgWidth;
-    private ArrayList<Bitmap> pictures;
+    private ArrayList<String> pictures;
+    private BitmapFactory.Options bmOptions;
 
-    public Adapter_ItemDetailsImage(Context c, ArrayList<Bitmap> pictures) {
-        this.pictures = pictures;
+    public Adapter_NewItemPicture(Context c) {
+        this.pictures = Sing_NewItemData.getInstance().getPhotoFileList();
         mContext = c;
+         bmOptions = new BitmapFactory.Options();
+
     }
 
     public int getCount() {
@@ -52,10 +60,10 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
 
         if (pictures != null && (pictures.size() > 0)) {
             try {
-                if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
-                    imageView.setImageBitmap(pictures.get(position));
-                } else {
-                }
+//                File image = new File(pictures.get(position), "hello.jpg");
+                Bitmap bitmap = BitmapFactory.decodeFile(pictures.get(position), bmOptions);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 300,300,false);
+                imageView.setImageBitmap(bitmap);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
