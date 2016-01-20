@@ -63,6 +63,7 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
             holder.progressBar = (ProgressBar) row.findViewById(R.id.progressBar_grid);
+            holder.progressBar.setVisibility(View.VISIBLE);
             holder.imageView = (ImageView) row.findViewById(R.id.grid_imageview);
             row.setTag(holder);
         } else {
@@ -73,6 +74,7 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
             try {
                 if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
                     holder.imageView.setImageBitmap(pictures.get(position));
+                    holder.progressBar.setVisibility(View.INVISIBLE);
                 } else {
                 }
             } catch (NullPointerException e) {
