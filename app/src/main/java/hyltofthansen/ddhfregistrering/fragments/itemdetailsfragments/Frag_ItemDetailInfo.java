@@ -184,8 +184,12 @@ public class Frag_ItemDetailInfo extends Fragment {
             case R.id.action_checkmark:
                 Log.d(TAG, "Opdaterer genstand!");
                 if (et_headline.getText().toString().trim().equals("")) {
-                    et_headline.setError("Indtast en titel!");
-                    et_headline.requestFocus();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Genstand mangler en titel").setTitle("Titel mangler");
+                    AlertDialog alert = builder.create();
+                    alert.show();
+//                    et_headline.setError("Indtast en titel!");
+//                    et_headline.requestFocus();
                     return false;
                 }
                 Log.d(TAG, "createJSONItem() start");

@@ -1,5 +1,6 @@
 package hyltofthansen.ddhfregistrering.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -81,9 +82,11 @@ public class Act_NewItem extends AppCompatActivity {
 
                 EditText titelTxt = Sing_NewItemData.getInstance().getTitelTxt();
 
-                if (titelTxt.getText().toString().trim().equals("")) {
-                    titelTxt.setError("Indtast en titel!");
-                    titelTxt.requestFocus();
+                    if (Sing_NewItemData.getInstance().getTitelTxt().getText().toString().trim().equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("Genstand mangler en titel").setTitle("Titel mangler");
+                        AlertDialog alert = builder.create();
+                        alert.show();
                 } else {
                     JSONObject JSONitem = Sing_NewItemData.getInstance().getJSONitem();
                     Sing_AsyncTasks.getInstance().callPostHTTPController(JSONitem, this);

@@ -69,6 +69,8 @@ public class Act_ItemDetails extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_itemdetails, menu);
         MenuItem item = menu.findItem(R.id.action_checkmark);
         item.setVisible(false);
+        MenuItem cross = menu.findItem(R.id.action_undo);
+        cross.setVisible(false);
         return true;
     }
 

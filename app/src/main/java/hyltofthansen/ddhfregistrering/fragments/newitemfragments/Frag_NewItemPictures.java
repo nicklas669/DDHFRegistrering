@@ -99,17 +99,17 @@ public class Frag_NewItemPictures extends Fragment {
             }
         });
 
-        Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
-        b_gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent gallery = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*");
-                    startActivityForResult(gallery, PICK_IMAGE);
-                }
-            }
-        });
+//        Button b_gallery = (Button) root.findViewById(R.id.imgBrowse_bGallery);
+//        b_gallery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent gallery = null;
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//                    gallery = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*");
+//                    startActivityForResult(gallery, PICK_IMAGE);
+//                }
+//            }
+//        });
 
         Button b_newImg = (Button) root.findViewById(R.id.imgBrowse_bImage);
         b_newImg.setOnClickListener(new View.OnClickListener() {
