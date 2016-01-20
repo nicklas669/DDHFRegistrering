@@ -3,7 +3,9 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,12 +14,16 @@ import android.widget.ProgressBar;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -76,13 +82,40 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
             //Get all image URL's from an item
             String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
 
+            URL url = new URL (imageURL);
+            InputStream input = url.openStream();
+            try {
+                //The sdcard directory e.g. '/sdcard' can be used directly, or
+                //more safely abstracted with getExternalStorageDirectory()
+                File storagePath = Environment.getExternalStorageDirectory();
+                File file = new File(storagePath,"myImage.jpg");
+                OutputStream output = new FileOutputStream(file);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = 0;
+                    while ((bytesRead = input.read(buffer, 0, buffer.length)) >= 0) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                } finally {
+                    output.close();
+                }
+                Log.d(TAG, file.getAbsolutePath());
+                ExifInterface ei = new ExifInterface(file.toString());
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+
+                Log.d(TAG, orientation + " orientation");
+            } finally {
+                input.close();
+            }
+
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             InputStream in;
             try {
                 in = new URL(imageURL).openStream();
                 BitmapFactory.decodeStream(in, null, options);
-                currentImage = BitmapFactory.decodeStream(in);
+//                currentImage = BitmapFactory.decodeStream(in);
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
