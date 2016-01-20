@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,28 @@ public class Frag_ItemDetailInfo extends Fragment {
     private TextView tv_itemid;
     private boolean editing = false;
     private JSONObject JSONitem;
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem checkMark = menu.findItem(R.id.action_checkmark);
+        MenuItem editPencil = menu.findItem(R.id.action_edit_item);
+        MenuItem garbageCan = menu.findItem(R.id.action_delete_item);
+        MenuItem undo = menu.findItem(R.id.action_undo);
+
+        if(checkMark != null && editPencil != null && garbageCan != null) {
+            if (editing) {
+                undo.setVisible(true);
+                editPencil.setVisible(false);
+                checkMark.setVisible(true);
+                garbageCan.setVisible(false);
+            } else {
+                undo.setVisible(false);
+                editPencil.setVisible(true);
+                checkMark.setVisible(false);
+                garbageCan.setVisible(true);
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,22 +176,32 @@ public class Frag_ItemDetailInfo extends Fragment {
                     Log.d(TAG, "enabling edit texts!");
                     enableEditTexts();
                     editing = true;
+                    getActivity().invalidateOptionsMenu();
                 } else {
-                    Log.d(TAG, "Opdaterer genstand!");
-                    if (et_headline.getText().toString().trim().equals("")) {
-                        et_headline.setError("Indtast en titel!");
-                        et_headline.requestFocus();
-                        return false;
-                    }
-                    Log.d(TAG, "createJSONItem() start");
-                    createJSONItem();
-                    Log.d(TAG, "createJSONItem() slut");
-                    PostHTTPEdit postHTTPEdit = new PostHTTPEdit(getActivity(), itemObject.getItemid(), JSONitem);
-                    postHTTPEdit.execute();
-                    disableEditTexts();
-                    editing = false;
+
                 }
                 return true;
+            case R.id.action_checkmark:
+                Log.d(TAG, "Opdaterer genstand!");
+                if (et_headline.getText().toString().trim().equals("")) {
+                    et_headline.setError("Indtast en titel!");
+                    et_headline.requestFocus();
+                    return false;
+                }
+                Log.d(TAG, "createJSONItem() start");
+                createJSONItem();
+                Log.d(TAG, "createJSONItem() slut");
+                PostHTTPEdit postHTTPEdit = new PostHTTPEdit(getActivity(), itemObject.getItemid(), JSONitem);
+                postHTTPEdit.execute();
+                disableEditTexts();
+                editing = false;
+                getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.action_undo:
+                Log.d(TAG, "Undo");
+                editing = false;
+                updateEditViews();
+                getActivity().invalidateOptionsMenu();
             default:
                 return super.onOptionsItemSelected(item);
         }

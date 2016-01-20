@@ -67,6 +67,8 @@ public class Act_ItemDetails extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_itemdetails, menu);
+        MenuItem item = menu.findItem(R.id.action_checkmark);
+        item.setVisible(false);
         return true;
     }
 
