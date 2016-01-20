@@ -64,14 +64,6 @@ public class Sing_AsyncTasks extends Application {
         return firstInstance;
     }
 
-//    public void fetchItemsFromAPI(Context ctx, Adapter_SearchList listAdapter, Frag_SearchItem searchItemFragment) {
-//        cancelAllTask();
-//        items = new ArrayList<DTO_Item>();
-//        getHTTP = new GetHTTP(ctx, items, listAdapter, searchItemFragment);
-//        allTasks.add(getHTTP);
-//        getHTTP.execute();
-//    }
-
     public void fetchItemsFromAPI() {
         cancelAllTask();
         items = new ArrayList<DTO_Item>();

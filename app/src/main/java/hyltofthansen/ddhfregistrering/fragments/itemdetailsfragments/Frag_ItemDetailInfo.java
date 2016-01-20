@@ -59,12 +59,23 @@ public class Frag_ItemDetailInfo extends Fragment {
         tv_itemid.setText("Genstand id: " + itemObject.getItemid());
 
         et_headline.setText(itemObject.getItemheadline());
+        et_headline.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_descript.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_receiveDate.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_datingFrom.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_datingTo.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_donator.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_producer.setTextColor(getResources().getColor(R.color.editTextBlack));
+        et_zip.setTextColor(getResources().getColor(R.color.editTextBlack));
+
+
 
         et_descript.setText(itemObject.getItemdescription());
         Log.d(TAG, itemObject.getItemdescription());
 
         if(!itemObject.getItemreceived().equals("null"))
             et_receiveDate.setText(itemObject.getItemreceived());
+
 
         if(!itemObject.getItemdatingfrom().equals("null") ||itemObject.getItemdatingfrom().equals("0000-00-00") )
             et_datingFrom.setText(itemObject.getItemdatingfrom());
