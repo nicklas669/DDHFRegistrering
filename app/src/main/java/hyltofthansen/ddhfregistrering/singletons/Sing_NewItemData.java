@@ -75,6 +75,10 @@ public class Sing_NewItemData extends Application {
         this.refProducentTxt = refProducentTxt;
     }
 
+    public void deletePhotoFilePathItem(int position) {
+        photoFilePathList.remove(position);
+    }
+
     public JSONObject getJSONitem() {
         try {
            JSONitem = new JSONObject().put("itemheadline",

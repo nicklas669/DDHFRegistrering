@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.fragments.newitemfragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import java.util.Date;
 
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
 import hyltofthansen.ddhfregistrering.R;
+import hyltofthansen.ddhfregistrering.activities.Act_ShowImage;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_NewItemPicture;
 import hyltofthansen.ddhfregistrering.singletons.Sing_NewItemData;
 
@@ -93,9 +96,33 @@ public class Frag_NewItemPictures extends Fragment {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         GridView gridview = (GridView) root.findViewById(R.id.gridview_newitem_pics);
 
-        Adapter_NewItemPicture adapter_newItemPicture = new Adapter_NewItemPicture(getContext());
+        final Adapter_NewItemPicture adapter_newItemPicture = new Adapter_NewItemPicture(getContext());
 
         gridview.setAdapter(adapter_newItemPicture);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    final int position, long id) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                Sing_NewItemData.getInstance().deletePhotoFilePathItem(position);
+                                adapter_newItemPicture.notifyDataSetChanged();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Vil du slette billede " + position + "?").setPositiveButton("Ja", dialogClickListener)
+                        .setNegativeButton("Nej", dialogClickListener).show();
+            }
+        });
 
 //        iv_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 //            @Override
