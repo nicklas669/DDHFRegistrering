@@ -2,6 +2,7 @@ package hyltofthansen.ddhfregistrering.dao;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -44,13 +45,30 @@ public class PostHTTPPicture extends AsyncTask {
     private SharedPreferences prefs;
     private int itemid;
     private ArrayList<String> imageFilePathList;
+    private ProgressDialog progressDialog;
+    private int uploaded;
 
     public PostHTTPPicture(Activity context, int itemid) {
         this.context = context;
         this.itemid = itemid;
         this.imageFilePathList = Sing_NewItemData.getInstance().getPhotoFileList();
+        progressDialog = new ProgressDialog(context);
+        uploaded = 0;
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog = ProgressDialog.show(context, "Uploader", "Vent venligst");
+
+        progressDialog.setCancelable(false);
+    }
+
+    @Override
+    protected void onProgressUpdate(Object[] values) {
+        super.onProgressUpdate(values);
+        progressDialog.setMessage("Uploader billed " + uploaded + " ud af " + imageFilePathList.size());
+    }
 
     @Override
     protected Integer doInBackground(Object[] params) {
@@ -113,7 +131,8 @@ public class PostHTTPPicture extends AsyncTask {
             } catch (Exception e) {
                 Log.d(TAG, e.toString());
             }
-            //Update progresss....
+            uploaded++;
+           publishProgress();
         }
         return responseCode;
     }
@@ -122,6 +141,7 @@ public class PostHTTPPicture extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
+        progressDialog.hide();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         responseCode = Integer.valueOf(o.toString());
         if (responseCode == 200) {

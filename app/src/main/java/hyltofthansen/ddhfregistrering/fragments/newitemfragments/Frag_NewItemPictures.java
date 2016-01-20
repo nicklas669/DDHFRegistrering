@@ -216,47 +216,6 @@ public class Frag_NewItemPictures extends Fragment {
         }
     }
 
-//    /**
-//     * http://developer.android.com/training/camera/photobasics.html
-//     */
-//    private void setPic(ImageView gallery, String path) {
-//        Log.d(TAG, "path: "+path);
-//
-//        // Get the dimensions of the View
-//        int targetW = width;
-//        int targetH = height;
-//        Log.d(TAG, "targetWidth: "+targetW+", targetHeight: "+targetH);
-//
-//        // Get the dimensions of the bitmap
-//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//        bmOptions.inJustDecodeBounds = true;
-//        //BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
-//        //Log.d(TAG, "path: "+path);
-//        BitmapFactory.decodeFile(path, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
-//        Log.d(TAG, "Billede bredde: "+photoW+", højde: "+photoH);
-//
-//        // Determine how much to scale down the image
-//        Log.d(TAG, "photoW/targetW: "+photoW/targetW);
-//        Log.d(TAG, "photoH/targetH: "+photoH/targetH);
-//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-//        Log.d(TAG, "scaleFactor: "+scaleFactor);
-//
-//        // Decode the image file into a Bitmap sized to fill the View
-//        bmOptions.inJustDecodeBounds = false;
-//        bmOptions.inSampleSize = scaleFactor;
-//        //bmOptions.inPurgeable = true;
-//
-//        scaledBitmap = BitmapFactory.decodeFile(path, bmOptions);
-//
-//        scaledBitmap = ImgRotationDetection.getCorrectRotatedBitmap(scaledBitmap, path);
-//
-//        Log.d(TAG, "Ny billede bredde: " + scaledBitmap.getWidth() + ", højde: " + scaledBitmap.getHeight());
-//        gallery.setImageBitmap(scaledBitmap);
-//        //return bitmap;
-//    }
-
     /**
      * Initiate media scanning so picture taken with camera appears on the phone's gallery
      */
