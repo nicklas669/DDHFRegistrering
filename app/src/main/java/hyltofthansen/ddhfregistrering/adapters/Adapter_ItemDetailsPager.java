@@ -25,9 +25,9 @@ public class Adapter_ItemDetailsPager extends FragmentStatePagerAdapter {
             case 1:
                 Frag_ItemDetailPicture tab2 = new Frag_ItemDetailPicture();
                 return tab2;
-            case 2:
-                Frag_ItemDetailSound tab3 = new Frag_ItemDetailSound();
-                return tab3;
+//            case 2:
+//                Frag_ItemDetailSound tab3 = new Frag_ItemDetailSound();
+//                return tab3;
             default:
                 return null;
         }

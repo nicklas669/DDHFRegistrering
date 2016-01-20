@@ -36,7 +36,7 @@ public class Act_ItemDetails extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_info_black));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_image_black));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_mic_black));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_mic_black));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
