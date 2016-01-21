@@ -149,7 +149,7 @@ public class Frag_NewItemPictures extends Fragment {
         b_newImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.d(TAG, "takePictureIntent startes");
+                Log.d(TAG, "takePictureIntent startes");
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -271,8 +271,7 @@ public class Frag_NewItemPictures extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         //Log.d(TAG, "storageDir fil oprettes!");
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM);
+        File storageDir = Environment.getExternalStorageDirectory();
         //Log.d(TAG, "image fil oprettes!");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
