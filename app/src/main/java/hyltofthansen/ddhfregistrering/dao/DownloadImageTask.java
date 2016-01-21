@@ -6,11 +6,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.util.ArrayList;
 
-import hyltofthansen.ddhfregistrering.ImgRotationDetection;
+import hyltofthansen.ddhfregistrering.ImgCache;
+import hyltofthansen.ddhfregistrering.ImgScaling;
 import hyltofthansen.ddhfregistrering.adapters.Adapter_SearchList;
 import hyltofthansen.ddhfregistrering.dto.DTO_Item;
 
@@ -26,6 +26,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     BaseAdapter listAdapter;
     String urldisplay;
     private DTO_Item DTOItem;
+    private Bitmap image;
 
     public DownloadImageTask(DTO_Item DTOItem, Adapter_SearchList customArrayAdapter) {
         this.DTOItem = DTOItem;
@@ -35,40 +36,20 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPreExecute() {
+        image = ImgCache.getExistingImageSearchListSize(DTOItem.getItemid(), 0);
         DTOItem.setGettingPicture(true);
     }
 
     protected Bitmap doInBackground(String... urls) {
-        Bitmap image = null;
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        InputStream in;
-        try {
-            in = new java.net.URL(urldisplay).openStream();
-            BitmapFactory.decodeStream(in, null, options);
-            image = BitmapFactory.decodeStream(in);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Log.d(TAG, DTOItem + " er " + ImgCache.checkIfImageIsSaved(DTOItem.getItemid(), 0));
+        if (image == null) {
+            Log.d(TAG, "Image er null " + DTOItem.getItemid());
+            File file = new File(ImgCache.saveFileFromURL(urldisplay, DTOItem.getItemid(), 0), "");
+            image = ImgScaling.decodeSampledBitmapFromFile(file, 50, 50);
         }
-
-        //Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 50, 50);
-
-        // Decode bitmap with inSampleSize set
-        try {
-            in = new java.net.URL(urldisplay).openStream();
-            options.inJustDecodeBounds = false;
-            image = BitmapFactory.decodeStream(in, null, options);
-            in.close();
-
-//            image = ImgRotationDetection.getCorrectRotatedBitmap(image);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (image != null) {
+            Log.d(TAG, "Image er ikke null" + DTOItem.getItemid());
         }
         return image;
     }
@@ -79,33 +60,5 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         DTOItem.setDefaultImage(result);
         DTOItem.defaultImageDownloaded(true);
         listAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
     }
 }

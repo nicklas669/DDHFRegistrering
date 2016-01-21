@@ -8,6 +8,7 @@ import java.io.File;
 
 /**
  * Created by hylle on 21-01-2016.
+ * http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
  */
 public class ImgScaling {
     public static int calculateInSampleSize(
