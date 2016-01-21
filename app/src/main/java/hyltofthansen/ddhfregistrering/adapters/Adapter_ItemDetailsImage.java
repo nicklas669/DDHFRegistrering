@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * Created by hylle on 13-01-2016.
  */
 public class Adapter_ItemDetailsImage extends BaseAdapter {
-    private static final String TAG = "Adapter_ItemDetailsImage";
+    private static final String TAG = "Adpt_ItemDetailsImage";
     private Context mContext;
     private int imgWidth;
     private ArrayList<Bitmap> pictures;
@@ -52,10 +53,12 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
 
         if (pictures != null && (pictures.size() > 0)) {
             try {
-                if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
-                    imageView.setImageBitmap(pictures.get(position));
-                } else {
-                }
+                    if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
+                        imageView.setImageBitmap(pictures.get(position));
+                        Log.d(TAG, String.valueOf(position));
+                        Log.d(TAG, String.valueOf(pictures.size()));
+                    }
+
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

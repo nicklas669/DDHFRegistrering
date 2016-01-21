@@ -51,6 +51,7 @@ public class Sing_AsyncTasks extends Application {
 
     private Frag_SearchItem searchFragment;
     private Adapter_SearchList searchListAdapter;
+    private GetItemPicturesForGridViewTask getItemGridPics;
 
     private Sing_AsyncTasks() {
         items = new ArrayList<DTO_Item>();
@@ -104,17 +105,26 @@ public class Sing_AsyncTasks extends Application {
     }
 
     public DTO_Item getClickedItem() {
-        Log.d(TAG, clickedItem.toString());
         return clickedItem;
     }
 
-    public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures, Adapter_ItemDetailsImage itemDetailsImageAdapter, ProgressBar pb) {
-                GetItemPicturesForGridViewTask getItemGridPics = new GetItemPicturesForGridViewTask(context,
-                        itemid,pictures, itemDetailsImageAdapter, pb);
-        cancelAllTask();
-        allTasks.add(getItemGridPics);
-//        getItemGridPics.execute();
-        getItemGridPics.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    public void fetchItemGridPictures(Context context, int itemid, ArrayList<Bitmap> pictures,
+                                      Adapter_ItemDetailsImage itemDetailsImageAdapter,
+                                      ProgressBar pb) {
+        if(getItemGridPics == null) {
+            getItemGridPics = new GetItemPicturesForGridViewTask(context,
+                    itemid, pictures, itemDetailsImageAdapter, pb);
+            cancelAllTask();
+            allTasks.add(getItemGridPics);
+            getItemGridPics.execute();
+        }
+        if (getItemGridPics.getStatus() != AsyncTask.Status.RUNNING) {
+            getItemGridPics = new GetItemPicturesForGridViewTask(context,
+                    itemid, pictures, itemDetailsImageAdapter, pb);
+            cancelAllTask();
+            allTasks.add(getItemGridPics);
+            getItemGridPics.execute();
+        }
     }
 
     public void getFullScreenPic(Act_ShowImage actShowImage, int itemid, int clickedImage, ImageView imageView, ProgressBar progressBar) {

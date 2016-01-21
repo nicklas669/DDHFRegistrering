@@ -36,20 +36,15 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPreExecute() {
-        image = ImgCache.getExistingImageSearchListSize(DTOItem.getItemid(), 0);
+        image = ImgCache.getExistingImage(DTOItem.getItemid(), 0, 50, 50);
         DTOItem.setGettingPicture(true);
     }
 
     protected Bitmap doInBackground(String... urls) {
 
-        Log.d(TAG, DTOItem + " er " + ImgCache.checkIfImageIsSaved(DTOItem.getItemid(), 0));
         if (image == null) {
-            Log.d(TAG, "Image er null " + DTOItem.getItemid());
-            File file = new File(ImgCache.saveFileFromURL(urldisplay, DTOItem.getItemid(), 0), "");
+            File file = new File(ImgCache.saveFileFromURL(urldisplay, 0, DTOItem.getItemid()), "");
             image = ImgScaling.decodeSampledBitmapFromFile(file, 50, 50);
-        }
-        if (image != null) {
-            Log.d(TAG, "Image er ikke null" + DTOItem.getItemid());
         }
         return image;
     }

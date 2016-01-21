@@ -23,7 +23,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import hyltofthansen.ddhfregistrering.ImgCache;
 import hyltofthansen.ddhfregistrering.ImgRotationDetection;
+import hyltofthansen.ddhfregistrering.ImgScaling;
 import hyltofthansen.ddhfregistrering.R;
 
 /**
@@ -39,6 +41,9 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private Bitmap currentImage;
     private final int MAX_PICS = 99;
     private ProgressBar pb;
+    private Bitmap image;
+    private final int MAX_WIDTH = 300;
+    private final int MAX_HEIGHT = 300;
 
 
     public GetItemPicturesForGridViewTask
@@ -51,6 +56,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         this.imageList = imageList;
         this.listAdapter = listAdapter;
         this.pb = pb;
+        Log.d(TAG, "Tråd lavet");
     }
 
     @Override
@@ -60,7 +66,6 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     }
 
     protected Bitmap doInBackground(String... urls) {
-        Log.d(TAG, "Henter gridview pic URLs");
         itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
                 "?userID=56837dedd2d76438906140";
 
@@ -81,53 +86,26 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
 
             String inputLine;
             while ((inputLine = bufferedReader.readLine()) != null) {
-                //Log.d(TAG, String.valueOf(in.readLine()));
                 response.append(inputLine);
-                //Log.d(TAG, String.valueOf(response));
             }
             bufferedReader.close();
 
-            Log.d(TAG, String.valueOf(imageList.size()));
-
             JSONObject item = new JSONObject(response.toString());
             //Get all image URL's from an item
+            Log.d(TAG, imageList.size() + " imagelist sizen");
             for (int x = imageList.size(); x < MAX_PICS; x++) {
-                String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
-                Log.d(TAG, "Henter billed " + x + " :" + imageURL);
-
-                    // First decode with inJustDecodeBounds=true to check dimensions
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-
-                    //Get pictures
-                    InputStream in;
-                    try {
-                        in = new URL(imageURL).openStream();
-                        BitmapFactory.decodeStream(in, null, options);
-                        currentImage = BitmapFactory.decodeStream(in);
-//                        currentImage = Bitmap.createScaledBitmap(currentImage,300,300,false);
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    // Calculate inSampleSize
-                    options.inSampleSize = calculateInSampleSize(options, 300, 300);
-
-                    // Decode bitmap with inSampleSize set
-                    try {
-                        in = new URL(imageURL).openStream();
-                        options.inJustDecodeBounds = false;
-                        currentImage = BitmapFactory.decodeStream(in, null, options);
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        break;
-                    }
-                    Log.d(TAG, "Færdig med at hente gridview pic");
-                    publishProgress();
+                Log.d(TAG, String.valueOf(x) + " x værdien");
+                currentImage = ImgCache.getExistingImage(itemID, x, MAX_WIDTH,MAX_HEIGHT);
+                if (currentImage == null) {
+                    Log.d(TAG, "Billedet er null " + x + " itemID " + itemID);
+                    String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
+                    Log.d(TAG, x + " imageURL " + imageURL);
+                    File file = new File(ImgCache.saveFileFromURL(imageURL, x, itemID),"");
+                    currentImage = ImgScaling.decodeSampledBitmapFromFile(file, MAX_WIDTH, MAX_HEIGHT);
+                }
+                imageList.add(currentImage);
+                publishProgress();
             }
-            Log.d(TAG, item.getJSONObject("images").getJSONObject("image_0").get("href").toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,43 +115,15 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
 
     @Override
     protected void onProgressUpdate(Void... values) {
-        imageList.add(currentImage);
+        Log.d(TAG, "onProgressUpdate kaldt");
         listAdapter.notifyDataSetChanged();
         super.onProgressUpdate(values);
     }
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+        Log.d(TAG, "onPostExecute");
         pb.setVisibility(View.INVISIBLE);
         super.onPostExecute(bitmap);
-    }
-
-    /**
-     * Takes an BitmapFactory.Options object, reads the image dimensions saved in it and tries to scale it as close as possible to reqWidth x reqHeight
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
     }
 }

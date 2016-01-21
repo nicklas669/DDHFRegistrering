@@ -38,7 +38,6 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     private ProgressBar pb;
     private int clickedImage;
     private ImageView imageView;
-    private int orientation;
 
     public GetFullScreenPicTask(Context ctx, int itemid, int clickedImage, ImageView imageView, ProgressBar pb) {
         this.ctx = ctx;

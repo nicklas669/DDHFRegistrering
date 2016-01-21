@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.activities;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -26,7 +27,8 @@ public class Act_ShowImage extends Activity {
         ImageView imageView = (ImageView) findViewById(R.id.fullimageView);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarFullScreen);
         progressBar.setVisibility(View.INVISIBLE);
-        Bitmap bitmap = ImgCache.getExistingImageFullScreenSize(itemid, clickedImage);
+        Log.d(TAG, String.valueOf(clickedImage));
+        Bitmap bitmap = ImgCache.getExistingImage(itemid, clickedImage, 1280, 720);
         if(bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
