@@ -116,10 +116,11 @@ public class PostHTTPSound extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         // 1. Instantiate an AlertDialog.Builder with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        responseCode = Integer.valueOf(o.toString());
-        if (responseCode == 200) {
+            responseCode = Integer.valueOf(o.toString());
+            if (responseCode == 200) {
                 builder.setMessage("Genstand oprettet. Responskode: " + responseCode).setTitle("Success")
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -130,13 +131,16 @@ public class PostHTTPSound extends AsyncTask {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-        } else {
-            builder.setMessage("Genstand oprettet men fejl ved upload af lydfil. Responskode: " + responseCode)
-                    .setTitle("Fejl");
+            } else {
+                builder.setMessage("Genstand oprettet men fejl ved upload af lydfil. Responskode: " + responseCode)
+                        .setTitle("Fejl");
+            }
+            // 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
-        // 3. Get the AlertDialog from create()
-        AlertDialog dialog = builder.create();
-        dialog.show();
 
         // Ryd gemt lydfil fra app's data
         prefs.edit().remove("recording").commit();

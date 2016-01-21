@@ -141,10 +141,11 @@ public class PostHTTPPicture extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        progressDialog.hide();
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        responseCode = Integer.valueOf(o.toString());
-        if (responseCode == 200) {
+        try {
+            progressDialog.hide();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            responseCode = Integer.valueOf(o.toString());
+            if (responseCode == 200) {
                 builder.setMessage("Genstand oprettet. Responskode: " + responseCode).setTitle("Success")
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -155,13 +156,17 @@ public class PostHTTPPicture extends AsyncTask {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-        } else {
-            builder.setMessage("Genstand oprettet men fejl ved upload af billede. Responskode: " + responseCode)
-                    .setTitle("Fejl");
+            } else {
+                builder.setMessage("Genstand oprettet men fejl ved upload af billede. Responskode: " + responseCode)
+                        .setTitle("Fejl");
+            }
+
+            // 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
-        // 3. Get the AlertDialog from create()
-        AlertDialog dialog = builder.create();
-        dialog.show();
 
         // Ryd gemt billede fra app's data
         prefs.edit().remove("chosenImage").commit();

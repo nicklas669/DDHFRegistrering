@@ -91,9 +91,10 @@ public class PostHTTPEdit extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        responseCode = Integer.valueOf(o.toString());
-        if (responseCode == 200) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            responseCode = Integer.valueOf(o.toString());
+            if (responseCode == 200) {
                 builder.setMessage("Genstand ændret. Responskode: " + responseCode).setTitle("Success")
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -104,13 +105,16 @@ public class PostHTTPEdit extends AsyncTask {
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-        } else {
-            builder.setMessage("Der skete en fejl ved ændring af genstand. Responskode: " + responseCode)
-                    .setTitle("Fejl");
+            } else {
+                builder.setMessage("Der skete en fejl ved ændring af genstand. Responskode: " + responseCode)
+                        .setTitle("Fejl");
+            }
+            // 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
-        // 3. Get the AlertDialog from create()
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
 
