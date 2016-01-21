@@ -57,22 +57,22 @@ public class Frag_NewItemPictures extends Fragment {
             if (filePathFromState != null) {
                 photoFile = new File(filePathFromState);
             }
-            width = savedInstanceState.getInt("width");
-            height = savedInstanceState.getInt("height");
-            scaledBitmap = savedInstanceState.getParcelable("scaledBitmap");
-            if(scaledBitmap != null) {
-                iv_gallery.setImageBitmap(scaledBitmap);
+//            width = savedInstanceState.getInt("width");
+//            height = savedInstanceState.getInt("height");
+//            scaledBitmap = savedInstanceState.getParcelable("scaledBitmap");
+//            if(scaledBitmap != null) {
+//                iv_gallery.setImageBitmap(scaledBitmap);
             }
         }
-    }
+//    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(scaledBitmap != null) {
-            iv_gallery.setImageBitmap(scaledBitmap);
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if(scaledBitmap != null) {
+//            iv_gallery.setImageBitmap(scaledBitmap);
+//        }
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

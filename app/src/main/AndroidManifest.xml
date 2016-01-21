@@ -30,8 +30,9 @@
         </activity>
         <activity android:name=".activities.Act_NewItem"
             android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+
 
         </activity>
         <activity android:name=".activities.Act_ItemDetails"
