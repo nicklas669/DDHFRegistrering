@@ -83,7 +83,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
             //Get all image URL's from an item
             String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
 
-            ImgRotationDetection.saveFileToGetOrientation(imageURL);
+            ImgRotationDetection.saveFileToGetOrientation(imageURL, clickedImage);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;

@@ -41,9 +41,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         Bitmap image = null;
 
-//        ImgRotationDetection.saveFileToGetOrientation(urldisplay);
-
-
         // First decode with inJustDecodeBounds=true to check dimensions
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
