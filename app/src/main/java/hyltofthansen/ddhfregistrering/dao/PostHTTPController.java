@@ -38,13 +38,6 @@ public class PostHTTPController extends AsyncTask {
     private SharedPreferences prefs;
     private Fragment fragment;
 
-
-//    public PostHTTPController(JSONObject JSONitem, Activity context, FragmentManager fm) {
-//        this.JSONitem = JSONitem;
-//        this.context = context;
-//        this.fm = fm;
-//    }
-
     public PostHTTPController(JSONObject JSONitem, Activity context) {
         this.JSONitem = JSONitem;
         this.context = context;

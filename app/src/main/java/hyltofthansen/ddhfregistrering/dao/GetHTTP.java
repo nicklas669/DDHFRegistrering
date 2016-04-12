@@ -39,7 +39,12 @@ public class GetHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
+        //Gammel API
         String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
+
+        //Opdatering til ny Lumen API
+        //String url = ConnectionData.baseUrl + ConnectionData.token;
+        url = "http://192.168.1.109:8000/v1/items/?token=test";
         String USER_AGENT = "Mozilla/5.0";
         //Log.d(TAG, "doInBackground køres!");
 
@@ -62,7 +67,18 @@ public class GetHTTP extends AsyncTask {
             in.close();
             con.disconnect();
 
-            JSONArray itemsfromDB = new JSONArray(response.toString());
+            JSONObject data = new JSONObject(response.toString());
+
+            Log.d(TAG, data.toString());
+
+            JSONObject item = new JSONObject(data.getJSONObject(("data")).toString());
+
+//            item = new JSONObject(item.getJSONObject(("default")).toString());
+
+            JSONArray itemsfromDB = new JSONArray(item.getJSONArray("default").toString());
+
+            Log.d(TAG, "itemsFraDB til streng");
+            Log.d(TAG, itemsfromDB.toString());
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
 //                Log.d(TAG, "Kører loop " + x);
@@ -70,12 +86,14 @@ public class GetHTTP extends AsyncTask {
                     Log.d(TAG, "Task cancelled");
                     break;
                 }
-                JSONObject item = itemsfromDB.getJSONObject(x);
-                items.add(new DTO_Item(item.getInt("itemid"),
-                        item.getString("itemheadline"),
-                        item.getString("defaultimage")));
+                item = itemsfromDB.getJSONObject(x);
+                items.add(new DTO_Item(item.getInt("id"),
+                        item.getString("headline"),
+                        item.optJSONArray("images").toString()));
 //                        item.optJSONArray("images"), //Denne skal fjernes eller også skal der itereres detaljer for hver item allerede her!
 //                        listAdapter));
+                Log.d(TAG, "Item.getString()" + item.getString("itemheadline"));
+                Log.d(TAG, "GetString() her");
             }
 //            Log.d(TAG, "Færdig med task");
 
