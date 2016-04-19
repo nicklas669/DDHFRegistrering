@@ -60,7 +60,6 @@ public class PostHTTPPicture extends AsyncTask {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = ProgressDialog.show(context, "Uploader", "Vent venligst");
-
         progressDialog.setCancelable(false);
     }
 
@@ -77,9 +76,9 @@ public class PostHTTPPicture extends AsyncTask {
                 //Opretter POST URL
                 try {
                     String urlAPI = null;
-                    urlAPI = context.getString(R.string.API_URL) + itemid;
+                    urlAPI = context.getString(R.string.API_URL) + itemid+"?token=test";
                     url = new URL(urlAPI);
-                    System.out.println("URL til at uploade bilede: " + url);
+                   Log.d(TAG,"URL til at uploade bilede: " + url);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -121,12 +120,6 @@ public class PostHTTPPicture extends AsyncTask {
                 in.close();
                 conn.disconnect();
 
-            } catch (UnsupportedEncodingException e) {
-                Log.d(TAG, e.toString());
-            } catch (ProtocolException e) {
-                Log.d(TAG, e.toString());
-            } catch (IOException e) {
-                Log.d(TAG, e.toString());
             } catch (Exception e) {
                 Log.d(TAG, e.toString());
             }

@@ -65,7 +65,7 @@ public class Frag_ItemDetailPicture extends Fragment {
         itemDetailsImageAdapter = new Adapter_ItemDetailsImage(getActivity(),pictures);
 
         itemid = Sing_AsyncTasks.getInstance().getItemDetailsID();
-        Log.d(TAG, String.valueOf(itemid) );
+        Log.d(TAG, "itemid: "+String.valueOf(itemid) );
 
         //Fetch pictures for itemid
 

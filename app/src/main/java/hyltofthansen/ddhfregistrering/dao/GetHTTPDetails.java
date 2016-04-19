@@ -81,11 +81,8 @@ public class GetHTTPDetails extends AsyncTask {
             }
             in.close();
 
-            Log.d(TAG, "object start");
             JSONObject object = new JSONObject(response.toString());
-            Log.d(TAG, "object done");
             JSONObject data = new JSONObject(object.getString("data")); // Fetch data object (first index)
-            Log.d(TAG, "data done");
             JSONObject item = new JSONObject(data.getString("default"));
             Log.d(TAG, "item: "+item);
 

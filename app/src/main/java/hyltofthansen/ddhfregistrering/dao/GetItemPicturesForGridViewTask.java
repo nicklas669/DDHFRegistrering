@@ -39,7 +39,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     private int itemID;
     private Context ctx;
     private Bitmap currentImage;
-    private final int MAX_PICS = 99;
+    private final int MAX_PICS = 6;
     private ProgressBar pb;
     private Bitmap image;
     private final int MAX_WIDTH = 300;
@@ -88,10 +88,15 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                 response.append(inputLine);
             }
             bufferedReader.close();
+            //Log.d(TAG, "response: "+response.toString());
 
-            JSONObject item = new JSONObject(response.toString());
+            JSONObject object = new JSONObject(response.toString());
+            JSONObject data = new JSONObject(object.getJSONObject(("data")).toString());
+            JSONObject item = new JSONObject(data.getJSONObject("default").toString());
+            Log.d(TAG, "item: "+item);
+
             //Get all image URL's from an item
-            Log.d(TAG, imageList.size() + " imagelist sizen");
+            Log.d(TAG, imageList.size() + " imagelist size");
             for (int x = imageList.size(); x < MAX_PICS; x++) {
                 Log.d(TAG, String.valueOf(x) + " x værdien");
                 currentImage = ImgCache.getExistingImage(itemID, x, MAX_WIDTH,MAX_HEIGHT);

@@ -22,8 +22,10 @@ public class ImgCache {
 
     public static Bitmap getExistingImage(int itemid, int imageNumber, int dstWidth, int dstHeight) {
         File storagePath = Environment.getExternalStorageDirectory();
-        Log.d(TAG, storagePath.toString());
+        Log.d(TAG, "storagePath: "+storagePath.toString());
+
         File file = new File(storagePath + "/DDHF_" + itemid + "_" + imageNumber + ".jpg");
+        Log.d(TAG, "file: "+file.getAbsolutePath().toString());
         if (file.exists()) {
             Log.d(TAG, file.getAbsolutePath().toString() + " findes!");
             int orient = ImgRotationDetection.getOrientationFromFile(file);
