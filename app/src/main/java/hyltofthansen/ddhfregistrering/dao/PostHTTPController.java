@@ -3,6 +3,7 @@ package hyltofthansen.ddhfregistrering.dao;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,9 +13,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -47,30 +50,49 @@ public class PostHTTPController extends AsyncTask {
     @Override
     protected Integer doInBackground(Object[] params) {
 
+        Log.d(TAG, "item: "+JSONitem.toString());
         try {
 
             //Opretter POST URL
             try {
-                String urlAPI = context.getString(R.string.API_URL);
+                String urlAPI = context.getString(R.string.API_URL)+"?token=test";
                 url = new URL(urlAPI);
-                System.out.println("URL: " + url);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json"); // content type til API
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); // content type til API
+
+            Uri.Builder builder = null;
+            try {
+                builder = new Uri.Builder()
+                        .appendQueryParameter("headline", JSONitem.getString("headline"))
+                        .appendQueryParameter("description", JSONitem.getString("description"))
+                        .appendQueryParameter("donator", JSONitem.getString("donator"))
+                        .appendQueryParameter("producer", JSONitem.getString("producer"))
+                        .appendQueryParameter("zipcode", JSONitem.getString("zipcode"))
+                        .appendQueryParameter("dating_to", JSONitem.getString("dating_to"))
+                        .appendQueryParameter("dating_from", JSONitem.getString("dating_from"))
+                        .appendQueryParameter("received_at", JSONitem.getString("received_at"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String query = builder.build().getEncodedQuery();
 
             OutputStream os = conn.getOutputStream();
-            os.write(JSONitem.toString().getBytes());
-            os.flush();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
             os.close();
 
+
             responseCode = conn.getResponseCode();
-            String responseMsg = "PostHTTPController.java - Response Code: " + responseCode;
-            Log.d(TAG, responseMsg);
+            Log.d(TAG, "Response Code: " + responseCode);
 
 
             // Evt. læse svaret men ved ikke om vi har brug for andet end response code?

@@ -88,15 +88,22 @@ public class GetHTTP extends AsyncTask {
                     break;
                 }
                 item = itemsfromDB.getJSONObject(x);
-                items.add(new DTO_Item(item.getInt("id"),
-                        item.getString("headline"),
-                        item.getJSONArray("images").getJSONObject(0).optString("thumb")));
+                if (item.getJSONArray("images").optJSONObject(0) != null) {
+                    items.add(new DTO_Item(item.getInt("id"),
+                            item.getString("headline"),
+                            item.getJSONArray("images").optJSONObject(0).optString("thumb")));
+                } else {
+                    items.add(new DTO_Item(item.getInt("id"),
+                            item.getString("headline"),
+                            "null"));
+                }
+                //item.getJSONArray("images").getJSONObject(0).optString("thumb")
 //                        listAdapter));
                //Log.d(TAG, "Item.getString()" + item.getString("headline"));
                 //Log.d(TAG, "GetString() her");
                 //Log.d(TAG, "images: " +item.optString("images"));
                 //Log.d(TAG, "JSONArray: " +item.getJSONArray("images"));
-                Log.d(TAG, "id: "+item.getInt("id")+", thumb: " +item.getJSONArray("images").getJSONObject(0).optString("thumb"));
+                //Log.d(TAG, "id: "+item.getInt("id")+", thumb: " +item.getJSONArray("images").getJSONObject(0).optString("thumb"));
             }
             Log.d(TAG, "Færdig med task!");
 

@@ -81,15 +81,15 @@ public class Sing_NewItemData extends Application {
 
     public JSONObject getJSONitem() {
         try {
-           JSONitem = new JSONObject().put("itemheadline",
-                   titelTxt.getText().toString()).put("itemdescription",
-                beskrivelseTxt.getText().toString()).put("itemreceived",
-                   modtagelsesDatoTxt.getText().toString()).put("itemdatingfrom",
-                   dateringFraTxt.getText().toString()).put("itemdatingto",
+           JSONitem = new JSONObject().put("headline",
+                   titelTxt.getText().toString()).put("description",
+                beskrivelseTxt.getText().toString()).put("received_at",
+                   modtagelsesDatoTxt.getText().toString()).put("dating_from",
+                   dateringFraTxt.getText().toString()).put("dating_to",
                 dateringTilTxt.getText().toString()).put("donator",
                 refDonatorTxt.getText().toString()).put("producer",
                 refProducentTxt.getText().toString())
-                .put("postnummer", postNrTxt.getText().toString());
+                .put("zipcode", postNrTxt.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
