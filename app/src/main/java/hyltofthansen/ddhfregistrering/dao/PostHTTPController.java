@@ -55,7 +55,7 @@ public class PostHTTPController extends AsyncTask {
 
             //Opretter POST URL
             try {
-                String urlAPI = context.getString(R.string.API_URL)+"?token=test";
+                String urlAPI = context.getString(R.string.API_URL);
                 url = new URL(urlAPI);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -69,6 +69,7 @@ public class PostHTTPController extends AsyncTask {
             Uri.Builder builder = null;
             try {
                 builder = new Uri.Builder()
+                        .appendQueryParameter("token", "test")
                         .appendQueryParameter("headline", JSONitem.getString("headline"))
                         .appendQueryParameter("description", JSONitem.getString("description"))
                         .appendQueryParameter("donator", JSONitem.getString("donator"))
@@ -86,7 +87,7 @@ public class PostHTTPController extends AsyncTask {
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(query);
-            writer.flush();
+            //writer.flush();
             writer.close();
             os.close();
 
@@ -95,7 +96,7 @@ public class PostHTTPController extends AsyncTask {
             Log.d(TAG, "Response Code: " + responseCode);
 
 
-            // Evt. læse svaret men ved ikke om vi har brug for andet end response code?
+            // Læs response da vi skal bruge itemID for det nyoprettede item
            response = new StringBuffer();
            BufferedReader in = new BufferedReader(
                new InputStreamReader(conn.getInputStream()));
@@ -111,10 +112,13 @@ public class PostHTTPController extends AsyncTask {
 
         }
         catch (UnsupportedEncodingException e) {
+            Log.d(TAG, e.getMessage());
             e.printStackTrace();
         } catch (ProtocolException e) {
+            Log.d(TAG, e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d(TAG, e.getMessage());
             e.printStackTrace();
         }
         return responseCode;

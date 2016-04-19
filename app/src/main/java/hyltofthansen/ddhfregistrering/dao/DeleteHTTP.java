@@ -51,7 +51,7 @@ public class DeleteHTTP extends AsyncTask {
 
             response = httpURLConnection.getResponseCode();
 
-            StringBuffer responseBuffer = new StringBuffer();
+           /* StringBuffer responseBuffer = new StringBuffer();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(httpURLConnection.getInputStream()));
             String inputLine;
@@ -59,7 +59,7 @@ public class DeleteHTTP extends AsyncTask {
                 responseBuffer.append(inputLine);
             }
             Log.d(TAG, responseBuffer.toString());
-            in.close();
+            in.close();*/
         } catch (IOException exception) {
             exception.printStackTrace();
         } finally {

@@ -105,8 +105,7 @@ public class PostHTTPPicture extends AsyncTask {
                 os.close();
 
                 responseCode = conn.getResponseCode();
-                String responseMsg = "PostHTTPController.java - Response Code: " + responseCode;
-                Log.d(TAG, responseMsg);
+                Log.d(TAG, "Response Code: " + responseCode);
 
 
                 StringBuffer response = new StringBuffer();
