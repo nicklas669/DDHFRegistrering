@@ -51,7 +51,7 @@ public class PostHTTPController extends AsyncTask {
 
             //Opretter POST URL
             try {
-                String urlAPI = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
+                String urlAPI = context.getString(R.string.API_URL);
                 url = new URL(urlAPI);
                 System.out.println("URL: " + url);
             } catch (MalformedURLException e) {
@@ -61,7 +61,7 @@ public class PostHTTPController extends AsyncTask {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json"); // content type til Mathias' API
+            conn.setRequestProperty("Content-Type", "application/json"); // content type til API
 
             OutputStream os = conn.getOutputStream();
             os.write(JSONitem.toString().getBytes());

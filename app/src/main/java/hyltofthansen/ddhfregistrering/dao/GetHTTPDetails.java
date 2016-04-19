@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,11 +54,9 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        Log.d(TAG, "Kører GetHTTPDetails");
-        Log.d(TAG, "Item id : " + itemID);
-        // URL til Mathias' API
-        String url = context.getString(R.string.API_URL_MATHIAS)+itemID+
-                "?userID=56837dedd2d76438906140";
+        //Log.d(TAG, "Kører GetHTTPDetails");
+        //Log.d(TAG, "Item id : " + itemID);
+        String url = context.getString(R.string.API_URL)+itemID;
 
         String USER_AGENT = "Mozilla/5.0";
 
@@ -82,20 +81,25 @@ public class GetHTTPDetails extends AsyncTask {
             }
             in.close();
 
-            JSONObject item = new JSONObject(response.toString());
+            Log.d(TAG, "object start");
+            JSONObject object = new JSONObject(response.toString());
+            Log.d(TAG, "object done");
+            JSONObject data = new JSONObject(object.getString("data")); // Fetch data object (first index)
+            Log.d(TAG, "data done");
+            JSONObject item = new JSONObject(data.getString("default"));
+            Log.d(TAG, "item: "+item);
 
-            Sing_AsyncTasks.getInstance().setClickedItem(new DTO_Item(item.getInt("itemid"),
-                    item.getString("itemheadline"),
-                    item.optString("itemdescription"),
-                    item.optString("itemreceived"),
-                    item.optString("itemdatingfrom"),
-                    item.optString("itemdatingto"),
+
+            Sing_AsyncTasks.getInstance().setClickedItem(new DTO_Item(item.getInt("id"),
+                    item.getString("headline"),
+                    item.optString("description"),
+                    item.optString("received_at"),
+                    item.optString("dating_from"),
+                    item.optString("dating_to"),
                     item.optString("donator"),
                     item.optString("producer"),
-                    item.optInt("postnummer"),
+                    item.optInt("zipcode"),
                     item.optJSONArray("images")));
-//            Log.d(TAG, item.getString("itemheadline"));
-//            Log.d(TAG, item.getString("itemdescription"));
 
             Log.d(TAG, Sing_AsyncTasks.getInstance().getClickedItem().toString());
 
@@ -113,6 +117,6 @@ public class GetHTTPDetails extends AsyncTask {
     protected void onPostExecute(Object o) {
         Log.d(TAG, "onPostExecute");
         detailsFragment.updateEditViews();
-        Log.d(TAG, "Updated editviews()");
+        //Log.d(TAG, "Updated editviews()");
     }
 }

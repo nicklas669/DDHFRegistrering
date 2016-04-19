@@ -77,7 +77,7 @@ public class PostHTTPPicture extends AsyncTask {
                 //Opretter POST URL
                 try {
                     String urlAPI = null;
-                    urlAPI = context.getString(R.string.API_URL_MATHIAS) + itemid + "?userID=56837dedd2d76438906140";
+                    urlAPI = context.getString(R.string.API_URL) + itemid;
                     url = new URL(urlAPI);
                     System.out.println("URL til at uploade bilede: " + url);
                 } catch (MalformedURLException e) {

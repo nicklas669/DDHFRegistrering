@@ -35,16 +35,17 @@ public class GetHTTP extends AsyncTask {
         this.items = items;
         this.listAdapter = listAdapter;
         this.searchItemFragment = searchItemFragment;
+        Log.d(TAG, "GetHTTP Constructor!");
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
-        //Gammel API
-        String url = context.getString(R.string.API_URL_MATHIAS)+"?userID=56837dedd2d76438906140";
+        Log.d(TAG, "GetHTTP doInBackground");
 
         //Opdatering til ny Lumen API
         //String url = ConnectionData.baseUrl + ConnectionData.token;
-        url = "http://192.168.1.109:8000/v1/items/?token=test";
+        //url = "http://192.168.1.6:8000/v1/items/";
+        String url = context.getString(R.string.API_URL);
         String USER_AGENT = "Mozilla/5.0";
         //Log.d(TAG, "doInBackground køres!");
 
@@ -69,7 +70,7 @@ public class GetHTTP extends AsyncTask {
 
             JSONObject data = new JSONObject(response.toString());
 
-            Log.d(TAG, data.toString());
+            //Log.d(TAG, data.toString());
 
             JSONObject item = new JSONObject(data.getJSONObject(("data")).toString());
 
@@ -77,8 +78,8 @@ public class GetHTTP extends AsyncTask {
 
             JSONArray itemsfromDB = new JSONArray(item.getJSONArray("default").toString());
 
-            Log.d(TAG, "itemsFraDB til streng");
-            Log.d(TAG, itemsfromDB.toString());
+            //Log.d(TAG, "itemsFraDB til streng");
+            //Log.d(TAG, itemsfromDB.toString());
 
             for (int x = 0; x < itemsfromDB.length(); x++) {
 //                Log.d(TAG, "Kører loop " + x);
@@ -89,13 +90,15 @@ public class GetHTTP extends AsyncTask {
                 item = itemsfromDB.getJSONObject(x);
                 items.add(new DTO_Item(item.getInt("id"),
                         item.getString("headline"),
-                        item.optJSONArray("images").toString()));
-//                        item.optJSONArray("images"), //Denne skal fjernes eller også skal der itereres detaljer for hver item allerede her!
+                        item.getJSONArray("images").getJSONObject(0).optString("thumb")));
 //                        listAdapter));
-                Log.d(TAG, "Item.getString()" + item.getString("itemheadline"));
-                Log.d(TAG, "GetString() her");
+               //Log.d(TAG, "Item.getString()" + item.getString("headline"));
+                //Log.d(TAG, "GetString() her");
+                //Log.d(TAG, "images: " +item.optString("images"));
+                //Log.d(TAG, "JSONArray: " +item.getJSONArray("images"));
+                Log.d(TAG, "id: "+item.getInt("id")+", thumb: " +item.getJSONArray("images").getJSONObject(0).optString("thumb"));
             }
-//            Log.d(TAG, "Færdig med task");
+            Log.d(TAG, "Færdig med task!");
 
         } catch (ConnectException e) {
             response.append("Kunne ikke forbinde: "+  e.toString());

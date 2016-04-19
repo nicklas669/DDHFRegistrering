@@ -35,7 +35,7 @@ public class DeleteHTTP extends AsyncTask {
         int response = -1;
         URL url = null;
         try {
-            url = new URL(context.getString(R.string.API_URL_MATHIAS)+itemid+"?userID=56837dedd2d76438906140");
+            url = new URL(context.getString(R.string.API_URL)+itemid);
         } catch (MalformedURLException exception) {
             exception.printStackTrace();
         }

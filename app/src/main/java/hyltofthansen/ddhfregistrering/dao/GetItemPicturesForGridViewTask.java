@@ -66,8 +66,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
     }
 
     protected Bitmap doInBackground(String... urls) {
-        itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
-                "?userID=56837dedd2d76438906140";
+        itemIDURL = ctx.getString(R.string.API_URL)+itemID;
 
         //Get item image url's
         String USER_AGENT = "Mozilla/5.0";

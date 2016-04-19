@@ -56,8 +56,7 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         // TODO: Slet debug logs
         Log.d(TAG, "Henter fullscreen pic");
-        itemIDURL = ctx.getString(R.string.API_URL_MATHIAS)+itemID+
-                "?userID=56837dedd2d76438906140";
+        itemIDURL = ctx.getString(R.string.API_URL)+itemID;
         Log.d(TAG, itemID + " img " + clickedImage);
         //Get item image url's
         String USER_AGENT = "Mozilla/5.0";
