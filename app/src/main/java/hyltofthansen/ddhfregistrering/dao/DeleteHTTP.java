@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,10 +34,11 @@ public class DeleteHTTP extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
+        Log.d(TAG, "Trying to delete item: "+itemid);
         int response = -1;
         URL url = null;
         try {
-            url = new URL(context.getString(R.string.API_URL)+itemid);
+            url = new URL(context.getString(R.string.API_URL)+itemid+"?token=test");
         } catch (MalformedURLException exception) {
             exception.printStackTrace();
         }
@@ -47,6 +50,16 @@ public class DeleteHTTP extends AsyncTask {
             httpURLConnection.setRequestMethod("DELETE");
 
             response = httpURLConnection.getResponseCode();
+
+            StringBuffer responseBuffer = new StringBuffer();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(httpURLConnection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                responseBuffer.append(inputLine);
+            }
+            Log.d(TAG, responseBuffer.toString());
+            in.close();
         } catch (IOException exception) {
             exception.printStackTrace();
         } finally {
@@ -54,6 +67,8 @@ public class DeleteHTTP extends AsyncTask {
                 httpURLConnection.disconnect();
             }
         }
+
+
         return response;
     }
 
