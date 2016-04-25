@@ -117,7 +117,7 @@ public class ImgRotationDetection {
              InputStream input = url.openStream();
             File storagePath = Environment.getExternalStorageDirectory();
             int itemid = Sing_AsyncTasks.getInstance().getClickedItem().getItemid();
-            File file = new File(storagePath,"DDHF_" + itemid + "_" + imageNumber + ".jpg");
+            File file = new File(storagePath,"DDHF_" + itemid + "_" + imageNumber + "_full.jpg");
             OutputStream output = new FileOutputStream(file);
             try {
                 byte[] buffer = new byte[1024];

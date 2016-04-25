@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -57,8 +58,8 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
         // TODO: Slet debug logs
         Log.d(TAG, "Henter fullscreen pic");
         itemIDURL = ctx.getString(R.string.API_URL)+itemID;
-        Log.d(TAG, itemID + " img " + clickedImage);
-        //Get item image url's
+        //Log.d(TAG, itemID + " img " + clickedImage);
+        //Get item image URL
         String USER_AGENT = "Mozilla/5.0";
         StringBuffer response = new StringBuffer();
 
@@ -77,9 +78,13 @@ public class GetFullScreenPicTask extends AsyncTask<String, Void, Bitmap> {
             }
             bufferedReader.close();
 
-            JSONObject item = new JSONObject(response.toString());
-            //Get all image URL's from an item
-            String imageURL = item.getJSONObject("images").getJSONObject("image_" + clickedImage).get("href").toString();
+            JSONObject object = new JSONObject(response.toString());
+            JSONObject data = new JSONObject(object.getJSONObject(("data")).toString());
+            JSONObject item = new JSONObject(data.getJSONObject("default").toString());
+            JSONArray images = item.getJSONArray("images");
+
+            String imageURL = images.getJSONObject(clickedImage).getString("full");
+            Log.d(TAG, "fullscreen pic url: "+imageURL);
 
             ImgRotationDetection.saveFileToGetOrientation(imageURL, clickedImage);
 

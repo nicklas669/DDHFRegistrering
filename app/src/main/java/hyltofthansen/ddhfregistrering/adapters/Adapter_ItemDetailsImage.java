@@ -55,8 +55,8 @@ public class Adapter_ItemDetailsImage extends BaseAdapter {
             try {
                     if ((pictures.get(position).getHeight() + pictures.get(position).getWidth()) > 0) {
                         imageView.setImageBitmap(pictures.get(position));
-                        Log.d(TAG, String.valueOf(position));
-                        Log.d(TAG, String.valueOf(pictures.size()));
+                        //Log.d(TAG, String.valueOf(position));
+                        //Log.d(TAG, String.valueOf(pictures.size()));
                     }
 
             } catch (NullPointerException e) {

@@ -25,7 +25,7 @@ public class ImgCache {
         //Log.d(TAG, "storagePath: "+storagePath.toString());
 
         File file = new File(storagePath + "/DDHF_" + itemid + "_" + imageNumber + "_" + imgSize + ".jpg");
-        Log.d(TAG, "file: "+file.getAbsolutePath().toString());
+        //Log.d(TAG, "file: "+file.getAbsolutePath().toString());
         if (file.exists()) {
             Log.d(TAG, file.getAbsolutePath().toString() + " findes!");
             int orient = ImgRotationDetection.getOrientationFromFile(file);
