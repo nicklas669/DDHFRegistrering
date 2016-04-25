@@ -36,22 +36,22 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPreExecute() {
-        image = ImgCache.getExistingImage(DTOItem.getItemid(), 0, 50, 50);
+        image = ImgCache.getExistingImage(DTOItem.getItemid(), 0, 50, 50, "thumb");
         DTOItem.setGettingPicture(true);
     }
 
     protected Bitmap doInBackground(String... urls) {
 
         if (image == null) {
-            File file = new File(ImgCache.saveFileFromURL(urldisplay, 0, DTOItem.getItemid()), "");
+            File file = new File(ImgCache.saveFileFromURL(urldisplay, 0, DTOItem.getItemid(), "thumb"), "");
             image = ImgScaling.decodeSampledBitmapFromFile(file, 50, 50);
         }
         return image;
     }
 
     protected void onPostExecute(Bitmap result) {
-        Log.d(TAG, "PostExecute defaultimage");
-        Log.d(TAG, DTOItem.getItemheadline());
+        //Log.d(TAG, "PostExecute defaultimage");
+        //Log.d(TAG, DTOItem.getItemheadline());
         DTOItem.setDefaultImage(result);
         DTOItem.defaultImageDownloaded(true);
         listAdapter.notifyDataSetChanged();

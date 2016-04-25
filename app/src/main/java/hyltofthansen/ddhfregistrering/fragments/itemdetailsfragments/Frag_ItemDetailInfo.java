@@ -95,7 +95,7 @@ public class Frag_ItemDetailInfo extends Fragment {
 
 
         et_descript.setText(itemObject.getItemdescription());
-        Log.d(TAG, itemObject.getItemdescription());
+        //Log.d(TAG, itemObject.getItemdescription());
 
         if(!itemObject.getItemreceived().equals("null"))
             et_receiveDate.setText(itemObject.getItemreceived());
@@ -135,14 +135,14 @@ public class Frag_ItemDetailInfo extends Fragment {
 
     public void updateEditViews() {
         itemObject = Sing_AsyncTasks.getInstance().getClickedItem();
-        Log.d(TAG, "updateEditView");
+        //Log.d(TAG, "updateEditView");
 
         disableEditTexts();
 
         et_headline.setText(itemObject.getItemheadline().toString());
 
         et_descript.setText(itemObject.getItemdescription().toString());
-        Log.d(TAG, itemObject.getItemdescription().toString());
+        //Log.d(TAG, itemObject.getItemdescription().toString());
 
         if(!itemObject.getItemreceived().equals("null"))
             et_receiveDate.setText(itemObject.getItemreceived().toString());

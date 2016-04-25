@@ -88,10 +88,11 @@ public class GetHTTP extends AsyncTask {
                     break;
                 }
                 item = itemsfromDB.getJSONObject(x);
+                // Hvis der er uploaded et billede til genstanden
                 if (item.getJSONArray("images").optJSONObject(0) != null) {
                     items.add(new DTO_Item(item.getInt("id"),
                             item.getString("headline"),
-                            item.getJSONArray("images").optJSONObject(0).optString("thumb")));
+                            item.getJSONArray("images").optJSONObject(0).optString("thumb"))); // Sæt det første thumbnail billede til defaultimage i DTO_Item
                 } else {
                     items.add(new DTO_Item(item.getInt("id"),
                             item.getString("headline"),

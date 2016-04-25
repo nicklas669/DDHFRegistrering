@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -56,7 +57,7 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
         this.imageList = imageList;
         this.listAdapter = listAdapter;
         this.pb = pb;
-        Log.d(TAG, "Tråd lavet");
+        //Log.d(TAG, "Tråd lavet");
     }
 
     @Override
@@ -93,9 +94,40 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
             JSONObject object = new JSONObject(response.toString());
             JSONObject data = new JSONObject(object.getJSONObject(("data")).toString());
             JSONObject item = new JSONObject(data.getJSONObject("default").toString());
-            Log.d(TAG, "item: "+item);
+            //Log.d(TAG, "item: "+item);
 
             //Get all image URL's from an item
+            //Log.d(TAG, "images: "+item.getJSONArray("images").optJSONObject(0).optString("thumb"));
+            JSONArray images = item.getJSONArray("images");
+            //Log.d(TAG, "images: "+item.getJSONArray("images"));
+            //Log.d(TAG, "Genstand har "+ images.length() +" billeder!");
+
+            // Debug: print billeder der tilhører genstanden (i medium størrelse)
+            /*
+            for (int x = 0; x < images.length(); x++)
+                Log.d(TAG, "Image"+x+": "+images.getJSONObject(x).getString("medium"));
+                */
+
+            //Log.d(TAG, "Går ind i image loop!");
+            if (images.length() > 0) {
+                for (int x = 0; x < images.length(); x++) {
+                    if (x < MAX_PICS) {
+                        //Log.d(TAG, String.valueOf(x) + " x værdien");
+                        currentImage = ImgCache.getExistingImage(itemID, x, MAX_WIDTH,MAX_HEIGHT, "medium");
+                        if (currentImage == null) {
+                            //Log.d(TAG, "Billedet er null " + x + " itemID " + itemID);
+                            String imageURL = images.getJSONObject(x).getString("medium");
+                            Log.d(TAG, x + " imageURL " + imageURL);
+                            File file = new File(ImgCache.saveFileFromURL(imageURL, x, itemID, "medium"),"");
+                            currentImage = ImgScaling.decodeSampledBitmapFromFile(file, MAX_WIDTH, MAX_HEIGHT);
+                        }
+                        imageList.add(x, currentImage);
+                        publishProgress();
+                    }
+                }
+            }
+
+            /*
             Log.d(TAG, imageList.size() + " imagelist size");
             for (int x = imageList.size(); x < MAX_PICS; x++) {
                 Log.d(TAG, String.valueOf(x) + " x værdien");
@@ -103,13 +135,16 @@ public class GetItemPicturesForGridViewTask extends AsyncTask<String, Void, Bitm
                 if (currentImage == null) {
                     Log.d(TAG, "Billedet er null " + x + " itemID " + itemID);
                     String imageURL = item.getJSONObject("images").getJSONObject("image_" + x).get("href").toString();
+                    Log.d(TAG, "NU KOMMER DER PRINT!");
                     Log.d(TAG, x + " imageURL " + imageURL);
+                    Log.d(TAG, "HVOR VAR DET?");
                     File file = new File(ImgCache.saveFileFromURL(imageURL, x, itemID),"");
                     currentImage = ImgScaling.decodeSampledBitmapFromFile(file, MAX_WIDTH, MAX_HEIGHT);
                 }
                 imageList.add(currentImage);
                 publishProgress();
             }
+            */
 
         } catch (Exception e) {
             e.printStackTrace();

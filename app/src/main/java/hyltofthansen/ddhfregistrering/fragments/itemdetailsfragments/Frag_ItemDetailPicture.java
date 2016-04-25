@@ -37,6 +37,7 @@ public class Frag_ItemDetailPicture extends Fragment {
 
     @Override
     public void onResume() {
+        pictures = new ArrayList<Bitmap>(); // Clear the list
         Sing_AsyncTasks.getInstance().fetchItemGridPictures(getContext(),
                 itemid, pictures, itemDetailsImageAdapter, pb);
         super.onResume();

@@ -84,7 +84,7 @@ public class GetHTTPDetails extends AsyncTask {
             JSONObject object = new JSONObject(response.toString());
             JSONObject data = new JSONObject(object.getString("data")); // Fetch data object (first index)
             JSONObject item = new JSONObject(data.getString("default"));
-            Log.d(TAG, "item: "+item);
+            //Log.d(TAG, "item: "+item);
 
 
             Sing_AsyncTasks.getInstance().setClickedItem(new DTO_Item(item.getInt("id"),
@@ -98,7 +98,7 @@ public class GetHTTPDetails extends AsyncTask {
                     item.optInt("zipcode"),
                     item.optJSONArray("images")));
 
-            Log.d(TAG, Sing_AsyncTasks.getInstance().getClickedItem().toString());
+            //Log.d(TAG, Sing_AsyncTasks.getInstance().getClickedItem().toString());
 
         } catch (JSONException e) {
             Log.d(TAG, e.toString());
@@ -112,7 +112,7 @@ public class GetHTTPDetails extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        Log.d(TAG, "onPostExecute");
+        //Log.d(TAG, "onPostExecute");
         detailsFragment.updateEditViews();
         //Log.d(TAG, "Updated editviews()");
     }

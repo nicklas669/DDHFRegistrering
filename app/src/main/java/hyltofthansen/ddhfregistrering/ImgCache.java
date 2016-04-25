@@ -20,11 +20,11 @@ public class ImgCache {
     private static String TAG = "ImgCache";
     private static Bitmap bitmap;
 
-    public static Bitmap getExistingImage(int itemid, int imageNumber, int dstWidth, int dstHeight) {
+    public static Bitmap getExistingImage(int itemid, int imageNumber, int dstWidth, int dstHeight, String imgSize) {
         File storagePath = Environment.getExternalStorageDirectory();
-        Log.d(TAG, "storagePath: "+storagePath.toString());
+        //Log.d(TAG, "storagePath: "+storagePath.toString());
 
-        File file = new File(storagePath + "/DDHF_" + itemid + "_" + imageNumber + ".jpg");
+        File file = new File(storagePath + "/DDHF_" + itemid + "_" + imageNumber + "_" + imgSize + ".jpg");
         Log.d(TAG, "file: "+file.getAbsolutePath().toString());
         if (file.exists()) {
             Log.d(TAG, file.getAbsolutePath().toString() + " findes!");
@@ -37,14 +37,14 @@ public class ImgCache {
         return bitmap;
     }
 
-    public static File saveFileFromURL(String imageURL, int imageNumber, int itemid) {
+    public static File saveFileFromURL(String imageURL, int imageNumber, int itemid, String imgSize) {
         URL url = null;
         File file = null;
         try {
             url = new URL(imageURL);
             InputStream input = url.openStream();
             File storagePath = Environment.getExternalStorageDirectory();
-            file = new File(storagePath,"DDHF_" + itemid + "_" + imageNumber + ".jpg");
+            file = new File(storagePath,"DDHF_" + itemid + "_" + imageNumber + "_" + imgSize + ".jpg");
             OutputStream output = new FileOutputStream(file);
             try {
                 byte[] buffer = new byte[1024];

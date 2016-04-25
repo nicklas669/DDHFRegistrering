@@ -58,7 +58,7 @@ public class Frag_SearchItem extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        Log.d(TAG, "onCreateView køres!");
+        //Log.d(TAG, "onCreateView køres!");
         singAsyncTasks = Sing_AsyncTasks.getInstance();
 
         View root = inflater.inflate(R.layout.search_layout, container, false);

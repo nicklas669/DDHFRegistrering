@@ -28,7 +28,7 @@ public class Act_ShowImage extends Activity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarFullScreen);
         progressBar.setVisibility(View.INVISIBLE);
         Log.d(TAG, String.valueOf(clickedImage));
-        Bitmap bitmap = ImgCache.getExistingImage(itemid, clickedImage, 1280, 720);
+        Bitmap bitmap = ImgCache.getExistingImage(itemid, clickedImage, 1280, 720, "full");
         if(bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
