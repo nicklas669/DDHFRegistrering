@@ -71,7 +71,9 @@ public class PostHTTPPicture extends AsyncTask {
 
     @Override
     protected Integer doInBackground(Object[] params) {
+        Log.d(TAG, "imageFilePathList.size: "+imageFilePathList.size());
         for (int x = 0; imageFilePathList.size() > x; x++ ) {
+
             try {
                 //Opretter POST URL
                 try {
@@ -82,10 +84,10 @@ public class PostHTTPPicture extends AsyncTask {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-
+                Log.d(TAG, "Begynder at oprette forbindelse og uploade billede "+x);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
+                conn.setRequestMethod("PUT");
                 conn.setRequestProperty("Content-Type", "image/jpg"); // content type til Mathias' API
 
                 prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -126,6 +128,7 @@ public class PostHTTPPicture extends AsyncTask {
             uploaded++;
            publishProgress();
         }
+        Log.d(TAG, "Færdig med at uploade billeder!");
         return responseCode;
     }
 
