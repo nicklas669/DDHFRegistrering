@@ -47,7 +47,7 @@ public class PostHTTPEdit extends AsyncTask {
             //Opretter POST URL
             try {
                 String urlAPI = null;
-                urlAPI = context.getString(R.string.API_URL) + itemid;
+                urlAPI = context.getString(R.string.API_URL) + itemid+"?token=test";
                 url = new URL(urlAPI);
                 Log.d(TAG, "URL til at ændre item: " + url);
             } catch (MalformedURLException e) {
@@ -60,6 +60,7 @@ public class PostHTTPEdit extends AsyncTask {
             conn.setRequestProperty("Content-Type", "application/json");
 
             OutputStream os = conn.getOutputStream();
+            //Log.d(TAG, "JSONitem: "+JSONitem);
             os.write(JSONitem.toString().getBytes());
             os.flush();
             os.close();
