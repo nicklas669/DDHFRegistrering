@@ -79,9 +79,9 @@ public class PostHTTPController extends AsyncTask {
                         .appendQueryParameter("donator", JSONitem.getString("donator"))
                         .appendQueryParameter("producer", JSONitem.getString("producer"))
                         .appendQueryParameter("zipcode", JSONitem.getString("zipcode"))
-                        .appendQueryParameter("dating_to", JSONitem.getString("dating_to"))
-                        .appendQueryParameter("dating_from", JSONitem.getString("dating_from"))
-                        .appendQueryParameter("received_at", JSONitem.getString("received_at"));
+                        .appendQueryParameter("dating_to", JSONitem.optString("dating_to", "0"))
+                        .appendQueryParameter("dating_from", JSONitem.optString("dating_from", "0"))
+                        .appendQueryParameter("received_at", JSONitem.optString("received_at", "0"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

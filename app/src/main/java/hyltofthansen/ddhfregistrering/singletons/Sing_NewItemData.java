@@ -86,31 +86,48 @@ public class Sing_NewItemData extends Application {
 
     public JSONObject getJSONitem() {
         try {
+            boolean receiveDateSet = false,
+                    dateFromSet = false,
+                    dateToSet = false;
+            long longReceived = 0, longFrom = 0, longTo = 0;
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-            Log.d(TAG, "modtagelsesDato: "+modtagelsesDatoTxt.getText().toString().split(" ")[0]);
-            Date dateReceived = (Date) formatter.parse(modtagelsesDatoTxt.getText().toString().split(" ")[0]);
-            long longReceived = dateReceived.getTime()/1000;
-            Log.d(TAG, "modtagelsesDato: "+longReceived);
 
-            Log.d(TAG, "dateringFraDato: "+dateringFraTxt.getText().toString().split(" ")[0]);
-            Date dateFrom = (Date) formatter.parse(dateringFraTxt.getText().toString().split(" ")[0]);
-            long longFrom = dateFrom.getTime()/1000;
-            Log.d(TAG, "dateringFra: "+longFrom);
+            if (!modtagelsesDatoTxt.getText().toString().isEmpty() && modtagelsesDatoTxt.getText() != null) {
+                Log.d(TAG, "modtagelsesDato: "+modtagelsesDatoTxt.getText().toString().split(" ")[0]);
+                Date dateReceived = (Date) formatter.parse(modtagelsesDatoTxt.getText().toString().split(" ")[0]);
+                longReceived = dateReceived.getTime()/1000;
+                Log.d(TAG, "modtagelsesDato: "+longReceived);
+                receiveDateSet = true;
+            }
 
-            Log.d(TAG, "dateringTil: "+dateringTilTxt.getText().toString().split(" ")[0]);
-            Date dateTo = (Date) formatter.parse(dateringTilTxt.getText().toString().split(" ")[0]);
-            long longTo = dateTo.getTime()/1000;
-            Log.d(TAG, "dateringTilTxt: "+longTo);
+            if (!dateringFraTxt.getText().toString().isEmpty() && dateringFraTxt.getText() != null) {
+                Log.d(TAG, "dateringFraDato: " + dateringFraTxt.getText().toString().split(" ")[0]);
+                Date dateFrom = (Date) formatter.parse(dateringFraTxt.getText().toString().split(" ")[0]);
+                longFrom = dateFrom.getTime() / 1000;
+                Log.d(TAG, "dateringFra: " + longFrom);
+                dateFromSet = true;
+            }
+
+            if (!dateringTilTxt.getText().toString().isEmpty() && dateringTilTxt.getText() != null) {
+                Log.d(TAG, "dateringTil: " + dateringTilTxt.getText().toString().split(" ")[0]);
+                Date dateTo = (Date) formatter.parse(dateringTilTxt.getText().toString().split(" ")[0]);
+                longTo = dateTo.getTime() / 1000;
+                Log.d(TAG, "dateringTilTxt: " + longTo);
+                dateToSet = true;
+            }
 
            JSONitem = new JSONObject()
                    .put("headline", titelTxt.getText().toString())
-                    .put("description", beskrivelseTxt.getText().toString())
-                    .put("received_at", longReceived)
-                    .put("dating_from", longFrom)
-                    .put("dating_to", longTo)
-                    .put("donator", refDonatorTxt.getText().toString())
-                    .put("producer", refProducentTxt.getText().toString())
-                    .put("zipcode", postNrTxt.getText().toString());
+                   .put("description", beskrivelseTxt.getText().toString())
+                   .put("donator", refDonatorTxt.getText().toString())
+                   .put("producer", refProducentTxt.getText().toString())
+                   .put("zipcode", postNrTxt.getText().toString());
+
+            if (receiveDateSet) JSONitem.put("received_at", longReceived);
+            if (dateFromSet) JSONitem.put("dating_from", longFrom);
+            if (dateToSet) JSONitem.put("dating_to", longTo);
+
+
             Log.d(TAG, "getJSONitem: "+JSONitem);
         } catch (JSONException e) {
             e.printStackTrace();
