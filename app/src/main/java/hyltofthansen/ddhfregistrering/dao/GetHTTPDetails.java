@@ -86,13 +86,14 @@ public class GetHTTPDetails extends AsyncTask {
             JSONObject item = new JSONObject(data.getString("default"));
             //Log.d(TAG, "item: "+item);
 
+            //Log.d(TAG, "pretty: "+item.optJSONObject("dating_from").optString("pretty"));
 
             Sing_AsyncTasks.getInstance().setClickedItem(new DTO_Item(item.getInt("id"),
                     item.getString("headline"),
                     item.optString("description"),
-                    item.optString("received_at"),
-                    item.optString("dating_from"),
-                    item.optString("dating_to"),
+                    item.optJSONObject("received_at").optString("pretty"),
+                    item.optJSONObject("dating_from").optString("pretty"),
+                    item.optJSONObject("dating_to").optString("pretty"),
                     item.optString("donator"),
                     item.optString("producer"),
                     item.optInt("zipcode"),

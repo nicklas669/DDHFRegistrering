@@ -1,19 +1,24 @@
 package hyltofthansen.ddhfregistrering.singletons;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.Identity;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 /**
  * Sing_AsyncTasks responsible for sharing data between Fragments in Swipeviews.
  */
 public class Sing_NewItemData extends Application {
-
+    private static final String TAG = "Sing_NewItemData";
     private JSONObject JSONitem;
 
     private EditText titelTxt;
@@ -81,16 +86,35 @@ public class Sing_NewItemData extends Application {
 
     public JSONObject getJSONitem() {
         try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            Log.d(TAG, "modtagelsesDato: "+modtagelsesDatoTxt.getText().toString().split(" ")[0]);
+            Date dateReceived = (Date) formatter.parse(modtagelsesDatoTxt.getText().toString().split(" ")[0]);
+            long longReceived = dateReceived.getTime()/1000;
+            Log.d(TAG, "modtagelsesDato: "+longReceived);
+
+            Log.d(TAG, "dateringFraDato: "+dateringFraTxt.getText().toString().split(" ")[0]);
+            Date dateFrom = (Date) formatter.parse(dateringFraTxt.getText().toString().split(" ")[0]);
+            long longFrom = dateFrom.getTime()/1000;
+            Log.d(TAG, "dateringFra: "+longFrom);
+
+            Log.d(TAG, "dateringTil: "+dateringTilTxt.getText().toString().split(" ")[0]);
+            Date dateTo = (Date) formatter.parse(dateringTilTxt.getText().toString().split(" ")[0]);
+            long longTo = dateTo.getTime()/1000;
+            Log.d(TAG, "dateringTilTxt: "+longTo);
+
            JSONitem = new JSONObject()
                    .put("headline", titelTxt.getText().toString())
                     .put("description", beskrivelseTxt.getText().toString())
-                    //.put("received_at", modtagelsesDatoTxt.getText().toString())
-                    //.put("dating_from",dateringFraTxt.getText().toString())
-                    //.put("dating_to", dateringTilTxt.getText().toString())
+                    .put("received_at", longReceived)
+                    .put("dating_from", longFrom)
+                    .put("dating_to", longTo)
                     .put("donator", refDonatorTxt.getText().toString())
                     .put("producer", refProducentTxt.getText().toString())
                     .put("zipcode", postNrTxt.getText().toString());
+            Log.d(TAG, "getJSONitem: "+JSONitem);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return JSONitem;

@@ -78,15 +78,15 @@ public class PostHTTPController extends AsyncTask {
                         .appendQueryParameter("description", JSONitem.getString("description"))
                         .appendQueryParameter("donator", JSONitem.getString("donator"))
                         .appendQueryParameter("producer", JSONitem.getString("producer"))
-                        .appendQueryParameter("zipcode", JSONitem.getString("zipcode"));
-//                        .appendQueryParameter("dating_to", JSONitem.getString("dating_to"));
-//                        .appendQueryParameter("dating_from", JSONitem.getString("dating_from"));
-//                        .appendQueryParameter("received_at", JSONitem.getString("received_at"));
+                        .appendQueryParameter("zipcode", JSONitem.getString("zipcode"))
+                        .appendQueryParameter("dating_to", JSONitem.getString("dating_to"))
+                        .appendQueryParameter("dating_from", JSONitem.getString("dating_from"))
+                        .appendQueryParameter("received_at", JSONitem.getString("received_at"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             String query = builder.build().getEncodedQuery();
-
+            Log.d(TAG, "query: "+query);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));

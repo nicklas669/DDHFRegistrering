@@ -147,10 +147,10 @@ public class Frag_ItemDetailInfo extends Fragment {
         if(!itemObject.getItemreceived().equals("null"))
             et_receiveDate.setText(itemObject.getItemreceived().toString());
 
-        if(!itemObject.getItemdatingfrom().equals("null") ||itemObject.getItemdatingfrom().equals("0000-00-00") )
+        if(!itemObject.getItemdatingfrom().equals("null") || itemObject.getItemdatingfrom().equals("0000-00-00") )
             et_datingFrom.setText(itemObject.getItemdatingfrom().toString());
 
-        if(!itemObject.getItemdatingto().equals("null") ||itemObject.getItemdatingto().equals("0000-00-00"))
+        if(!itemObject.getItemdatingto().equals("null") || itemObject.getItemdatingto().equals("0000-00-00"))
             et_datingTo.setText(itemObject.getItemdatingto().toString());
 
         if(!itemObject.getDonator().equals("null"))
@@ -224,7 +224,7 @@ public class Frag_ItemDetailInfo extends Fragment {
     }
 
     /**
-     * Disables all the edittexts, making them editable.
+     * Disables all the edittexts, making them not editable.
      */
     private void disableEditTexts() {
         et_headline.setEnabled(false);

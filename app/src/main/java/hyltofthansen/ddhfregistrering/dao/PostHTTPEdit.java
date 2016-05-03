@@ -60,7 +60,7 @@ public class PostHTTPEdit extends AsyncTask {
             conn.setRequestProperty("Content-Type", "application/json");
 
             OutputStream os = conn.getOutputStream();
-            //Log.d(TAG, "JSONitem: "+JSONitem);
+            Log.d(TAG, "JSONitem: "+JSONitem.toString());
             os.write(JSONitem.toString().getBytes());
             os.flush();
             os.close();
